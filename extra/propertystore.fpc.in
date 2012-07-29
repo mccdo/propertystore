@@ -1,0 +1,15 @@
+prefix=${fp_file_cwd}/../..
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: propertystore
+Description: propertystore release pre-compiled for VES
+Provides: propertystore
+Requires:
+Version: @propertystore_VERSION@
+Libs: @propertystore_FPC_LIBRARIES@
+Cflags: @propertystore_FPC_INCLUDES@
+Arch: noarch
+
+

@@ -1,0 +1,29 @@
+# - Config file for the propertystore package
+# It defines the following variables
+#  propertystore_INCLUDE_DIRS - include directories for propertystore
+#  propertystore_LIBRARIES    - libraries to link against
+#  propertystore_EXECUTABLE   - the bar executable
+
+@PACKAGE_INIT@
+
+# These are IMPORTED targets created by propertystoreLibraryDepends.cmake
+set(propertystore_LIBRARIES "PropertySetBrowser" )
+set(propertystore_EXECUTABLE test)
+
+# Compute paths
+# get_filename_component(propertystore_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
+if(EXISTS "${PACKAGE_PREFIX_DIR}/CMakeCache.txt")
+    # In build tree
+    include("${PACKAGE_PREFIX_DIR}/lib/propertystoreBuildTreeSettings.cmake")
+    # Our library dependencies (contains definitions for IMPORTED targets)
+    include("${PACKAGE_PREFIX_DIR}/lib/propertystoreLibraryDepends.cmake")
+else()
+    set_and_check(propertystore_INCLUDE_DIRS "${PACKAGE_PREFIX_DIR}/include")
+    # The propertystore targets file.
+    if(EXISTS "${PACKAGE_PREFIX_DIR}/lib/propertystore-targets.cmake")
+        include("${PACKAGE_PREFIX_DIR}/lib/propertystore-targets.cmake")
+    endif()
+endif()
+
+# The location of the Usepropertystore.cmake file.
+set(propertystore_USE_FILE "${PACKAGE_PREFIX_DIR}/lib/Usepropertystore.cmake")
