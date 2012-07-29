@@ -85,3 +85,96 @@ SET(LIBRARY_OUTPUT_PATH ${OUTPUT_LIBDIR})
 
 add_subdirectory(src)
 
+#
+# Doxygen
+#find_package( Doxygen )
+#if( DOXYGEN_FOUND )
+#    set( HAVE_DOT "NO" )
+#    if( DOXYGEN_DOT_PATH )
+#        set( HAVE_DOT "YES" )
+#    endif()
+#    
+#    configure_file( ${PROJECT_SOURCE_DIR}/doc/doxyfile.cmake
+#        ${PROJECT_BINARY_DIR}/doc/doxyfile
+#    )
+#    add_custom_target( Documentation ${DOXYGEN_EXECUTABLE}
+#        ${PROJECT_BINARY_DIR}/doc/doxyfile
+#    )
+#    
+#    add_subdirectory( doc/images )
+#endif()
+
+# On windows provide the user with the pdb files 
+# for debugging if they are present
+if(MSVC)
+    install(
+        DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/\${CMAKE_INSTALL_CONFIG_NAME}/
+        DESTINATION lib
+        USE_SOURCE_PERMISSIONS
+        COMPONENT Development
+        FILES_MATCHING PATTERN "*.pdb"
+    )
+endif(MSVC)
+
+# Install the CMake find script for crunchstore
+install( FILES "extra/Findpropertystore.cmake"
+    DESTINATION "share/${CMAKE_PROJECT_NAME}/extra"
+    COMPONENT Development
+)
+
+#
+# Create and install all of the auto find tools
+# =============================================
+
+# Add all targets to the build-tree export set
+export(TARGETS PropertySetBrowser
+  FILE "${PROJECT_BINARY_DIR}/lib/propertystoreLibraryDepends.cmake")
+
+# Export the package for use from the build-tree
+# (this registers the build-tree with a global CMake-registry)
+export(PACKAGE propertystore)
+
+# Create a propertystoreBuildTreeSettings.cmake file for the use from the build tree
+configure_file(propertystoreBuildTreeSettings.cmake.in
+  "${PROJECT_BINARY_DIR}/lib/propertystoreBuildTreeSettings.cmake" @ONLY)
+
+#configure_file(propertystoreConfig.cmake.in
+#  "${PROJECT_BINARY_DIR}/lib/propertystoreConfig.cmake" @ONLY)
+configure_file(propertystoreConfigVersion.cmake.in
+  "${PROJECT_BINARY_DIR}/lib/propertystoreConfigVersion.cmake" @ONLY)
+configure_file(Usepropertystore.cmake.in
+  "${PROJECT_BINARY_DIR}/lib/Usepropertystore.cmake" @ONLY)
+
+# Install the export set for use with the install-tree
+install(EXPORT propertystore-targets DESTINATION lib)
+
+include( CMakePackageConfigHelpers )
+# Create the propertystoreConfig.cmake and propertystoreConfigVersion files
+file(RELATIVE_PATH CONF_REL_INCLUDE_DIR "${CMAKE_INSTALL_PREFIX}/lib"
+   "${CMAKE_INSTALL_PREFIX}/include")
+
+configure_package_config_file( 
+    propertystoreConfig.cmake.in ${CMAKE_CURRENT_BINARY_DIR}/lib/propertystoreConfig.cmake
+    INSTALL_DESTINATION lib
+    PATH_VARS CONF_REL_INCLUDE_DIR )
+
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/lib/propertystoreConfig.cmake 
+              ${CMAKE_CURRENT_BINARY_DIR}/lib/propertystoreConfigVersion.cmake
+              ${CMAKE_CURRENT_BINARY_DIR}/lib/Usepropertystore.cmake
+        DESTINATION lib )
+
+#
+# Setup the fpc auto detection files
+if(WIN32)
+    set(propertystore_FPC_LIBRARIES "/libpath:\"\${libdir}\" PropertySetBrowser.lib")
+    set(propertystore_FPC_INCLUDES "/I\"\${includedir}\"")
+else(WIN32)
+    set(propertystore_FPC_INCLUDES "-I\${includedir}")
+    set(propertystore_FPC_LIBRARIES "-L\${libdir} -lPropertySetBrowser")
+endif(WIN32)
+
+configure_file(extra/propertystore.fpc.in
+  "${PROJECT_BINARY_DIR}/lib/flagpoll/propertystore.fpc" @ONLY)
+
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/lib/flagpoll/propertystore.fpc
+        DESTINATION lib/flagpoll )
