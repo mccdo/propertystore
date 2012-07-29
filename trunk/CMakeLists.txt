@@ -1,34 +1,46 @@
-cmake_minimum_required (VERSION 2.6)
+cmake_minimum_required (VERSION 2.8.8)
 
-project( PropertySetBrowser )
+project( propertystore )
 
 SET( CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/CMakeModules" )
-#SET( CMAKE_INSTALL_PREFIX "${PROJECT_SOURCE_DIR}/install-64-bit")
-SET( Poco_DIR "${PROJECT_SOURCE_DIR}/CMakeModules" )
-SET( POCO_ROOT "$ENV{POCO_INSTALL_DIR}" )
-SET( Poco_INCLUDE_DIR "${POCO_ROOT}/include" )
-SET( Poco_LIBRARY_DIR "${POCO_ROOT}/lib" )
+
+set(propertystore_MAJOR_VERSION 0)
+set(propertystore_MINOR_VERSION 2)
+set(propertystore_SUB_VERSION 0)
+set(propertystore_VERSION ${propertystore_MAJOR_VERSION}.${propertystore_MINOR_VERSION}.${propertystore_SUB_VERSION})
 
 #option(BUILD_EXAMPLES "Build examples?" ON)
 
+find_package( crunchstore 0.2.0 REQUIRED )
+if( crunchstore_FOUND )
+    include( ${crunchstore_USE_FILE} )
+endif()
+
+find_package( switchwire 0.2.0 REQUIRED )
+if( switchwire_FOUND )
+    include( ${switchwire_USE_FILE} )
+endif()
+
 SET(BOOST_INCLUDEDIR "$ENV{BOOST_INSTALL_DIR}/include" CACHE PATH "docstring")
-SET(Persistence_ROOT "$ENV{Persistence_INSTALL_DIR}" CACHE PATH "docstring")
-SET(EventManager_ROOT "$ENV{EventManager_INSTALL_DIR}" CACHE PATH "docstring")
 
-FIND_PACKAGE(Boost)
-FIND_PACKAGE(Poco COMPONENTS Foundation)
-FIND_PACKAGE(Qt4 REQUIRED)
+set(Boost_USE_STATIC_LIBS       OFF)
+set(Boost_USE_MULTITHREADED      ON)
+set(Boost_USE_STATIC_RUNTIME    OFF)
 
+FIND_PACKAGE(Boost 1.44.0 REQUIRED COMPONENTS system)
+
+FIND_PACKAGE(POCO 1.4.1 REQUIRED COMPONENTS PocoFoundation PocoUtil PocoData PocoDataSQLite)
+
+FIND_PACKAGE(Qt4 REQUIRED COMPONENTS QtCore QtGui )
+include(${QT_USE_FILE})
 
 INCLUDE_DIRECTORIES( 
     ${Boost_INCLUDE_DIRS}
-    ${Poco_INCLUDE_DIR}
-    ${Persistence_ROOT}/include
-    ${EventManager_ROOT}/include
+    ${POCO_INCLUDE_DIR}
+    ${switchwire_INCLUDE_DIRS}
+    ${crunchstore_INCLUDE_DIRS}
     ${PROJECT_SOURCE_DIR}/qtpropertybrowser-2.5_1-opensource/src
 )
-
-LINK_DIRECTORIES(${Poco_LIBRARY_DIRS} ${Persistence_ROOT}/lib64 ${EventManager_ROOT}/lib64)
 
 # Alias for the qtpropertybrowser path
 SET( QTPBDIR ${CMAKE_SOURCE_DIR}/src/qtpropertybrowser-2.5_1-opensource/src )
