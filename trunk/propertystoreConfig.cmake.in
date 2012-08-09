@@ -14,16 +14,16 @@ set(propertystore_EXECUTABLE test)
 # get_filename_component(propertystore_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
 if(EXISTS "${PACKAGE_PREFIX_DIR}/CMakeCache.txt")
     # In build tree
-    include("${PACKAGE_PREFIX_DIR}/lib/propertystoreBuildTreeSettings.cmake")
+    include("${PACKAGE_PREFIX_DIR}/@CMAKE_INSTALL_LIBDIR@/propertystoreBuildTreeSettings.cmake")
     # Our library dependencies (contains definitions for IMPORTED targets)
-    include("${PACKAGE_PREFIX_DIR}/lib/propertystoreLibraryDepends.cmake")
+    include("${PACKAGE_PREFIX_DIR}/@CMAKE_INSTALL_LIBDIR@/propertystoreLibraryDepends.cmake")
 else()
     set_and_check(propertystore_INCLUDE_DIRS "${PACKAGE_PREFIX_DIR}/include")
     # The propertystore targets file.
-    if(EXISTS "${PACKAGE_PREFIX_DIR}/lib/propertystore-targets.cmake")
-        include("${PACKAGE_PREFIX_DIR}/lib/propertystore-targets.cmake")
+    if(EXISTS "${PACKAGE_PREFIX_DIR}/@CMAKE_INSTALL_LIBDIR@/propertystore-targets.cmake")
+        include("${PACKAGE_PREFIX_DIR}/@CMAKE_INSTALL_LIBDIR@/propertystore-targets.cmake")
     endif()
 endif()
 
 # The location of the Usepropertystore.cmake file.
-set(propertystore_USE_FILE "${PACKAGE_PREFIX_DIR}/lib/Usepropertystore.cmake")
+set(propertystore_USE_FILE "${PACKAGE_PREFIX_DIR}/@CMAKE_INSTALL_LIBDIR@/Usepropertystore.cmake")
