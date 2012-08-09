@@ -59,29 +59,13 @@ IF(WIN32)
     ENDIF(MSVC)
 ENDIF (WIN32)
 
-IF(UNIX AND NOT WIN32 AND NOT APPLE)
-  IF(CMAKE_SIZEOF_VOID_P MATCHES "8")
-      SET(LIB_POSTFIX "64" CACHE STRING "suffix for 32/64 dir placement")
-      MARK_AS_ADVANCED(LIB_POSTFIX)
-  ENDIF()
-ENDIF()
-IF(NOT DEFINED LIB_POSTFIX)
-    SET(LIB_POSTFIX "")
-ENDIF()
+if(CMAKE_COMPILER_IS_GNUCXX AND NOT WIN32 AND NOT APPLE)
+    include(GNUInstallDirs)
+endif(CMAKE_COMPILER_IS_GNUCXX AND NOT WIN32 AND NOT APPLE)
 
-################################################################################
-# Create lib directory if required
-
-IF("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_BINARY_DIR}")
-   FILE(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-ENDIF("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_BINARY_DIR}")
-
-################################################################################
-
-SET(OUTPUT_LIBDIR ${PROJECT_BINARY_DIR}/lib)
-MAKE_DIRECTORY(${OUTPUT_LIBDIR})
-SET(LIBRARY_OUTPUT_PATH ${OUTPUT_LIBDIR})
-
+if(NOT DEFINED CMAKE_INSTALL_LIBDIR)
+  set(CMAKE_INSTALL_LIBDIR lib)
+endif(NOT DEFINED CMAKE_INSTALL_LIBDIR)
 
 add_subdirectory(src)
 
@@ -109,7 +93,7 @@ add_subdirectory(src)
 if(MSVC)
     install(
         DIRECTORY ${PROJECT_BINARY_DIR}/lib/\${CMAKE_INSTALL_CONFIG_NAME}/
-        DESTINATION lib
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}
         USE_SOURCE_PERMISSIONS
         COMPONENT Development
         FILES_MATCHING PATTERN "*.pdb"
@@ -128,7 +112,7 @@ install( FILES "extra/Findpropertystore.cmake"
 
 # Add all targets to the build-tree export set
 export(TARGETS PropertySetBrowser
-  FILE "${PROJECT_BINARY_DIR}/lib/propertystoreLibraryDepends.cmake")
+  FILE "${PROJECT_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}/propertystoreLibraryDepends.cmake")
 
 # Export the package for use from the build-tree
 # (this registers the build-tree with a global CMake-registry)
@@ -136,32 +120,32 @@ export(PACKAGE propertystore)
 
 # Create a propertystoreBuildTreeSettings.cmake file for the use from the build tree
 configure_file(propertystoreBuildTreeSettings.cmake.in
-  "${PROJECT_BINARY_DIR}/lib/propertystoreBuildTreeSettings.cmake" @ONLY)
+  "${PROJECT_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}/propertystoreBuildTreeSettings.cmake" @ONLY)
 
 #configure_file(propertystoreConfig.cmake.in
-#  "${PROJECT_BINARY_DIR}/lib/propertystoreConfig.cmake" @ONLY)
+#  "${PROJECT_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}/propertystoreConfig.cmake" @ONLY)
 configure_file(propertystoreConfigVersion.cmake.in
-  "${PROJECT_BINARY_DIR}/lib/propertystoreConfigVersion.cmake" @ONLY)
+  "${PROJECT_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}/propertystoreConfigVersion.cmake" @ONLY)
 configure_file(Usepropertystore.cmake.in
-  "${PROJECT_BINARY_DIR}/lib/Usepropertystore.cmake" @ONLY)
+  "${PROJECT_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}/Usepropertystore.cmake" @ONLY)
 
 # Install the export set for use with the install-tree
-install(EXPORT propertystore-targets DESTINATION lib)
+install(EXPORT propertystore-targets DESTINATION ${CMAKE_INSTALL_LIBDIR})
 
 include( CMakePackageConfigHelpers )
 # Create the propertystoreConfig.cmake and propertystoreConfigVersion files
-file(RELATIVE_PATH CONF_REL_INCLUDE_DIR "${CMAKE_INSTALL_PREFIX}/lib"
+file(RELATIVE_PATH CONF_REL_INCLUDE_DIR "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}"
    "${CMAKE_INSTALL_PREFIX}/include")
 
 configure_package_config_file( 
-    propertystoreConfig.cmake.in ${CMAKE_CURRENT_BINARY_DIR}/lib/propertystoreConfig.cmake
-    INSTALL_DESTINATION lib
+    propertystoreConfig.cmake.in ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}/propertystoreConfig.cmake
+    INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}
     PATH_VARS CONF_REL_INCLUDE_DIR )
 
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/lib/propertystoreConfig.cmake 
-              ${CMAKE_CURRENT_BINARY_DIR}/lib/propertystoreConfigVersion.cmake
-              ${CMAKE_CURRENT_BINARY_DIR}/lib/Usepropertystore.cmake
-        DESTINATION lib )
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}/propertystoreConfig.cmake 
+              ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}/propertystoreConfigVersion.cmake
+              ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}/Usepropertystore.cmake
+        DESTINATION ${CMAKE_INSTALL_LIBDIR} )
 
 #
 # Setup the fpc auto detection files
@@ -174,7 +158,7 @@ else(WIN32)
 endif(WIN32)
 
 configure_file(extra/propertystore.fpc.in
-  "${PROJECT_BINARY_DIR}/lib/flagpoll/propertystore.fpc" @ONLY)
+  "${PROJECT_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}/propertystore.fpc" @ONLY)
 
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/lib/flagpoll/propertystore.fpc
-        DESTINATION lib/flagpoll )
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}/flagpoll/propertystore.fpc
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/flagpoll )
