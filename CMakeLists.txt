@@ -158,7 +158,7 @@ else(WIN32)
 endif(WIN32)
 
 configure_file(extra/propertystore.fpc.in
-  "${PROJECT_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}/propertystore.fpc" @ONLY)
+  "${PROJECT_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}/flagpoll/propertystore.fpc" @ONLY)
 
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}/flagpoll/propertystore.fpc
         DESTINATION ${CMAKE_INSTALL_LIBDIR}/flagpoll )
