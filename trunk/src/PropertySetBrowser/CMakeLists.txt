@@ -5,11 +5,7 @@ include_directories(
         ${CMAKE_BINARY_DIR}/src/PropertySetBrowser/__/qtpropertybrowser-2.5_1-opensource/src
     )
 
-#Lets us know we're building the library so export definition can be set up
-#correctly for win32
-#IF(WIN32)
 ADD_DEFINITIONS(-DPROPERTYSETBROWSER_LIBRARY)
-#ENDIF (WIN32)
 
 SET( QTPBDIR ${CMAKE_SOURCE_DIR}/src/qtpropertybrowser-2.5_1-opensource/src )
 
@@ -72,29 +68,15 @@ SET(TARGET_NAME PropertySetBrowser)
 ADD_LIBRARY(${TARGET_NAME} SHARED ${TARGET_SRC} ${PUBLIC_HEADERS} ${MOCCED} ${RCCED})
 TARGET_LINK_LIBRARIES(${TARGET_NAME} ${switchwire_LIBRARIES} ${crunchstore_LIBRARIES} ${POCO_LIBRARIES} ${QT_LIBRARIES}) 
 
-
-SET(INSTALL_INCDIR include)
-SET(INSTALL_BINDIR bin)
-SET(INSTALL_ARCHIVEDIR ${CMAKE_INSTALL_LIBDIR})
-IF(WIN32)
-    SET(INSTALL_LIBDIR bin)
-ELSE()
-    SET(INSTALL_LIBDIR ${CMAKE_INSTALL_LIBDIR})
-ENDIF()
-
 set_target_properties( ${TARGET_NAME} PROPERTIES VERSION ${propertystore_VERSION} )
 set_target_properties( ${TARGET_NAME} PROPERTIES SOVERSION ${propertystore_VERSION} )
 set_target_properties( ${TARGET_NAME} PROPERTIES PROJECT_LABEL "Lib ${TARGET_NAME}" )
 
-INSTALL(
-        TARGETS ${TARGET_NAME}
+INSTALL(TARGETS ${TARGET_NAME}
         EXPORT propertystore-targets
         RUNTIME DESTINATION ${INSTALL_BINDIR}
         LIBRARY DESTINATION ${INSTALL_LIBDIR}
-        ARCHIVE DESTINATION ${INSTALL_ARCHIVEDIR}
-    )
+        ARCHIVE DESTINATION ${INSTALL_ARCHIVEDIR})
 
-INSTALL(
-        FILES       ${PUBLIC_HEADERS}
-        DESTINATION ${INSTALL_INCDIR}/${TARGET_NAME}
-    )
+INSTALL(FILES       ${PUBLIC_HEADERS}
+        DESTINATION ${INSTALL_INCDIR}/${TARGET_NAME})
