@@ -8,6 +8,7 @@ set(propertystore_MAJOR_VERSION 0)
 set(propertystore_MINOR_VERSION 2)
 set(propertystore_SUB_VERSION 0)
 set(propertystore_VERSION ${propertystore_MAJOR_VERSION}.${propertystore_MINOR_VERSION}.${propertystore_SUB_VERSION})
+set(VES_PACKAGE_VERSION ${propertystore_VERSION})
 
 #option(BUILD_EXAMPLES "Build examples?" ON)
 
@@ -60,22 +61,7 @@ IF(WIN32)
     ENDIF(MSVC)
 ENDIF (WIN32)
 
-if(CMAKE_COMPILER_IS_GNUCXX)
-    include(GNUInstallDirs)
-endif(CMAKE_COMPILER_IS_GNUCXX)
-
-if(NOT DEFINED CMAKE_INSTALL_LIBDIR)
-  set(CMAKE_INSTALL_LIBDIR lib)
-endif(NOT DEFINED CMAKE_INSTALL_LIBDIR)
-
-set(INSTALL_INCDIR include)
-set(INSTALL_BINDIR bin)
-set(INSTALL_ARCHIVEDIR ${CMAKE_INSTALL_LIBDIR})
-if(WIN32)
-    SET(INSTALL_LIBDIR bin)
-else(WIN32)
-    SET(INSTALL_LIBDIR ${CMAKE_INSTALL_LIBDIR})
-endif(WIN32)
+include(VESBinAndLibDirs)
 
 add_subdirectory(src)
 
@@ -98,64 +84,10 @@ add_subdirectory(src)
 #    add_subdirectory( doc/images )
 #endif()
 
-# On windows provide the user with the pdb files 
-# for debugging if they are present
-if(MSVC)
-    install(
-        DIRECTORY ${PROJECT_BINARY_DIR}/lib/\${CMAKE_INSTALL_CONFIG_NAME}/
-        DESTINATION ${CMAKE_INSTALL_LIBDIR}
-        USE_SOURCE_PERMISSIONS
-        COMPONENT Development
-        FILES_MATCHING PATTERN "*.pdb"
-    )
-endif(MSVC)
+include(VESInstallPDBFiles)
 
-# Install the CMake find script for crunchstore
-install( FILES "extra/Findpropertystore.cmake"
-    DESTINATION "share/${CMAKE_PROJECT_NAME}/extra"
-    COMPONENT Development
-)
-
-#
-# Create and install all of the auto find tools
-# =============================================
-
-# Add all targets to the build-tree export set
-export(TARGETS PropertySetBrowser
-  FILE "${PROJECT_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}/propertystoreLibraryDepends.cmake")
-
-# Export the package for use from the build-tree
-# (this registers the build-tree with a global CMake-registry)
-export(PACKAGE propertystore)
-
-# Create a propertystoreBuildTreeSettings.cmake file for the use from the build tree
-configure_file(propertystoreBuildTreeSettings.cmake.in
-  "${PROJECT_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}/propertystoreBuildTreeSettings.cmake" @ONLY)
-
-#configure_file(propertystoreConfig.cmake.in
-#  "${PROJECT_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}/propertystoreConfig.cmake" @ONLY)
-configure_file(propertystoreConfigVersion.cmake.in
-  "${PROJECT_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}/propertystoreConfigVersion.cmake" @ONLY)
-configure_file(Usepropertystore.cmake.in
-  "${PROJECT_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}/Usepropertystore.cmake" @ONLY)
-
-# Install the export set for use with the install-tree
-install(EXPORT propertystore-targets DESTINATION ${CMAKE_INSTALL_LIBDIR})
-
-include( CMakePackageConfigHelpers )
-# Create the propertystoreConfig.cmake and propertystoreConfigVersion files
-file(RELATIVE_PATH CONF_REL_INCLUDE_DIR "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}"
-   "${CMAKE_INSTALL_PREFIX}/include")
-
-configure_package_config_file( 
-    propertystoreConfig.cmake.in ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}/propertystoreConfig.cmake
-    INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    PATH_VARS CONF_REL_INCLUDE_DIR CMAKE_INSTALL_LIBDIR)
-
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}/propertystoreConfig.cmake 
-              ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}/propertystoreConfigVersion.cmake
-              ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}/Usepropertystore.cmake
-        DESTINATION ${CMAKE_INSTALL_LIBDIR} )
+set(VES_EXPORT_LIBRARY_TARGETS PropertySetBrowser)
+set(VES_CONFIGURE_VARS CMAKE_INSTALL_LIBDIR)
 
 #
 # Setup the fpc auto detection files
@@ -167,8 +99,4 @@ else(WIN32)
     set(propertystore_FPC_LIBRARIES "-L\${libdir} -lPropertySetBrowser")
 endif(WIN32)
 
-configure_file(extra/propertystore.fpc.in
-  "${PROJECT_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}/flagpoll/propertystore.fpc" @ONLY)
-
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}/flagpoll/propertystore.fpc
-        DESTINATION ${CMAKE_INSTALL_LIBDIR}/flagpoll )
+include(VESInstallAutoDiscoveryTools)
