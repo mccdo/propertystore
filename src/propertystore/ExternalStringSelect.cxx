@@ -30,7 +30,7 @@
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.rb END do not edit this line> ***************/
-#include <PropertySetBrowser/ExternalStringSelect.h>
+#include <propertystore/ExternalStringSelect.h>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QToolButton>
 #include <QtGui/QFileDialog>
@@ -39,7 +39,7 @@
 
 Q_DECLARE_METATYPE(std::string)
 
-namespace PropertySetBrowser
+namespace propertystore
 {
 
 ExternalStringSelect::ExternalStringSelect(QWidget *parent)

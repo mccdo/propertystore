@@ -38,11 +38,11 @@
 #include <Poco/Logger.h>
 #include <Poco/LogStream.h>
 
-#include <PropertySetBrowser/PointerTypes.h>
+#include <propertystore/PointerTypes.h>
 
 // Smart pointer-ized version of LogStream to automate memory management
 
-namespace PropertySetBrowser
+namespace propertystore
 {
 /// Typedef for the SmartPtr types.
 typedef ClassPtrDef<Poco::LogStream>::type  LogStreamPtr;
@@ -80,13 +80,13 @@ typedef ClassPtrDef<Poco::LogStream>::type  LogStreamPtr;
 #define STATIC_LOG_INFO( name, msg ) _STATIC_LOG_CALL( information, name, msg )
 
 
-// DEBUG and TRACE log messages will only be compiled in when PROPERTYSETBROWSER_DEBUG
+// DEBUG and TRACE log messages will only be compiled in when PROPERTYSTORE_DEBUG
 // is defined. This allows the liberal use of DEBUG and TRACE messages to
 // track down difficult bugs without affecting performace of production builds.
-// PROPERTYSETBROWSER_DEBUG can either be defined via the build system for the entire build or can be
+// PROPERTYSTORE_DEBUG can either be defined via the build system for the entire build or can be
 // individually defined in a single class before the include statement for
 // this file.
-#if defined(PROPERTYSETBROWSER_DEBUG)
+#if defined(PROPERTYSTORE_DEBUG)
     #define LOG_DEBUG( msg ) _LOG_CALL( debug, msg )
     #define LOG_TRACE( msg ) _LOG_CALL( trace, msg )
     #define STATIC_LOG_DEBUG( name, msg ) _STATIC_LOG_CALL( debug, name, msg )

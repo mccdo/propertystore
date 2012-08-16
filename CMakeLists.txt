@@ -86,17 +86,17 @@ add_subdirectory(src)
 
 include(VESInstallPDBFiles)
 
-set(VES_EXPORT_LIBRARY_TARGETS PropertySetBrowser)
+set(VES_EXPORT_LIBRARY_TARGETS propertystore)
 set(VES_CONFIGURE_VARS CMAKE_INSTALL_LIBDIR)
 
 #
 # Setup the fpc auto detection files
 if(WIN32)
-    set(propertystore_FPC_LIBRARIES "/libpath:\"\${libdir}\" PropertySetBrowser.lib")
+    set(propertystore_FPC_LIBRARIES "/libpath:\"\${libdir}\" propertystore.lib")
     set(propertystore_FPC_INCLUDES "/I\"\${includedir}\"")
 else(WIN32)
     set(propertystore_FPC_INCLUDES "-I\${includedir}")
-    set(propertystore_FPC_LIBRARIES "-L\${libdir} -lPropertySetBrowser")
+    set(propertystore_FPC_LIBRARIES "-L\${libdir} -lpropertystore")
 endif(WIN32)
 
 include(VESInstallAutoDiscoveryTools)

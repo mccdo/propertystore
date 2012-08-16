@@ -32,12 +32,12 @@
  *************** <auto-copyright.rb END do not edit this line> ***************/
 #pragma once
 
-#include <PropertySetBrowser/Property.h>
-#include <PropertySetBrowser/PropertySet.h>
-#include <PropertySetBrowser/PointerTypes.h>
-#include <PropertySetBrowser/Logging.h>
+#include <propertystore/Property.h>
+#include <propertystore/PropertySet.h>
+#include <propertystore/PointerTypes.h>
+#include <propertystore/Logging.h>
 
-#include <eventmanager/EventManager.h>
+#include <switchwire/EventManager.h>
 
 #include <string>
 #include <iostream>
@@ -50,10 +50,10 @@
 #include <boost/concept_check.hpp>
 
 /// @file MakeLive.h
-/// @namespace PropertySetBrowser
+/// @namespace propertystore
 
 
-namespace PropertySetBrowser
+namespace propertystore
 {
 
 /// Base class for MakeLive and MakeLiveLinked that allows differing templated
@@ -113,7 +113,7 @@ public:
         m_SignalName.append( "." );
         m_SignalName.append( signalName );
 
-        using eventmanager::EventManager;
+        using switchwire::EventManager;
         if( m_passUUID )
         {
             EventManager::instance()->RegisterSignal( &m_Signal, m_SignalName );
@@ -148,16 +148,16 @@ public:
         }
         catch(...)
         {
-            STATIC_LOG_CRITICAL( "PropertySetBrowser",
+            STATIC_LOG_CRITICAL( "propertystore",
                                  "Failed boost::any_cast in MakeLive during attempt to call "
                                     << m_SignalName << " signal for property ");
         }
     }
 
 private:
-    typedef eventmanager::Event<void(const std::string&, T)> m_Signal_Type;
+    typedef switchwire::Event<void(const std::string&, T)> m_Signal_Type;
     m_Signal_Type m_Signal;
-    typedef eventmanager::Event< void( T ) > m_SignalNoUUID_Type;
+    typedef switchwire::Event< void( T ) > m_SignalNoUUID_Type;
     m_SignalNoUUID_Type m_SignalNoUUID;
     std::string m_SignalName;
     const std::string& m_UUID;
@@ -205,7 +205,7 @@ public:
         m_SignalName.append( "." );
         m_SignalName.append( signalName );
 
-        using eventmanager::EventManager;
+        using switchwire::EventManager;
         EventManager::instance()->RegisterSignal( &m_Signal, m_SignalName );
 
         std::vector< PropertyPtr >::const_iterator iter = m_Properties.begin();
@@ -245,14 +245,14 @@ public:
         }
         catch(...)
         {
-            STATIC_LOG_CRITICAL( "PropertySetBrowser",
+            STATIC_LOG_CRITICAL( "propertystore",
                                  "Failed boost::any_cast in MakeLiveLinked during attempt to call "
                                     << m_SignalName << " signal for property ");
         }
     }
 
 private:
-    typedef eventmanager::Event< void( const std::string&, const std::vector< T >& ) > m_Signal_Type;
+    typedef switchwire::Event< void( const std::string&, const std::vector< T >& ) > m_Signal_Type;
     m_Signal_Type m_Signal;
     std::string m_SignalName;
     const std::string& m_UUID;

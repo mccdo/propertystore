@@ -31,7 +31,7 @@
  *
  *************** <auto-copyright.rb END do not edit this line> ***************/
 
-#include <PropertySetBrowser/FileEdit.h>
+#include <propertystore/FileEdit.h>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QToolButton>
 #include <QtGui/QFileDialog>
@@ -39,7 +39,7 @@
 #include <iostream>
 //#include <ves/conductor/qt/UITabs.h>
 
-namespace PropertySetBrowser
+namespace propertystore
 {
 
 FileEdit::FileEdit(QWidget *parent)

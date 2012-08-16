@@ -32,42 +32,24 @@
  *************** <auto-copyright.rb END do not edit this line> ***************/
 #pragma once
 
-#include <boost/shared_ptr.hpp>
-#include <boost/weak_ptr.hpp>
-#include <boost/scoped_ptr.hpp>
+#include <propertystore/PointerTypes.h>
 
-namespace PropertySetBrowser
-{
-// ClassPtrDef is the regular ptr class to use.
-template
-< typename T >
-struct ClassPtrDef
-{
-    typedef boost::shared_ptr< T > type;
-};
+/**
+ * \file propertystore::PropertySetPtr
+ *
+ * Include this file to get a forward declaration of the pointer.
+ * To get the full declaration of this pointer include the non-Ptr header file.
+ * \class propertystore::PropertySetPtr
+ * \namespace propertystore
+ *
+ */
 
-// SharedPtrDef is for using shared ptrs explicitly.
-template
-< typename T >
-struct SharedPtrDef
+namespace propertystore
 {
-    typedef boost::shared_ptr< T > type;
-};
-
-// WeakPtrDef used for getting around circular references only.
-template
-< typename T >
-struct WeakPtrDef
-{
-    typedef boost::weak_ptr< T > type;
-};
-
-// Simple scoped ptr for use within functions only.  Very lightweight.
-template
-< typename T >
-struct ScopedPtrDef
-{
-    typedef boost::scoped_ptr< T > type;
-};
-
+class PropertySet;
+/// Typedef for a SmartPtr
+typedef propertystore::ClassPtrDef<PropertySet>::type  PropertySetPtr;
+typedef propertystore::SharedPtrDef<PropertySet>::type PropertySetSharedPtr;
+typedef propertystore::WeakPtrDef<PropertySet>::type   PropertySetWeakPtr;
+typedef propertystore::ScopedPtrDef<PropertySet>::type PropertySetScopedPtr;
 }

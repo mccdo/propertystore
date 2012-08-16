@@ -31,8 +31,8 @@
  *
  *************** <auto-copyright.rb END do not edit this line> ***************/
 #pragma once
-#include <Persistence/Datum.h>
-#include <Persistence/Persistable.h>
+#include <crunchstore/Datum.h>
+#include <crunchstore/Persistable.h>
 
 #include <string>
 #include <vector>
@@ -42,12 +42,12 @@
 #include <boost/signals2/signal.hpp>
 #include <boost/enable_shared_from_this.hpp>
 
-#include <PropertySetBrowser/Exports.h>
-#include <PropertySetBrowser/PropertyPtr.h>
+#include <propertystore/Exports.h>
+#include <propertystore/PropertyPtr.h>
 
 // TODO: Check through const status everywhere
 /// @file Property.h
-/// @namespace PropertySetBrowser
+/// @namespace propertystore
 /// @class Property holds a main value in a boost::any type, and can also
 /// hold attributes that give extra information about the main value or
 /// that alter the way the main value is used.
@@ -56,7 +56,7 @@
 /// Attributes are key-value pairs in which the key is a std::string and the
 /// value is a boost::any. This allows attributes to store more or less anything
 /// you need to travel along with the main value of a property. There are a
-/// few special attributes that are baked into the PropertySetBrowser library.
+/// few special attributes that are baked into the propertystore library.
 /// * "userVisible" -- adding this attribute to a property and setting it to
 ///    false indicated to the PropertyBrowser widget that this property should
 ///    not be displayed to the user. Setting the value to true indicates that
@@ -118,12 +118,12 @@
 /// SetAttribute( "enumValues", val ), where val is anything besides a valid
 /// Property::PSVectorOfStrings.
 
-namespace PropertySetBrowser
+namespace propertystore
 {
 
 
-class PROPERTYSETBROWSER_EXPORT Property : public boost::signals2::trackable,
-                                 public Persistence::Datum,
+class PROPERTYSTORE_EXPORT Property : public boost::signals2::trackable,
+                                 public crunchstore::Datum,
                                  public boost::enable_shared_from_this< Property >
 {
 public:
@@ -172,7 +172,7 @@ public:
 
     ///
     /// Returns the associated value of a given attribute
-    Persistence::DatumPtr GetAttribute( const std::string& attributeName ) const;
+    crunchstore::DatumPtr GetAttribute( const std::string& attributeName ) const;
 
     ///
     /// Returns a list of all attribute names owned by this property
@@ -258,7 +258,7 @@ private:
     /// Min, Max, UI_Label, etc. are just attributes stored in a Persistable.
     /// This allows the class to be extremely flexible in terms of what
     /// extra information it can hold.
-    Persistence::Persistable mAttributes;
+    crunchstore::Persistable mAttributes;
 
     ///
     /// Stores whether this property has a minimum value so that we need not

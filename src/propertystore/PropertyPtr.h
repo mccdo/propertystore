@@ -30,36 +30,31 @@
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.rb END do not edit this line> ***************/
+#pragma once
 
-#include <PropertySetBrowser/ExternalStringSelectManager.h>
+#include <propertystore/PointerTypes.h>
 
-namespace PropertySetBrowser
+/**
+ * \file propertystore::PropertyPtr
+ *
+ * Include this file to get a forward declaration of the pointer.
+ * To get the full declaration of this pointer include the non-Ptr header file.
+ */
+ 
+/*!\class propertystore::PropertyPtr
+ *
+ */
+
+/*!\namespace propertystore
+ *
+ */
+
+namespace propertystore
 {
-
-QString ExternalStringSelectManager::value(const QtProperty *property) const
-{
-    if (!theValues.contains(property))
-        return QString();
-    return theValues[property].value;
+class Property;
+/// Typedef for a SmartPtr
+typedef propertystore::ClassPtrDef<Property>::type  PropertyPtr;
+typedef propertystore::SharedPtrDef<Property>::type PropertySharedPtr;
+typedef propertystore::WeakPtrDef<Property>::type   PropertyWeakPtr;
+typedef propertystore::ScopedPtrDef<Property>::type PropertyScopedPtr;
 }
-
-void ExternalStringSelectManager::setValue(QtProperty *property, const QString &val)
-{
-    if (!theValues.contains(property))
-        return;
-
-    Data data = theValues[property];
-
-    if (data.value == val)
-        return;
-
-    data.value = val;
-
-    theValues[property] = data;
-
-    emit propertyChanged(property);
-    emit valueChanged(property, data.value);
-}
-
-}
-

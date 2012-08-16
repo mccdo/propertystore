@@ -32,25 +32,33 @@
  *************** <auto-copyright.rb END do not edit this line> ***************/
 #pragma once
 
-#include <PropertySetBrowser/PointerTypes.h>
+#if defined(_MSC_VER)
+#pragma warning( disable : 4503 )
+#pragma warning( disable : 4251 )
+#endif
 
-/**
- * \file PropertySetBrowser::MakeLiveBasePtr
- *
- * Include this file to get a forward declaration of the pointer.
- * To get the full declaration of this pointer include the non-Ptr header file.
- * \class PropertySetBrowser::MakeLiveBasePtr
- * \namespace PropertySetBrowser
- *
- */
-
-namespace PropertySetBrowser
-{
-class MakeLiveBase;
-/// Typedef for a SmartPtr
-typedef PropertySetBrowser::ClassPtrDef<MakeLiveBase>::type  MakeLiveBasePtr;
-typedef PropertySetBrowser::SharedPtrDef<MakeLiveBase>::type MakeLiveBaseSharedPtr;
-typedef PropertySetBrowser::WeakPtrDef<MakeLiveBase>::type   MakeLiveBaseWeakPtr;
-typedef PropertySetBrowser::ScopedPtrDef<MakeLiveBase>::type MakeLiveBaseScopedPtr;
-}
-
+#if defined(_MSC_VER) || defined(__CYGWIN__) || defined(__MINGW32__) || defined( __BCPLUSPLUS__)  || defined( __MWERKS__)
+    #  if defined( PROPERTYSTORE_LIBRARY_STATIC )
+    #    define PROPERTYSTORE_EXPORT
+    #    define PROPERTYSTORE_LOCAL
+    #  elif defined( PROPERTYSTORE_LIBRARY )
+    #    define PROPERTYSTORE_EXPORT   __declspec(dllexport)
+    #    define PROPERTYSTORE_LOCAL
+    #  else
+    #    define PROPERTYSTORE_EXPORT   __declspec(dllimport)
+    #    define PROPERTYSTORE_LOCAL
+    #  endif
+#else
+  #if __GNUC__ >= 4
+    # if defined( PROPERTYSTORE_LIBRARY_STATIC )
+    #    define PROPERTYSTORE_EXPORT
+    #    define PROPERTYSTORE_LOCAL
+    # else
+    #    define PROPERTYSTORE_EXPORT   __attribute__ ((visibility ("default")))
+    #    define PROPERTYSTORE_LOCAL   __attribute__ ((visibility ("hidden")))
+    # endif
+  #else
+    #  define PROPERTYSTORE_EXPORT
+    #  define PROPERTYSTORE_LOCAL
+  #endif
+#endif

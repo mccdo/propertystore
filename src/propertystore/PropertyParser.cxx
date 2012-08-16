@@ -30,12 +30,12 @@
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.rb END do not edit this line> ***************/
-#include <PropertySetBrowser/PropertyParser.h>
+#include <propertystore/PropertyParser.h>
 
 #include <iostream>
 #include <cmath>
 
-namespace PropertySetBrowser
+namespace propertystore
 {
 ////////////////////////////////////////////////////////////////////////////////
 PropertyParser::PropertyParser( QObject* parent ) :
@@ -463,7 +463,7 @@ void PropertyParser::_extractMinMaxValues( PropertyPtr property,
     if( property->AttributeExists( "minimumValue" ) )
     {
         ( *hasMin ) = true;
-        Persistence::DatumPtr minVal = property->GetAttribute( "minimumValue" );
+        crunchstore::DatumPtr minVal = property->GetAttribute( "minimumValue" );
         if( minVal->IsInt() )
         {
             ( *min ) = static_cast < double > (  minVal->extract<int>() );
@@ -480,7 +480,7 @@ void PropertyParser::_extractMinMaxValues( PropertyPtr property,
     if( property->AttributeExists( "maximumValue" ) )
     {
         ( *hasMax ) = true;
-        Persistence::DatumPtr maxVal = property->GetAttribute( "maximumValue" );
+        crunchstore::DatumPtr maxVal = property->GetAttribute( "maximumValue" );
         if( maxVal->IsInt() )
         {
             ( *max ) = static_cast < double > ( maxVal->extract<int>() );

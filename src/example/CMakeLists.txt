@@ -1,4 +1,4 @@
-#Lets us address our internal includes as <PropertySetBrowser/foo.h>
+#Lets us address our internal includes as <propertystore/foo.h>
 include_directories(
         ${CMAKE_SOURCE_DIR}/src
         ${QTPBDIR}
@@ -11,7 +11,7 @@ SET(TARGET_SRC ${srcs})
 
 SET(TARGET_NAME BasicTest)
 ADD_EXECUTABLE(${TARGET_NAME} ${TARGET_SRC})
-TARGET_LINK_LIBRARIES(${TARGET_NAME} PropertySetBrowser ${QT_LIBRARIES})
+TARGET_LINK_LIBRARIES(${TARGET_NAME} propertystore ${QT_LIBRARIES})
 
 SET(INSTALL_BINDIR bin)
 
@@ -27,7 +27,7 @@ SET(TARGET_SRC ${srcs})
 
 SET(TARGET_NAME LiveTest)
 ADD_EXECUTABLE(${TARGET_NAME} ${TARGET_SRC})
-TARGET_LINK_LIBRARIES(${TARGET_NAME} PropertySetBrowser ${QT_LIBRARIES})
+TARGET_LINK_LIBRARIES(${TARGET_NAME} propertystore ${QT_LIBRARIES})
 
 SET(INSTALL_BINDIR bin)
 

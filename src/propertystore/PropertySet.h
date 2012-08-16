@@ -40,14 +40,14 @@
 
 #include <Poco/Types.h>
 
-#include <Persistence/Persistable.h>
-#include <Persistence/DataManagerPtr.h>
+#include <crunchstore/Persistable.h>
+#include <crunchstore/DataManagerPtr.h>
 
-#include <PropertySetBrowser/Exports.h>
-#include <PropertySetBrowser/MakeLivePtr.h>
-#include <PropertySetBrowser/PropertySetPtr.h>
-#include <PropertySetBrowser/PropertyPtr.h>
-#include <PropertySetBrowser/Logging.h>
+#include <propertystore/Exports.h>
+#include <propertystore/MakeLivePtr.h>
+#include <propertystore/PropertySetPtr.h>
+#include <propertystore/PropertyPtr.h>
+#include <propertystore/Logging.h>
 
 // Forward declarations
 namespace Poco
@@ -60,19 +60,19 @@ class Statement;
 } // namespace Data
 } // namespace Poco
 
-namespace PropertySetBrowser
+namespace propertystore
 {
 /*!\file PropertySet.h
- * \class PropertySetBrowser::PropertySet
+ * \class propertystore::PropertySet
  * PropertySet is a base class for collections of properties
  * containing methods to read and write values and attributes of
  * properties, as well as to get information about changes to other properties
  * that may occur when a property value or attribute is changed.
- * \namespace PropertySetBrowser
+ * \namespace propertystore
  *
  */
 
-class PROPERTYSETBROWSER_EXPORT PropertySet: public Persistence::Persistable
+class PROPERTYSTORE_EXPORT PropertySet: public crunchstore::Persistable
 {
 public:
     typedef std::vector<std::string> PSVectorOfStrings;
@@ -111,7 +111,7 @@ public:
 
     /// Returns value of the property attribute identified by
     /// attributeName and owned by property propertyName
-    virtual Persistence::DatumPtr GetPropertyAttribute( std::string const& propertyName,
+    virtual crunchstore::DatumPtr GetPropertyAttribute( std::string const& propertyName,
                                              std::string const& attributeName ) const;
 
     /// Returns the value of the attribute identified by attributeName of the
@@ -174,7 +174,7 @@ public:
 
     /// Sets the DataManager that should be used for Load(), LoadByKey(),
     /// Save(), Remove(), and SaveNoOverride()
-    virtual void SetDataManager( Persistence::DataManagerPtr manager );
+    virtual void SetDataManager( crunchstore::DataManagerPtr manager );
 
     /// Loads values from PropertySet from the DEFAULT_ROLE store where uuid
     /// is equal to the uuid of this PropertySet
@@ -234,7 +234,7 @@ private:
     PSVectorOfStrings emptyPSVectorOfStrings;
     PSVectorOfStrings m_accumulatedChangesReturnable;
 
-    Persistence::DataManagerPtr m_dataManager;
+    crunchstore::DataManagerPtr m_dataManager;
     Poco::Timer* m_timer;
     bool m_writeDirty; ///< Data has changed since last write to db.
     bool m_liveWriteDirty; ///< Data in a live property has changed since last write to db

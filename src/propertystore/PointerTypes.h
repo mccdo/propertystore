@@ -32,33 +32,42 @@
  *************** <auto-copyright.rb END do not edit this line> ***************/
 #pragma once
 
-#if defined(_MSC_VER)
-#pragma warning( disable : 4503 )
-#pragma warning( disable : 4251 )
-#endif
+#include <boost/shared_ptr.hpp>
+#include <boost/weak_ptr.hpp>
+#include <boost/scoped_ptr.hpp>
 
-#if defined(_MSC_VER) || defined(__CYGWIN__) || defined(__MINGW32__) || defined( __BCPLUSPLUS__)  || defined( __MWERKS__)
-    #  if defined( PROPERTYSETBROWSER_LIBRARY_STATIC )
-    #    define PROPERTYSETBROWSER_EXPORT
-    #    define PROPERTYSETBROWSER_LOCAL
-    #  elif defined( PROPERTYSETBROWSER_LIBRARY )
-    #    define PROPERTYSETBROWSER_EXPORT   __declspec(dllexport)
-    #    define PROPERTYSETBROWSER_LOCAL
-    #  else
-    #    define PROPERTYSETBROWSER_EXPORT   __declspec(dllimport)
-    #    define PROPERTYSETBROWSER_LOCAL
-    #  endif
-#else
-  #if __GNUC__ >= 4
-    # if defined( PROPERTYSETBROWSER_LIBRARY_STATIC )
-    #    define PROPERTYSETBROWSER_EXPORT
-    #    define PROPERTYSETBROWSER_LOCAL
-    # else
-    #    define PROPERTYSETBROWSER_EXPORT   __attribute__ ((visibility ("default")))
-    #    define PROPERTYSETBROWSER_LOCAL   __attribute__ ((visibility ("hidden")))
-    # endif
-  #else
-    #  define PROPERTYSETBROWSER_EXPORT
-    #  define PROPERTYSETBROWSER_LOCAL
-  #endif
-#endif
+namespace propertystore
+{
+// ClassPtrDef is the regular ptr class to use.
+template
+< typename T >
+struct ClassPtrDef
+{
+    typedef boost::shared_ptr< T > type;
+};
+
+// SharedPtrDef is for using shared ptrs explicitly.
+template
+< typename T >
+struct SharedPtrDef
+{
+    typedef boost::shared_ptr< T > type;
+};
+
+// WeakPtrDef used for getting around circular references only.
+template
+< typename T >
+struct WeakPtrDef
+{
+    typedef boost::weak_ptr< T > type;
+};
+
+// Simple scoped ptr for use within functions only.  Very lightweight.
+template
+< typename T >
+struct ScopedPtrDef
+{
+    typedef boost::scoped_ptr< T > type;
+};
+
+}

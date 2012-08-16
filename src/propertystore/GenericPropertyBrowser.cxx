@@ -35,11 +35,11 @@
 #include <qtpropertymanager.h>
 #include <qteditorfactory.h>
 
-#include <PropertySetBrowser/GenericPropertyBrowser.h>
+#include <propertystore/GenericPropertyBrowser.h>
 
 #include <iostream>
 
-namespace PropertySetBrowser
+namespace propertystore
 {
 
 GenericPropertyBrowser::GenericPropertyBrowser(QWidget* parent) :

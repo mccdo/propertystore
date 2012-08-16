@@ -31,10 +31,10 @@
  *
  *************** <auto-copyright.rb END do not edit this line> ***************/
 
-#include <PropertySetBrowser/ExternalStringSelectFactory.h>
-#include <PropertySetBrowser/ExternalStringSelect.h>
+#include <propertystore/ExternalStringSelectFactory.h>
+#include <propertystore/ExternalStringSelect.h>
 
-namespace PropertySetBrowser
+namespace propertystore
 {
 
 ExternalStringSelectFactory::~ExternalStringSelectFactory()
