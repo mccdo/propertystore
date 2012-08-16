@@ -35,10 +35,10 @@
 #define QT_NO_KEYWORDS
 
 #include <qttreepropertybrowser.h>
-#include <PropertySetBrowser/PropertyParser.h>
+#include <propertystore/PropertyParser.h>
 
 /// @file GenericPropertyBrowser.h
-/// @namespace PropertySetBrowser
+/// @namespace propertystore
 /// @class GenericPropertyBrowser ties together a QtTreePropertyBrowser,
 /// a set of editor factories, and a PropertySetParser. Use it to display
 /// a tree-type property browser. If you need a different type ( such as a
@@ -47,10 +47,10 @@
 /// copy all the code from this class into a new class and then alter it to
 /// create the appropriate factories, do any resizing or polish needed, etc.
 
-namespace PropertySetBrowser
+namespace propertystore
 {
 
-class PROPERTYSETBROWSER_EXPORT GenericPropertyBrowser : public QtTreePropertyBrowser
+class PROPERTYSTORE_EXPORT GenericPropertyBrowser : public QtTreePropertyBrowser
 {
 Q_OBJECT
 public:

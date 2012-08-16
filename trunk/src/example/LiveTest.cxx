@@ -1,10 +1,10 @@
 #include <QtGui/QApplication>
 
-#include <PropertySetBrowser/GenericPropertyBrowser.h>
-#include <PropertySetBrowser/PropertySet.h>
-#include <PropertySetBrowser/MakeLive.h>
-#include <eventmanager/EventManager.h>
-#include <eventmanager/OptionalMacros.h>
+#include <propertystore/GenericPropertyBrowser.h>
+#include <propertystore/PropertySet.h>
+#include <propertystore/MakeLive.h>
+#include <switchwire/EventManager.h>
+#include <switchwire/OptionalMacros.h>
 
 #include <iostream>
 #include <cmath>
@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
 
 
     // Create a PropertySet with some test data, and make the properties live
-    PropertySetBrowser::PropertySetPtr propertySet( new PropertySetBrowser::PropertySet );
+    propertystore::PropertySetPtr propertySet( new propertystore::PropertySet );
 
     propertySet->AddProperty( "ABoolean", true, "A Boolean Value" );
 
@@ -43,13 +43,13 @@ int main(int argc, char *argv[])
     // to the change singal for each and every "AnInteger" by simply requesting
     // a connection from EventManager to every signal matching the name,
     // "AnIntegerSignal" which we pass in below.
-    PropertySetBrowser::MakeLiveBasePtr p = PropertySetBrowser::MakeLiveBasePtr(
-         new PropertySetBrowser::MakeLive<bool>( propertySet->GetUUIDAsString(),
+    propertystore::MakeLiveBasePtr p = propertystore::MakeLiveBasePtr(
+         new propertystore::MakeLive<bool>( propertySet->GetUUIDAsString(),
              propertySet->GetProperty("ABoolean"),
              "ABooleanSignal") );
 
-    PropertySetBrowser::MakeLiveBasePtr q = PropertySetBrowser::MakeLiveBasePtr(
-          new PropertySetBrowser::MakeLive<int>( propertySet->GetUUIDAsString(),
+    propertystore::MakeLiveBasePtr q = propertystore::MakeLiveBasePtr(
+          new propertystore::MakeLive<int>( propertySet->GetUUIDAsString(),
               propertySet->GetProperty("AnInteger"),
               "AnIntegerSignal") );
 
@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
     // adds a unique identifier to the front of the signals it registers so as
     // to prevent name clashes. The % is a wildcard that matches any sequence of
     // characters.
-    eventmanager::ScopedConnectionList connections;
+    switchwire::ScopedConnectionList connections;
     CONNECTSIGNALS_STATIC( "%ABooleanSignal",
                             void( const std::string&, bool ),
                             &BoolSlot,
@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
 
     // Create, set up, and show a GenericPropertyBrowser which can display
     // the PropertySet
-    PropertySetBrowser::GenericPropertyBrowser browserDisplay;
+    propertystore::GenericPropertyBrowser browserDisplay;
     browserDisplay.ParsePropertySet( propertySet );
     browserDisplay.resize( 350, 350 );
     browserDisplay.show();

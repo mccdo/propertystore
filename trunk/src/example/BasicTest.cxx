@@ -1,12 +1,12 @@
 #include <QtGui/QApplication>
 
-#include <PropertySetBrowser/GenericPropertyBrowser.h>
-#include <PropertySetBrowser/PropertySet.h>
+#include <propertystore/GenericPropertyBrowser.h>
+#include <propertystore/PropertySet.h>
 
 #include <iostream>
 #include <cmath>
 
-bool evenValidator( PropertySetBrowser::PropertyPtr property, boost::any value )
+bool evenValidator( propertystore::PropertyPtr property, boost::any value )
 {
     // Only allow even numbers
     int castValue = boost::any_cast<int>(value);
@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
 
 
     // Create a PropertySet with some test data
-    PropertySetBrowser::PropertySetPtr propertySet( new PropertySetBrowser::PropertySet );
+    propertystore::PropertySetPtr propertySet( new propertystore::PropertySet );
 
     propertySet->AddProperty( "ABoolean", true, "A Boolean Value" );
 
@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
 
     // Create, set up, and show a GenericPropertyBrowser which can display
     // the PropertySet
-    PropertySetBrowser::GenericPropertyBrowser browserDisplay;
+    propertystore::GenericPropertyBrowser browserDisplay;
     browserDisplay.ParsePropertySet( propertySet );
     browserDisplay.resize( 350, 350 );
     browserDisplay.show();

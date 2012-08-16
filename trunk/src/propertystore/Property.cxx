@@ -34,7 +34,7 @@
 
 #include <boost/concept_check.hpp>
 
-namespace PropertySetBrowser
+namespace propertystore
 {
 ////////////////////////////////////////////////////////////////////////////////
 Property::Property( boost::any value, bool enabled )
@@ -107,7 +107,7 @@ bool Property::SetValue( boost::any value )
     // If we've passed all the tests, set the new value
     if( !mIsEnum )
     {
-        Persistence::Datum::SetValue( value );
+        crunchstore::Datum::SetValue( value );
     }
     else // We have an enum and we must do extra stuff to ensure that the
         // correct value gets set and associated attributes stay synchronized
@@ -264,7 +264,7 @@ void Property::SetAttribute( const std::string& attributeName,
     }
 }
 ////////////////////////////////////////////////////////////////////////////////
-Persistence::DatumPtr Property::GetAttribute( const std::string& attributeName ) const
+crunchstore::DatumPtr Property::GetAttribute( const std::string& attributeName ) const
 {
     return mAttributes.GetDatum( attributeName );
 }

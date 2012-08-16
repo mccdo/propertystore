@@ -37,57 +37,36 @@
 http://doc.qt.nokia.com/qq/qq18-propertybrowser.html#extendingtheframework
 It is being used in accordance with the terms of LGPL **/
 
-
 #include <QtGui/QLineEdit>
 #include <QtGui/QFileDialog>
-#include <PropertySetBrowser/Exports.h>
 
-/// @file ExternalStringSelect.h
-/// @namespace PropertySetBrowser
-/// @class ExternalStringSelect is a base implementation of an external string
-/// selector widget consisting of a textedit field and an associated button.
-/// In the base implementation, the button does nothing; the buttonClicked
-/// method should be overridden in derived classes to provide the desired
-/// behavior for externally selecting a string. Examples of this behavior are
-/// launching a file chooser dialog or launching a color chooser dialog. The
-/// execution path taken when the user clicks the button should eventually call
-/// onExternalStringSelected() with the contents of the chosen string. Derived
-/// classes must override buttonClicked and createNew.
+#include <propertystore/ExternalStringSelect.h>
 
-namespace PropertySetBrowser
+/// @file FileEdit.h
+/// @namespace propertystore
+/// @class FileEdit is an editor widget consisting of a textedit and associated
+/// button. When clicked, the button brings up a QFileDialog so the user may
+/// select a file. Once chosen, the file path is converted to a relative path
+/// (relative to the present working directory) and is placed into the textedit.
+namespace propertystore
 {
 
-class PROPERTYSETBROWSER_EXPORT ExternalStringSelect : public QWidget
+class PROPERTYSTORE_EXPORT FileEdit : public ExternalStringSelect
 {
     Q_OBJECT
 public:
-    ExternalStringSelect(QWidget *parent = 0);
-    void setString(const QString &str) { if (theLineEdit->text() != str) theLineEdit->setText(str); }
-    QString string() const { return theLineEdit->text(); }
-
-    /// Returns a pointer to a new one of these. Used by ExternalStringSelectFactory
-    /// to create new versions of this object. This allows the developer to derive
-    /// from this class, and pass a pointer to the derived class to
-    /// ExternalStringSelectFactory::setEditorType. The factory can then create
-    /// instances of the derived class as needed.
+    FileEdit(QWidget *parent = 0);
     virtual ExternalStringSelect* createNew( QWidget* parent );
 Q_SIGNALS:
-    void stringChanged(const QString &str);
-    void ExternalStringSelectedQSignal( const std::string str );
-
-protected:
-    void focusInEvent(QFocusEvent *e);
-    void focusOutEvent(QFocusEvent *e);
-    void keyPressEvent(QKeyEvent *e);
-    void keyReleaseEvent(QKeyEvent *e);
+    //void filePathChanged(const QString &filePath);
 
 public Q_SLOTS:
     virtual void buttonClicked();
-    virtual void onExternalStringSelected( const std::string& str );
-    virtual void onExternalStringSelectedQueued( const std::string str );
+    virtual void onFileSelected( const QString& filePath );
+    virtual void onFileCancelled();
 
 private:
-    QLineEdit *theLineEdit;
+    QFileDialog* m_fileDialog;
 };
 
 }

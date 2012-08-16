@@ -33,10 +33,10 @@
 #include "PropertySet.h"
 #include "Property.h"
 
-#include <Persistence/SearchCriterion.h>
-#include <Persistence/DataManager.h>
+#include <crunchstore/SearchCriterion.h>
+#include <crunchstore/DataManager.h>
 
-#include <PropertySetBrowser/MakeLive.h>
+#include <propertystore/MakeLive.h>
 
 #include <boost/bind.hpp>
 #include <boost/lexical_cast.hpp>
@@ -47,7 +47,7 @@
 
 #include <Poco/Timer.h>
 
-namespace PropertySetBrowser
+namespace propertystore
 {
 
 PropertySet::PropertySet():
@@ -135,7 +135,7 @@ const PropertySet::PSVectorOfStrings&
     }
 }
 ////////////////////////////////////////////////////////////////////////////////
-Persistence::DatumPtr PropertySet::GetPropertyAttribute( std::string const& propertyName,
+crunchstore::DatumPtr PropertySet::GetPropertyAttribute( std::string const& propertyName,
                                               std::string const& attributeName ) const
 {
     DataMap::const_iterator iterator = m_dataMap.find( propertyName );
@@ -146,7 +146,7 @@ Persistence::DatumPtr PropertySet::GetPropertyAttribute( std::string const& prop
     }
     else
     {
-        return Persistence::DatumPtr();
+        return crunchstore::DatumPtr();
     }
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -219,7 +219,7 @@ void PropertySet::ClearAccumulatedChanges()
     m_accumulatedChanges.clear();
 }
 ////////////////////////////////////////////////////////////////////////////////
-void PropertySet::SetDataManager( Persistence::DataManagerPtr manager )
+void PropertySet::SetDataManager( crunchstore::DataManagerPtr manager )
 {
     m_dataManager = manager;
 }
@@ -253,8 +253,8 @@ bool PropertySet::LoadByKey( std::string const& KeyName, boost::any KeyValue )
     }
 
     std::vector< std::string > results;
-    Persistence::SearchCriterion kvc( KeyName, "=", KeyValue );
-    std::vector< Persistence::SearchCriterion > criteria;
+    crunchstore::SearchCriterion kvc( KeyName, "=", KeyValue );
+    std::vector< crunchstore::SearchCriterion > criteria;
     criteria.push_back( kvc );
 
     m_dataManager->Search( GetTypeName(), criteria, "uuid", results );

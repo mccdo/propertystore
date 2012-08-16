@@ -30,44 +30,36 @@
  * -----------------------------------------------------------------
  *
  *************** <auto-copyright.rb END do not edit this line> ***************/
-#pragma once
 
-/** This class is a slightly altered version of the FileEdit class shown in
- Qt Quarterly at
-http://doc.qt.nokia.com/qq/qq18-propertybrowser.html#extendingtheframework
-It is being used in accordance with the terms of LGPL **/
+#include <propertystore/ExternalStringSelectManager.h>
 
-#include <QtGui/QLineEdit>
-#include <QtGui/QFileDialog>
-
-#include <PropertySetBrowser/ExternalStringSelect.h>
-
-/// @file FileEdit.h
-/// @namespace PropertySetBrowser
-/// @class FileEdit is an editor widget consisting of a textedit and associated
-/// button. When clicked, the button brings up a QFileDialog so the user may
-/// select a file. Once chosen, the file path is converted to a relative path
-/// (relative to the present working directory) and is placed into the textedit.
-namespace PropertySetBrowser
+namespace propertystore
 {
 
-class PROPERTYSETBROWSER_EXPORT FileEdit : public ExternalStringSelect
+QString ExternalStringSelectManager::value(const QtProperty *property) const
 {
-    Q_OBJECT
-public:
-    FileEdit(QWidget *parent = 0);
-    virtual ExternalStringSelect* createNew( QWidget* parent );
-Q_SIGNALS:
-    //void filePathChanged(const QString &filePath);
+    if (!theValues.contains(property))
+        return QString();
+    return theValues[property].value;
+}
 
-public Q_SLOTS:
-    virtual void buttonClicked();
-    virtual void onFileSelected( const QString& filePath );
-    virtual void onFileCancelled();
+void ExternalStringSelectManager::setValue(QtProperty *property, const QString &val)
+{
+    if (!theValues.contains(property))
+        return;
 
-private:
-    QFileDialog* m_fileDialog;
-};
+    Data data = theValues[property];
+
+    if (data.value == val)
+        return;
+
+    data.value = val;
+
+    theValues[property] = data;
+
+    emit propertyChanged(property);
+    emit valueChanged(property, data.value);
+}
 
 }
 

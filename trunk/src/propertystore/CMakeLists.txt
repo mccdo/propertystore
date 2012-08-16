@@ -1,11 +1,11 @@
-#Lets us address our internal includes as <PropertySetBrowser/foo.h>
+#Lets us address our internal includes as <propertystore/foo.h>
 include_directories(
         ${CMAKE_SOURCE_DIR}/src
         ${QTPBDIR}
-        ${CMAKE_BINARY_DIR}/src/PropertySetBrowser/__/qtpropertybrowser-2.5_1-opensource/src
+        ${CMAKE_BINARY_DIR}/src/propertystore/__/qtpropertybrowser-2.5_1-opensource/src
     )
 
-ADD_DEFINITIONS(-DPROPERTYSETBROWSER_LIBRARY)
+ADD_DEFINITIONS(-DPROPERTYSTORE_LIBRARY)
 
 SET( QTPBDIR ${CMAKE_SOURCE_DIR}/src/qtpropertybrowser-2.5_1-opensource/src )
 
@@ -35,7 +35,7 @@ SET( HDRS_TO_MOC_NO_COMPILE
 
 )
 FOREACH( _itr ${HDRS_TO_MOC_NO_COMPILE} )
-    SET( _path ${CMAKE_BINARY_DIR}/src/PropertySetBrowser/__/qtpropertybrowser-2.5_1-opensource/src )
+    SET( _path ${CMAKE_BINARY_DIR}/src/propertystore/__/qtpropertybrowser-2.5_1-opensource/src )
     GET_FILENAME_COMPONENT( _fname ${_itr} NAME_WE)
     SET( _outFile moc_${_fname}.cxx )
     QT4_CREATE_MOC_COMMAND( ${_itr} ${_path}/${_outFile} "" "" )
@@ -53,8 +53,8 @@ SET( SRCS_TO_MOC
     )
 FOREACH( _itr ${SRCS_TO_MOC} )
     GET_FILENAME_COMPONENT( _fname ${_itr} NAME_WE)
-    QT4_CREATE_MOC_COMMAND( ${_itr} "${CMAKE_BINARY_DIR}/src/PropertySetBrowser/__/qtpropertybrowser-2.5_1-opensource/src/${_fname}.moc" "" "" )
-    MACRO_ADD_FILE_DEPENDENCIES( ${_itr} ${CMAKE_BINARY_DIR}/src/PropertySetBrowser/__/qtpropertybrowser-2.5_1-opensource/src/${_fname}.moc )
+    QT4_CREATE_MOC_COMMAND( ${_itr} "${CMAKE_BINARY_DIR}/src/propertystore/__/qtpropertybrowser-2.5_1-opensource/src/${_fname}.moc" "" "" )
+    MACRO_ADD_FILE_DEPENDENCIES( ${_itr} ${CMAKE_BINARY_DIR}/src/propertystore/__/qtpropertybrowser-2.5_1-opensource/src/${_fname}.moc )
 ENDFOREACH( _itr ${SRCS_TO_MOC} )
 ### End special stuff for sources with moc info
 
@@ -67,7 +67,7 @@ SET(PUBLIC_HEADERS ${hdrs})
 set(VES_PRIVATE_HEADERS ${hdrs})
 set(VES_PUBLIC_HEADERS ${hdrs} )
 
-set(VES_TARGET_NAME PropertySetBrowser)
+set(VES_TARGET_NAME propertystore)
 set(VES_TARGET_VERSION ${propertystore_VERSION})
 set(VES_TARGET_EXPORT ${CMAKE_PROJECT_NAME}-targets)
 set(VES_TARGET_CATEGORY Lib)

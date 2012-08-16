@@ -1,3 +1,3 @@
-add_subdirectory( PropertySetBrowser )
+add_subdirectory( propertystore )
 add_subdirectory( example )
 

@@ -32,29 +32,25 @@
  *************** <auto-copyright.rb END do not edit this line> ***************/
 #pragma once
 
-#include <PropertySetBrowser/PointerTypes.h>
+#include <propertystore/PointerTypes.h>
 
 /**
- * \file PropertySetBrowser::PropertyPtr
+ * \file propertystore::MakeLiveBasePtr
  *
  * Include this file to get a forward declaration of the pointer.
  * To get the full declaration of this pointer include the non-Ptr header file.
- */
- 
-/*!\class PropertySetBrowser::PropertyPtr
+ * \class propertystore::MakeLiveBasePtr
+ * \namespace propertystore
  *
  */
 
-/*!\namespace PropertySetBrowser
- *
- */
-
-namespace PropertySetBrowser
+namespace propertystore
 {
-class Property;
+class MakeLiveBase;
 /// Typedef for a SmartPtr
-typedef PropertySetBrowser::ClassPtrDef<Property>::type  PropertyPtr;
-typedef PropertySetBrowser::SharedPtrDef<Property>::type PropertySharedPtr;
-typedef PropertySetBrowser::WeakPtrDef<Property>::type   PropertyWeakPtr;
-typedef PropertySetBrowser::ScopedPtrDef<Property>::type PropertyScopedPtr;
+typedef propertystore::ClassPtrDef<MakeLiveBase>::type  MakeLiveBasePtr;
+typedef propertystore::SharedPtrDef<MakeLiveBase>::type MakeLiveBaseSharedPtr;
+typedef propertystore::WeakPtrDef<MakeLiveBase>::type   MakeLiveBaseWeakPtr;
+typedef propertystore::ScopedPtrDef<MakeLiveBase>::type MakeLiveBaseScopedPtr;
 }
+

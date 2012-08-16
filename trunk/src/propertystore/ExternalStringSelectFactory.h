@@ -38,43 +38,47 @@ http://doc.qt.nokia.com/qq/qq18-propertybrowser.html#extendingtheframework
 It is being used in accordance with the terms of LGPL **/
 
 #include <qtpropertybrowser.h>
-#include <QtCore/QMap>
-#include <PropertySetBrowser/Exports.h>
+#include <propertystore/ExternalStringSelectManager.h>
 
-/// @file ExternalStringSelectManager.h
-/// @namespace PropertySetBrowser
-/// @class ExternalStringSelectManager is the generic manager for any editor
-/// widgets derived from ExternalStringSelect.
+/// @file ExternalStringSelectFactory.h
+/// @namespace propertystore
+/// @class ExternalStringSelectFactory is a class factory for
+/// ExternalStringSelect and derived types. There must be a separate instance
+/// ExternalStringSelectFactory for each derived type. The exact type is set
+/// via a call to setEditorType by passing in a pointer to an instance of the
+/// ExternalStringSelect-derived editor type.
 
-namespace PropertySetBrowser
+namespace propertystore
 {
 
-class PROPERTYSETBROWSER_EXPORT ExternalStringSelectManager : public QtAbstractPropertyManager
+class ExternalStringSelect;
+
+class PROPERTYSTORE_EXPORT ExternalStringSelectFactory : public QtAbstractEditorFactory<ExternalStringSelectManager>
 {
     Q_OBJECT
 public:
-    ExternalStringSelectManager(QObject *parent = 0)
-        : QtAbstractPropertyManager(parent)
-    {  }
+    ExternalStringSelectFactory(QObject *parent = 0)
+        : QtAbstractEditorFactory<ExternalStringSelectManager>(parent),
+          m_editorType( 0 )
+            {  }
+    virtual ~ExternalStringSelectFactory();
 
-    QString value(const QtProperty *property) const;
-
-public Q_SLOTS:
-    void setValue(QtProperty *property, const QString &val);
-Q_SIGNALS:
-    void valueChanged(QtProperty *property, const QString &val);
+    /// Sets the editor type this factory should create. This factory will take
+    /// over ownership of the pointer passed in, so don't delete it elsewhere!
+    void setEditorType( ExternalStringSelect* editor );
 protected:
-    virtual QString valueText(const QtProperty *property) const { return value(property); }
-    virtual void initializeProperty(QtProperty *property) { theValues[property] = Data(); }
-    virtual void uninitializeProperty(QtProperty *property) { theValues.remove(property); }
+    virtual void connectPropertyManager(ExternalStringSelectManager *manager);
+    virtual QWidget *createEditor(ExternalStringSelectManager *manager, QtProperty *property,
+                QWidget *parent);
+    virtual void disconnectPropertyManager(ExternalStringSelectManager *manager);
+private Q_SLOTS:
+    void slotPropertyChanged(QtProperty *property, const QString &value);
+    void slotSetValue(const QString &value);
+    void slotEditorDestroyed(QObject *object);
 private:
-
-    struct Data
-    {
-        QString value;
-    };
-
-    QMap<const QtProperty *, Data> theValues;
+    QMap<QtProperty *, QList<ExternalStringSelect *> > theCreatedEditors;
+    QMap<ExternalStringSelect *, QtProperty *> theEditorToProperty;
+    ExternalStringSelect* m_editorType;
 };
 
 }
