@@ -16,6 +16,7 @@ FILE( GLOB hdrs "*.h" )
 FILE( GLOB qbrowserhdrs "${QTPBDIR}/*.h" )
 FILE( GLOB qtbrowserhdrs "${QTPBDIR}/Qt*" )
 list(REMOVE_ITEM qtbrowserhdrs ${qsrcs})
+list(REMOVE_ITEM qtbrowserhdrs ${QTPBDIR}/qtpropertybrowser.pri ${QTPBDIR}/qtpropertybrowser.qrc)
 
 SET( HDRS_TO_MOC
         ExternalStringSelect.h
