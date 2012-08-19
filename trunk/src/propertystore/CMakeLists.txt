@@ -13,6 +13,10 @@ FILE( GLOB srcs "*.cxx" )
 FILE( GLOB qsrcs "${QTPBDIR}/*.cpp" )
 FILE( GLOB hdrs "*.h" )
 
+FILE( GLOB qbrowserhdrs "${QTPBDIR}/*.h" )
+FILE( GLOB qtbrowserhdrs "${QTPBDIR}/Qt*" )
+list(REMOVE_ITEM qtbrowserhdrs ${qsrcs})
+
 SET( HDRS_TO_MOC
         ExternalStringSelect.h
         ExternalStringSelectFactory.h
@@ -74,5 +78,12 @@ set(VES_TARGET_CATEGORY Lib)
 
 ADD_LIBRARY(${VES_TARGET_NAME} SHARED ${TARGET_SRC} ${VES_PUBLIC_HEADERS} ${MOCCED} ${RCCED})
 TARGET_LINK_LIBRARIES(${VES_TARGET_NAME} ${switchwire_LIBRARIES} ${crunchstore_LIBRARIES} ${POCO_LIBRARIES} ${QT_LIBRARIES}) 
+
+install(FILES ${qbrowserhdrs}
+        DESTINATION ${VES_INSTALL_INCDIR}/qtpropertybrowser
+        COMPONENT development)
+install(FILES ${qtbrowserhdrs}
+        DESTINATION ${VES_INSTALL_INCDIR}/qtpropertybrowser
+        COMPONENT development)
 
 include(VESModuleInstall)
