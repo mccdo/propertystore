@@ -116,7 +116,14 @@ bool PropertySet::SetPropertyValue( const std::string& propertyName,
 ////////////////////////////////////////////////////////////////////////////////
 boost::any PropertySet::GetPropertyValue( const std::string& propertyName )
 {
-    return GetDatum( propertyName )->GetValue();
+    try
+    {
+        return GetDatum( propertyName )->GetValue();
+    }
+    catch(...)
+    {
+        return boost::any();
+    }
 }
 ////////////////////////////////////////////////////////////////////////////////
 PropertyPtr PropertySet::GetProperty( const std::string& propertyName )
