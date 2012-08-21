@@ -93,7 +93,7 @@ set(VES_CONFIGURE_VARS CMAKE_INSTALL_LIBDIR)
 # Setup the fpc auto detection files
 if(WIN32)
     set(propertystore_FPC_LIBRARIES "/libpath:\"\${libdir}\" propertystore.lib")
-    set(propertystore_FPC_INCLUDES "/I\"\${includedir}\" /I\"\${includedir}/qtpropertybrowser\"")
+    set(propertystore_FPC_INCLUDES "/DQT_QTPROPERTYBROWSER_IMPORT /I\"\${includedir}\" /I\"\${includedir}/qtpropertybrowser\"")
 else(WIN32)
     set(propertystore_FPC_INCLUDES "-I\${includedir} -I\${includedir}/qtpropertybrowser")
     set(propertystore_FPC_LIBRARIES "-L\${libdir} -lpropertystore")
