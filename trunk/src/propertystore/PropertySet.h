@@ -99,8 +99,15 @@ public:
                               boost::any value,
                               std::string uiLabel = "" );
 
+    /// Sets the value of @c propertyName to @c value. Synonymous with
+    /// SetDatumValue().
+    virtual void SetPropertyValue( const std::string& propertyName,
+                                   boost::any value );
+
+    /// Returns the underlying boost::any value of property @c propertyName
     virtual boost::any GetPropertyValue( const std::string& propertyName );
 
+    /// Returns a @c PropertyPtr for the property named @c propertyName
     virtual PropertyPtr GetProperty( const std::string& propertyName );
 
     /// Returns a vector containing the identifying names of all attributes
