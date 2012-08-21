@@ -43,7 +43,7 @@
 #include <boost/concept_check.hpp>
 
 #include <iostream>
-
+#include <stdexcept>
 
 #include <Poco/Timer.h>
 
@@ -120,7 +120,7 @@ boost::any PropertySet::GetPropertyValue( const std::string& propertyName )
     {
         return GetDatum( propertyName )->GetValue();
     }
-    catch(...)
+    catch( std::runtime_error)
     {
         return boost::any();
     }
@@ -164,7 +164,11 @@ crunchstore::DatumPtr PropertySet::GetPropertyAttribute( std::string const& prop
     }
     else
     {
-        return crunchstore::DatumPtr();
+        std::string error( "PropertySet::GetPropertyAttribute: No property named " );
+        error += propertyName;
+        error += " in PropertySet named " + GetTypeName();
+        throw std::runtime_error( error );
+        //return crunchstore::DatumPtr();
     }
 }
 ////////////////////////////////////////////////////////////////////////////////

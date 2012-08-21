@@ -105,9 +105,13 @@ public:
                                    boost::any value );
 
     /// Returns the underlying boost::any value of property @c propertyName
+    /// @throws None Does not throw. Contrast this with GetProperty, which throws
+    /// if the requested property does not exist. GetPropertyValue returns an
+    /// empty boost::any if the property does not exist.
     virtual boost::any GetPropertyValue( const std::string& propertyName );
 
     /// Returns a @c PropertyPtr for the property named @c propertyName
+    /// @throws std::runtime_error if property does not exist.
     virtual PropertyPtr GetProperty( const std::string& propertyName );
 
     /// Returns whether this property exists. Synonymous with DatumExists().
@@ -121,6 +125,7 @@ public:
 
     /// Returns value of the property attribute identified by
     /// attributeName and owned by property propertyName
+    /// @throws std::runtime_error if property does not exist
     virtual crunchstore::DatumPtr GetPropertyAttribute( std::string const& propertyName,
                                              std::string const& attributeName ) const;
 
