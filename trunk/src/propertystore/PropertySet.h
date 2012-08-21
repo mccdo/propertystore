@@ -101,7 +101,7 @@ public:
 
     /// Sets the value of @c propertyName to @c value. Synonymous with
     /// SetDatumValue().
-    virtual void SetPropertyValue( const std::string& propertyName,
+    virtual bool SetPropertyValue( const std::string& propertyName,
                                    boost::any value );
 
     /// Returns the underlying boost::any value of property @c propertyName
