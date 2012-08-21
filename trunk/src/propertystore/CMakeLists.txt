@@ -7,6 +7,10 @@ include_directories(
 
 ADD_DEFINITIONS(-DPROPERTYSTORE_LIBRARY)
 
+if(WIN32)
+    ADD_DEFINITIONS(-DQT_QTPROPERTYBROWSER_EXPORT)
+endif(WIN32)
+
 SET( QTPBDIR ${CMAKE_SOURCE_DIR}/src/qtpropertybrowser-2.5_1-opensource/src )
 
 FILE( GLOB srcs "*.cxx" )
