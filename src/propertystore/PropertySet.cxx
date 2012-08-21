@@ -108,6 +108,12 @@ void PropertySet::AddProperty( std::string const& propertyName,
     _connectChanges( property );
 }
 ////////////////////////////////////////////////////////////////////////////////
+void PropertySet::SetPropertyValue( const std::string& propertyName,
+                                    boost::any value )
+{
+    SetDatumValue( propertyName, value );
+}
+////////////////////////////////////////////////////////////////////////////////
 boost::any PropertySet::GetPropertyValue( const std::string& propertyName )
 {
     return GetDatum( propertyName )->GetValue();
