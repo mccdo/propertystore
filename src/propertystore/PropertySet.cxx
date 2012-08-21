@@ -124,6 +124,11 @@ PropertyPtr PropertySet::GetProperty( const std::string& propertyName )
     return boost::dynamic_pointer_cast<Property>( GetDatum( propertyName ) );
 }
 ////////////////////////////////////////////////////////////////////////////////
+bool PropertySet::PropertyExists( std::string const& propertyName ) const
+{
+    return DatumExists( propertyName );
+}
+////////////////////////////////////////////////////////////////////////////////
 const PropertySet::PSVectorOfStrings&
                     PropertySet::GetPropertyAttributeList( std::string const&
                                                            propertyName )

@@ -110,6 +110,9 @@ public:
     /// Returns a @c PropertyPtr for the property named @c propertyName
     virtual PropertyPtr GetProperty( const std::string& propertyName );
 
+    /// Returns whether this property exists. Synonymous with DatumExists().
+    virtual bool PropertyExists( std::string const& propertyName ) const;
+
     /// Returns a vector containing the identifying names of all attributes
     /// owned by property propertyName
     virtual const PSVectorOfStrings& GetPropertyAttributeList( std::string const&
