@@ -114,7 +114,7 @@
 /// and in integer argument should correspond to a valid index, that is it
 /// should lie on the interval [0, enumSize).
 /// 4) Although not recommended practice, it is possible to convert a
-/// pseudo-enum back to a normal integer by calling
+/// pseudo-enum back to a normal string by calling
 /// SetAttribute( "enumValues", val ), where val is anything besides a valid
 /// Property::PSVectorOfStrings.
 
@@ -283,7 +283,7 @@ private:
     double mMaximum; 
 
     ///
-    /// Set true whenever m_value.type == int AND there exists an
+    /// Set true whenever m_value.type == std::string AND there exists an
     /// attribute with key "enumValues" and value of type
     /// std::vector<std::string>.
     /// This member variable is set so that we don't have to look through

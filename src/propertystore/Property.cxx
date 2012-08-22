@@ -401,7 +401,7 @@ void Property::_doExtraEnumSetValueProcessing( boost::any value )
         int castValue = boost::any_cast< int > ( value );
         PSVectorOfStrings castEnumValues =
                 GetAttribute( "enumValues" )->extract< PSVectorOfStrings >();
-        if( castValue < ( castEnumValues.size() - 1 ) )
+        if( castValue < ( castEnumValues.size() ) )
         {
             m_value = castEnumValues.at( castValue );
             index = castValue;
@@ -409,7 +409,7 @@ void Property::_doExtraEnumSetValueProcessing( boost::any value )
     }
     else // Must have a std::string
     {
-        // Convert the string to the proper index to store in main value
+        // Convert the string to the proper index to store in enumCurrentIndex
         std::string castValue = boost::any_cast<std::string > ( value );
         PSVectorOfStrings castEnumValues =
                 GetAttribute( "enumValues" )->extract< PSVectorOfStrings >();
