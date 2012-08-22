@@ -60,7 +60,12 @@ GenericPropertyBrowser::GenericPropertyBrowser(QWidget* parent) :
     mFileEditFactory->setEditorType( new FileEdit );
 }
 
-void GenericPropertyBrowser::ParsePropertySet( PropertySetPtr set )
+GenericPropertyBrowser::~GenericPropertyBrowser()
+{
+    delete mParser;
+}
+
+void GenericPropertyBrowser::ParsePropertySet( PropertySetPtr set, bool autosize )
 {
     if( !mParser )
     {
@@ -69,11 +74,15 @@ void GenericPropertyBrowser::ParsePropertySet( PropertySetPtr set )
 
     mParser->ParsePropertySet( set );
     RefreshAllValues();
-    RefreshContents();
+    RefreshContents( autosize );
 }
 
 void GenericPropertyBrowser::SetPropertyParser( PropertyParser* parser )
 {
+    if( mParser )
+    {
+        delete mParser;
+    }
     mParser = parser;
 
     // Associate editor types with property types

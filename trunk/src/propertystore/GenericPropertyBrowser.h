@@ -56,6 +56,8 @@ Q_OBJECT
 public:
     explicit GenericPropertyBrowser(QWidget* parent = 0);
 
+    virtual ~GenericPropertyBrowser();
+
     void SetPropertyParser( PropertyParser* parser );
 
     /// Refreshes the list of properties to be displayed. This does not refresh
@@ -66,7 +68,7 @@ public:
     ///                 and value columns as equal widths.
     void RefreshContents( bool autosize = true );
 
-    void ParsePropertySet( PropertySetPtr set );
+    void ParsePropertySet( PropertySetPtr set, bool autosize = true );
 
     /// Refreshes only values of property-value pairs that have changed.
     void RefreshValues();
