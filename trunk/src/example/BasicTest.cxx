@@ -19,6 +19,11 @@ bool evenValidator( propertystore::PropertyPtr property, boost::any value )
     return false;
 }
 
+void printIndex( propertystore::PropertyPtr property )
+{
+    std::cout << "AnEnum index = " << property->GetAttribute("enumCurrentIndex")->extract<int>() << std::endl << std::flush;
+}
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
@@ -48,6 +53,7 @@ int main(int argc, char *argv[])
     choices.push_back("Option 2");
     choices.push_back("Option 3");
     propertySet->SetPropertyAttribute( "AnEnum", "enumValues", choices );
+    propertySet->GetProperty( "AnEnum" )->SignalValueChanged.connect( &printIndex );
 
     propertySet->AddProperty( "AFilePath", std::string("Choose a file..."), "Path to some file" );
     propertySet->SetPropertyAttribute( "AFilePath", "isFilePath", true );
