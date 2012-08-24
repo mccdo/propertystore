@@ -5,7 +5,7 @@ include_directories(
     )
 
 # BasicTest
-set( srcs BasicTest.cxx )
+set( srcs BasicTest.cxx TestSet.cxx )
 
 SET(TARGET_SRC ${srcs})
 
