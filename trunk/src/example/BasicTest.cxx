@@ -3,6 +3,13 @@
 #include <propertystore/GenericPropertyBrowser.h>
 #include <propertystore/PropertySet.h>
 
+#include "TestSet.h"
+
+#include <crunchstore/SQLiteStore.h>
+#include <crunchstore/NullBuffer.h>
+#include <crunchstore/NullCache.h>
+#include <crunchstore/DataManager.h>
+
 #include <iostream>
 #include <cmath>
 
@@ -32,6 +39,7 @@ int main(int argc, char *argv[])
 
     // Create a PropertySet with some test data
     propertystore::PropertySetPtr propertySet( new propertystore::PropertySet );
+    propertySet->SetTypeName( "MyTest" );
 
     propertySet->AddProperty( "ABoolean", true, "A Boolean Value" );
 
@@ -67,7 +75,35 @@ int main(int argc, char *argv[])
     //     boost::bind( &MyClassName::MyMemberMethodName, this, _1, _2 ) );
 
 
+    // Set up an SQLiteStore and save propertySet out to it.
+    crunchstore::DataManagerPtr manager( new crunchstore::DataManager );
+    crunchstore::DataAbstractionLayerPtr cache( new crunchstore::NullCache );
+    crunchstore::DataAbstractionLayerPtr buffer( new crunchstore::NullBuffer );
+    crunchstore::SQLiteStorePtr store( new crunchstore::SQLiteStore );
+    manager->SetCache( cache );
+    manager->SetBuffer( buffer );
+    store->SetStorePath( "/tmp/basicTest.db" );
+    manager->AttachStore( store, crunchstore::Store::WORKINGSTORE_ROLE );
 
+    propertySet->SetDataManager( manager );
+    propertySet->Save();
+
+    // Remember the uuid, then change that and the value of AnInteger on
+    // propertySet. Then we'll do a LoadByKey, where the key is uuid and the
+    // value is the old uuid. This will check both whether the data made it into
+    // the store as well as whether LoadByKey works.
+    std::string uuid = propertySet->GetUUIDAsString();
+    propertySet->SetUUID( "00000000-0101-1010-1111-000011110000" );
+    propertySet->SetPropertyValue( "AnInteger", 88 );
+    propertySet->LoadByKey( "uuid", uuid );
+    std::cout << "If LoadByKey worked, this value will be 44: " << std::flush;
+    std::cout << propertySet->GetDatumValue< int >( "AnInteger" )
+              << std::endl;
+
+    std::cout << "CADTest" << std::endl << std::flush;
+     propertystore::PropertySetPtr ts( new TestSet );
+     ts->SetDataManager( manager );
+     ts->Save();
 
     // Create, set up, and show a GenericPropertyBrowser which can display
     // the PropertySet
