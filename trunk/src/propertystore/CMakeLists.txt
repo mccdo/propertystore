@@ -28,6 +28,7 @@ SET( HDRS_TO_MOC
         ExternalStringSelectManager.h
         FileEdit.h
         GenericPropertyBrowser.h
+        GroupPropertyBrowser.h
         PropertyParser.h
         ${QTPBDIR}/qtpropertybrowserutils_p.h
     )
