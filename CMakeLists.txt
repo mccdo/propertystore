@@ -47,19 +47,7 @@ INCLUDE_DIRECTORIES(
 # Alias for the qtpropertybrowser path
 SET( QTPBDIR ${CMAKE_SOURCE_DIR}/src/qtpropertybrowser-2.5_1-opensource/src )
 
-################################################################################
-# Platform specific definitions
-IF(WIN32)
-    IF(MSVC)
-        # To enable /MP, parralel build on MSVC
-        OPTION(WIN32_USE_MP "Set to OFF to diable /MP." ON)
-        MARK_AS_ADVANCED(WIN32_USE_MP)
-        IF(WIN32_USE_MP)
-            SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP")
-        ENDIF(WIN32_USE_MP)
-
-    ENDIF(MSVC)
-ENDIF (WIN32)
+include(VESSetupCompiler)
 
 include(VESBinAndLibDirs)
 
