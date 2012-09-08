@@ -130,7 +130,8 @@ const PropertySet::PSVectorOfStrings&
     DataMap::const_iterator iterator = m_dataMap.find( propertyName );
     if( iterator != m_dataMap.end() )
     {
-        Property* property = reinterpret_cast<Property*>( iterator->second.get() );
+        //Property* property = reinterpret_cast<Property*>( iterator->second.get() );
+        PropertyPtr property( iterator->second, boost::detail::static_cast_tag() );
         return property->GetAttributeList();
     }
     else
@@ -146,7 +147,8 @@ crunchstore::DatumPtr PropertySet::GetPropertyAttribute( std::string const& prop
     DataMap::const_iterator iterator = m_dataMap.find( propertyName );
     if( iterator != m_dataMap.end() )
     {
-        Property* property = reinterpret_cast<Property*>( iterator->second.get() );
+        //Property* property = reinterpret_cast<Property*>( iterator->second.get() );
+        PropertyPtr property( iterator->second, boost::detail::static_cast_tag() );
         return property->GetAttribute( attributeName );
     }
     else
@@ -164,7 +166,8 @@ bool PropertySet::GetPropertyEnabled( std::string const& propertyName ) const
     DataMap::const_iterator iterator = m_dataMap.find( propertyName );
     if( iterator != m_dataMap.end() )
     {
-        Property* property = reinterpret_cast<Property*>( iterator->second.get() );
+        //Property* property = reinterpret_cast<Property*>( iterator->second.get() );
+        PropertyPtr property( iterator->second, boost::detail::static_cast_tag() );
         return property->GetEnabled();
     }
     else
@@ -180,7 +183,8 @@ void PropertySet::SetPropertyAttribute( std::string const& propertyName,
     DataMap::const_iterator iterator = m_dataMap.find( propertyName );
     if( iterator != m_dataMap.end() )
     {
-        Property* property = reinterpret_cast<Property*>( iterator->second.get() );
+        //Property* property = reinterpret_cast<Property*>( iterator->second.get() );
+        PropertyPtr property( iterator->second, boost::detail::static_cast_tag() );
         property->SetAttribute( attributeName, value );
     }
 }
@@ -191,7 +195,8 @@ bool PropertySet::HasPropertyAttribute( std::string const& propertyName,
     DataMap::const_iterator iterator = m_dataMap.find( propertyName );
     if( iterator != m_dataMap.end() )
     {
-        Property* property = reinterpret_cast<Property*>( iterator->second.get() );
+        //Property* property = reinterpret_cast<Property*>( iterator->second.get() );
+        PropertyPtr property( iterator->second, boost::detail::static_cast_tag() );
         return property->AttributeExists( attributeName );
     }
     return false;
@@ -204,7 +209,8 @@ void PropertySet::SetPropertyEnabled( std::string const& propertyName,
     DataMap::const_iterator iterator = m_dataMap.find( propertyName );
     if( iterator != m_dataMap.end() )
     {
-        Property* property = reinterpret_cast<Property*>( iterator->second.get() );
+        //Property* property = reinterpret_cast<Property*>( iterator->second.get() );
+        PropertyPtr property( iterator->second, boost::detail::static_cast_tag() );
         if( enabled )
         {
             property->SetEnabled();
@@ -246,6 +252,7 @@ bool PropertySet::Remove()
 ////////////////////////////////////////////////////////////////////////////////
 bool PropertySet::Load()
 {
+    std::cout << "PropertySet::Load -- " << GetTypeName() << ": " << GetUUIDAsString() << std::endl << std::flush;
     if( !m_dataManager )
     {
         return false;
@@ -279,6 +286,7 @@ bool PropertySet::LoadByKey( std::string const& KeyName, boost::any KeyValue )
 ////////////////////////////////////////////////////////////////////////////////
 bool PropertySet::Save()
 {
+    std::cout << "PropertySet::Save -- " << GetTypeName() << std::endl << std::flush;
     if( !m_dataManager )
     {
         return false;
@@ -437,7 +445,18 @@ void PropertySet::SaveNoOverride()
     }
 }
 ////////////////////////////////////////////////////////////////////////////////
+void PropertySet::EmitValueChangedSignals() const
+{
+    DataMap::const_iterator itr = m_dataMap.begin();
+    while( itr != m_dataMap.end() )
+    {
+        //Property* property = reinterpret_cast<Property*>( itr->second.get() );
+        PropertyPtr property( itr->second, boost::detail::polymorphic_cast_tag() );
+        property->EmitValueChangedSignal();
+        ++itr;
+    }
+}
 
-
+////////////////////////////////////////////////////////////////////////////////
 }
 

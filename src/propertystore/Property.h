@@ -208,6 +208,15 @@ public:
     /// Extensions to typechecking methods in Persistable base class
     bool IsEnum();
 
+    ///
+    /// Properties only emit a change signal when their value changes from the
+    /// created default, but occasionally it is useful to force a Property to
+    /// emit this signal even when the value hasn't actually changed. This
+    /// can be useful, for example, to initialize other objects that
+    /// listen to value change signals but never read a property directly from
+    /// a datastore.
+    void EmitValueChangedSignal();
+
 private:
 
     ///

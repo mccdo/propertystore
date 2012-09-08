@@ -212,10 +212,6 @@ public:
     {
         boost::ignore_unused_variable_warning( property );
 
-        //ves::xplorer::data::PropertySet set;
-        //set.SetUUID( m_UUID );
-        //set.WriteToDatabase();
-
         try
         {
             std::vector< T > result;
@@ -233,7 +229,7 @@ public:
         catch(...)
         {
             STATIC_LOG_CRITICAL( "propertystore",
-                                 "Failed boost::any_cast in MakeLiveLinked during attempt to call "
+                                 "Failed value extraction in MakeLiveLinked during attempt to call "
                                     << m_SignalName << " signal for property ");
         }
     }
