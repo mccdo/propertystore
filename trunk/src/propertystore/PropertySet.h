@@ -160,7 +160,6 @@ public:
     /// of properties in the set.
     virtual void ClearAccumulatedChanges();
 
-
     ///
     /// Toggles live properties if this set has any that are not live by default.
     /// Add MakeLive directives for any such properties inside an overridden
@@ -173,6 +172,13 @@ public:
     /// this method in your derived class and do not call
     /// PropertySet::EnableLiveProperties() from within it.
     virtual void EnableLiveProperties( bool live );
+
+    /// Calls Property::EmitValueChangedSignal for each Property in the set.
+    /// One use of this is to ensure initial synchronization of application
+    /// objects that rely on signals from live properties. Note, however, that
+    /// this method will cause a change signal to be emitted from all properties
+    /// in the set, not just the live ones.
+    virtual void EmitValueChangedSignals() const;
 
     /// Sets the DataManager that should be used for Load(), LoadByKey(),
     /// Save(), Remove(), and SaveNoOverride()

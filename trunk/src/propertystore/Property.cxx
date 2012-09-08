@@ -102,13 +102,17 @@ bool Property::SetValue( boost::any value )
         _doExtraEnumSetValueProcessing( value );
     }
 
-    // Tell the world the value has changed
+    EmitValueChangedSignal();
+
+    return true;
+}
+////////////////////////////////////////////////////////////////////////////////
+void Property::EmitValueChangedSignal()
+{
     if( !SignalValueChanged.empty() )
     {
-        //PropertyPtr tempPtr = PropertyPtr( this );
         SignalValueChanged( shared_from_this() );
     }
-    return true;
 }
 ////////////////////////////////////////////////////////////////////////////////
 void Property::SetEnabled( PropertyPtr caller )
