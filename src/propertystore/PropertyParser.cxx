@@ -586,7 +586,7 @@ void PropertyParser::DoubleValueChanged( QtProperty* item, double value )
 
     LOG_TRACE( "DoubleValueChanged: " << value );
     int index = _getItemIndex( item );
-    if( index > 0 )
+    if( index > -1 )
     {
         PropertyPtr property = mProperties[index];
         // Must cast to float if the underlying type is really a float
