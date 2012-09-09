@@ -252,7 +252,7 @@ bool PropertySet::Remove()
 ////////////////////////////////////////////////////////////////////////////////
 bool PropertySet::Load()
 {
-    std::cout << "PropertySet::Load -- " << GetTypeName() << ": " << GetUUIDAsString() << std::endl << std::flush;
+    //std::cout << "PropertySet::Load -- " << GetTypeName() << ": " << GetUUIDAsString() << std::endl << std::flush;
     if( !m_dataManager )
     {
         return false;
@@ -286,7 +286,7 @@ bool PropertySet::LoadByKey( std::string const& KeyName, boost::any KeyValue )
 ////////////////////////////////////////////////////////////////////////////////
 bool PropertySet::Save()
 {
-    std::cout << "PropertySet::Save -- " << GetTypeName() << std::endl << std::flush;
+    //std::cout << "PropertySet::Save -- " << GetTypeName() << std::endl << std::flush;
     if( !m_dataManager )
     {
         return false;
