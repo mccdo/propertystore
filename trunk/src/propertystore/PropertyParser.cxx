@@ -624,79 +624,54 @@ int PropertyParser::_getPropertyIndex( PropertyPtr property )
 {
     // Get the index of this property in mProperties. The corresponding Item will
     // have the same index in mItems.
-    bool found = false;
     int index = -1;
-    int max = static_cast < int > ( mProperties.size() );
-    max--;
-    while( ( !found ) && ( index < max ) )
+    int max = mProperties.size() - 1;
+    while( index < max )
     {
         index++;
         if( mProperties[ index ] == property )
         {
-            found = true;
+            return index;
         }
     }
 
-    if( found )
-    {
-        return index;
-    }
-    else
-    {
-        return -1;
-    }
+    return -1;
 }
 ////////////////////////////////////////////////////////////////////////////////
 int PropertyParser::_getPropertyIndexByName( std::string name )
 {
     // Get the index of this name in mPropertyNames. The corresponding Property will
     // have the same index in mProperties.
-    bool found = false;
     int index = -1;
-    int max = static_cast < int > ( mPropertyNames.size() );
-    max--;
-    while( ( !found ) && ( index < max ) )
+    int max = mPropertyNames.size() - 1;
+    while( index < max )
     {
         index++;
         if( mPropertyNames[ index ] == name )
         {
-            found = true;
+            return index;
         }
     }
-    if( found )
-    {
-        return index;
-    }
-    else
-    {
-        return -1;
-    }
+    
+    return -1;
 }
 ////////////////////////////////////////////////////////////////////////////////
 int PropertyParser::_getItemIndex( QtProperty* item )
 {
     // Get the index of this property in mItems. The corresponding Property will
     // have the same index in mProperties.
-    bool found = false;
     int index = -1;
-    int max = static_cast < int > ( mItems.size() );
-    max--;
-    while( ( !found ) && ( index < max ) )
+    int max = mItems.size() - 1;
+    while( index < max )
     {
         index++;
         if( mItems[ index ] == item )
         {
-            found = true;
+            return index;
         }
     }
-    if( found )
-    {
-        return index;
-    }
-    else
-    {
-        return -1;
-    }
+
+    return -1;
 }
 ////////////////////////////////////////////////////////////////////////////////
 void PropertyParser::_setItemValue( QtProperty* item, PropertyPtr property )
