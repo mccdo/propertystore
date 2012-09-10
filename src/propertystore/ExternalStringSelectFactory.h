@@ -24,7 +24,7 @@
 http://doc.qt.nokia.com/qq/qq18-propertybrowser.html#extendingtheframework
 It is being used in accordance with the terms of LGPL **/
 
-#include <qtpropertybrowser/qtpropertybrowser.h>
+#include <qtpropertybrowser.h>
 #include <propertystore/ExternalStringSelectManager.h>
 
 /// @file ExternalStringSelectFactory.h
