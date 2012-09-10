@@ -22,9 +22,9 @@
 #define QT_NO_KEYWORDS
 
 #include <QtCore/QObject>
-#include <qtpropertybrowser/qtpropertybrowser.h>
-#include <qtpropertybrowser/qtpropertymanager.h>
-#include <qtpropertybrowser/qteditorfactory.h>
+#include <qtpropertybrowser.h>
+#include <qtpropertymanager.h>
+#include <qteditorfactory.h>
 
 #include <propertystore/ExternalStringSelectFactory.h>
 #include <propertystore/ExternalStringSelectManager.h>
