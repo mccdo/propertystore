@@ -21,8 +21,7 @@
 
 #define QT_NO_KEYWORDS
 
-//#include <qttreepropertybrowser.h>
-#include <qtgroupboxpropertybrowser.h>
+#include <qtpropertybrowser/qtgroupboxpropertybrowser.h>
 #include <propertystore/PropertyParser.h>
 
 /// @file GroupPropertyBrowser.h
