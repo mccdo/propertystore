@@ -182,10 +182,10 @@ private:
     int _getPropertyIndexByName( const std::string name ) const;
 
     /// Set the underlying Property to the value of the QtProperty
-    void _setPropertyValue( QtProperty* item, boost::any value );
+    void _setPropertyValue( QtProperty* const item, boost::any value );
 
     /// Set the QtProperty to the value of the underlying Property
-    void _setItemValue( QtProperty* item, PropertyPtr property );
+    void _setItemValue( QtProperty* const item, PropertyPtr property );
 
     /// Helper function to do the dirty work of finding out if a Property has
     /// min and max values

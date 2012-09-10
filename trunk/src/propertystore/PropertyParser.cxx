@@ -674,7 +674,7 @@ int PropertyParser::_getItemIndex( const QtProperty* item ) const
     return -1;
 }
 ////////////////////////////////////////////////////////////////////////////////
-void PropertyParser::_setItemValue( QtProperty* item, PropertyPtr property )
+void PropertyParser::_setItemValue( QtProperty* const item, PropertyPtr property )
 {
     //LOG_TRACE( "_setItemValue" );
     //boost::any value = property->GetValue();
@@ -737,7 +737,7 @@ void PropertyParser::_setItemValue( QtProperty* item, PropertyPtr property )
     }
 }
 ////////////////////////////////////////////////////////////////////////////////
-void PropertyParser::_setPropertyValue( QtProperty* item, boost::any value )
+void PropertyParser::_setPropertyValue( QtProperty* const item, boost::any value )
 {
     int index = _getItemIndex( item );
     LOG_TRACE( "_setPropertyValue: index " << index << "(" << item->propertyName().toStdString() << ")"  );
