@@ -199,7 +199,7 @@ void PropertyParser::ParsePropertySet( PropertySetPtr set )
             else
             {
                 LOG_TRACE( "Not adding property named " << (*iterator) );
-                mPropertyNames.erase( iterator );
+                iterator = mPropertyNames.erase( iterator );
                 // No need to increment iterator here since everything past the
                 // deleted iterator will fall back in the vector
             }
