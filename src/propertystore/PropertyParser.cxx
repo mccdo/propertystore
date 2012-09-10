@@ -620,7 +620,7 @@ void PropertyParser::Refresh()
     }
 }
 ////////////////////////////////////////////////////////////////////////////////
-int PropertyParser::_getPropertyIndex( PropertyPtr property )
+int PropertyParser::_getPropertyIndex( const PropertyPtr property ) const
 {
     // Get the index of this property in mProperties. The corresponding Item will
     // have the same index in mItems.
@@ -638,7 +638,7 @@ int PropertyParser::_getPropertyIndex( PropertyPtr property )
     return -1;
 }
 ////////////////////////////////////////////////////////////////////////////////
-int PropertyParser::_getPropertyIndexByName( std::string name )
+int PropertyParser::_getPropertyIndexByName( const std::string name ) const
 {
     // Get the index of this name in mPropertyNames. The corresponding Property will
     // have the same index in mProperties.
@@ -656,7 +656,7 @@ int PropertyParser::_getPropertyIndexByName( std::string name )
     return -1;
 }
 ////////////////////////////////////////////////////////////////////////////////
-int PropertyParser::_getItemIndex( QtProperty* item )
+int PropertyParser::_getItemIndex( const QtProperty* item ) const
 {
     // Get the index of this property in mItems. The corresponding Property will
     // have the same index in mProperties.

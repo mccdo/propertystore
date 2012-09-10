@@ -177,9 +177,9 @@ private:
     std::map< std::string, ExternalStringSelectManager* > m_customStringManagers;
 
     // Helper functions to find things in the triad of synchronized vectors
-    int _getPropertyIndex( PropertyPtr property );
-    int _getItemIndex( QtProperty* item );
-    int _getPropertyIndexByName( std::string name );
+    int _getPropertyIndex( const PropertyPtr property ) const;
+    int _getItemIndex( const QtProperty* item ) const;
+    int _getPropertyIndexByName( const std::string name ) const;
 
     /// Set the underlying Property to the value of the QtProperty
     void _setPropertyValue( QtProperty* item, boost::any value );
