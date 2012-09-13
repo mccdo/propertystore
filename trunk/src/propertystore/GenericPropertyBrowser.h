@@ -55,7 +55,7 @@ public:
     ///                 and value columns as equal widths.
     void RefreshContents( bool autosize = true );
 
-    void ParsePropertySet( PropertySetPtr set, bool autosize = true );
+    void ParsePropertySet( PropertySetPtr set, bool autosize = true, bool readOnly = false );
 
     /// Refreshes only values of property-value pairs that have changed.
     void RefreshValues();
