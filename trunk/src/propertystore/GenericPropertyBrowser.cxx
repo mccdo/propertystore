@@ -64,13 +64,19 @@ void GenericPropertyBrowser::ParsePropertySet( PropertySetPtr set, bool autosize
     RefreshContents( autosize );
 }
 
-void GenericPropertyBrowser::SetPropertyParser( PropertyParser* parser )
+void GenericPropertyBrowser::SetPropertyParser( PropertyParser* parser, bool readOnly )
 {
     if( mParser )
     {
         delete mParser;
     }
     mParser = parser;
+
+    if( readOnly )
+    {
+        // Everything will be read-only if we don't set factories
+        return;
+    }
 
     // Associate editor types with property types
     this->setFactoryForManager( parser->GetBoolManager(), mCheckBoxFactory );

@@ -45,7 +45,7 @@ public:
 
     virtual ~GenericPropertyBrowser();
 
-    void SetPropertyParser( PropertyParser* parser );
+    void SetPropertyParser( PropertyParser* parser, bool readOnly = false );
 
     /// Refreshes the list of properties to be displayed. This does not refresh
     /// the *values* of the property-value pairs, but only refreshes the property
