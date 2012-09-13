@@ -52,11 +52,11 @@ GenericPropertyBrowser::~GenericPropertyBrowser()
     delete mParser;
 }
 
-void GenericPropertyBrowser::ParsePropertySet( PropertySetPtr set, bool autosize )
+void GenericPropertyBrowser::ParsePropertySet( PropertySetPtr set, bool autosize, bool readOnly )
 {
     if( !mParser )
     {
-        SetPropertyParser( new PropertyParser );
+        SetPropertyParser( new PropertyParser, readOnly );
     }
 
     mParser->ParsePropertySet( set );
