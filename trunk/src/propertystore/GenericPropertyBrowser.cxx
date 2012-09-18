@@ -45,6 +45,9 @@ GenericPropertyBrowser::GenericPropertyBrowser(QWidget* parent) :
     // set up other custom ExternalStringSelect types
     mFileEditFactory = new ExternalStringSelectFactory(this);
     mFileEditFactory->setEditorType( new FileEdit );
+
+    mColorEditFactory = new ExternalStringSelectFactory(this);
+    mColorEditFactory->setEditorType( new ColorEditRGBA );
 }
 
 GenericPropertyBrowser::~GenericPropertyBrowser()
@@ -88,6 +91,10 @@ void GenericPropertyBrowser::SetPropertyParser( PropertyParser* parser, bool rea
     ExternalStringSelectManager* filePathManager = new ExternalStringSelectManager;
     parser->AddCustomExternalStringManager( filePathManager, "isFilePath" );
     this->setFactoryForManager( filePathManager, mFileEditFactory );
+
+    ExternalStringSelectManager* colorManager = new ExternalStringSelectManager;
+    parser->AddCustomExternalStringManager( colorManager, "isColorRGBA" );
+    this->setFactoryForManager( colorManager, mColorEditFactory );
 }
 
 void GenericPropertyBrowser::RefreshContents( bool autosize )
