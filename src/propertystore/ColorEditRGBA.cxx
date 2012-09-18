@@ -22,7 +22,7 @@
 #include <QtGui/QToolButton>
 #include <QtGui/QFileDialog>
 #include <QtGui/QFocusEvent>
-#include <iostream>
+#include <qtpropertybrowserutils_p.h>
 
 namespace propertystore
 {
@@ -31,7 +31,10 @@ ColorEditRGBA::ColorEditRGBA(QWidget *parent)
     : ExternalStringSelect( parent ),
       m_colorDialog( 0 )
 {
-
+    // Insert color swatch into the property display. We don't yet have a color,
+    // so wait until setString to color the swatch.
+    m_colorSwatch = new QLabel( this );
+    m_layout->insertWidget( 0, m_colorSwatch, 0 );
 }
 ////////////////////////////////////////////////////////////////////////////////
 ExternalStringSelect* ColorEditRGBA::createNew( QWidget* parent )
@@ -39,16 +42,15 @@ ExternalStringSelect* ColorEditRGBA::createNew( QWidget* parent )
     return new ColorEditRGBA( parent );
 }
 ////////////////////////////////////////////////////////////////////////////////
-void ColorEditRGBA::buttonClicked()
+void ColorEditRGBA::setString(const QString &str)
 {
-    if( m_colorDialog )
-    {
-        m_colorDialog->raise();
-        return;
-    }
-
-    // Pull and parse the color residing in the text field, and use it to set
-    // the initally-selected color in the QColorDialog
+    ExternalStringSelect::setString( str );
+    m_colorSwatch->setPixmap( QtPropertyBrowserUtils::brushValuePixmap(
+                    QBrush( ConvertStringToQColor() ) ) );
+}
+////////////////////////////////////////////////////////////////////////////////
+QColor ColorEditRGBA::ConvertStringToQColor()
+{
     QStringList colors = string().split( "," );
     int r, g, b, a;
     r = g = b = a = 255;
@@ -59,8 +61,26 @@ void ColorEditRGBA::buttonClicked()
         b = colors.at(2).toInt();
         a = colors.at(3).toInt();
     }
+    if( (r > -1) && (r < 256) && (g > -1) && (g < 256) &&
+            (b > -1) && (b < 256) && (a > -1) && (a < 256) )
+    {
+        return QColor( r, g, b, a );
+    }
+    else
+    {
+        return QColor( 255, 255, 255, 255 );
+    }
+}
+////////////////////////////////////////////////////////////////////////////////
+void ColorEditRGBA::buttonClicked()
+{
+    if( m_colorDialog )
+    {
+        m_colorDialog->raise();
+        return;
+    }
 
-    m_colorDialog = new QColorDialog( QColor( r, g, b, a ) , 0);
+    m_colorDialog = new QColorDialog( ConvertStringToQColor(), 0 );
     m_colorDialog->setOptions( QColorDialog::ShowAlphaChannel );
     m_colorDialog->setAttribute( Qt::WA_DeleteOnClose );
 
@@ -85,6 +105,9 @@ void ColorEditRGBA::onColorSelected( const QColor& color )
     // Now that we've pre-processed the color, let the base class handle updating
     // everything
     onExternalStringSelected( colorText.toStdString() );
+
+    m_colorSwatch->setPixmap(
+                QtPropertyBrowserUtils::brushValuePixmap( QBrush( color ) ) );
 
     if ( m_colorDialog != 0 )
     {

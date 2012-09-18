@@ -26,6 +26,7 @@ It is being used in accordance with the terms of LGPL **/
 
 #include <QtGui/QLineEdit>
 #include <QtGui/QColorDialog>
+#include <QtGui/QLabel>
 
 #include <propertystore/ExternalStringSelect.h>
 
@@ -44,6 +45,7 @@ class PROPERTYSTORE_EXPORT ColorEditRGBA : public ExternalStringSelect
 public:
     ColorEditRGBA(QWidget *parent = 0);
     virtual ExternalStringSelect* createNew( QWidget* parent );
+    virtual void setString(const QString &str);
 Q_SIGNALS:
 
 
@@ -53,7 +55,10 @@ public Q_SLOTS:
     virtual void onColorCancelled();
 
 private:
+    QColor ConvertStringToQColor();
+
     QColorDialog* m_colorDialog;
+    QLabel* m_colorSwatch;
 };
 
 }

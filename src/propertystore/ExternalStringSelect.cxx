@@ -18,89 +18,93 @@
  *
  *************** <auto-copyright.rb END do not edit this line> ***************/
 #include <propertystore/ExternalStringSelect.h>
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QToolButton>
-#include <QtGui/QFileDialog>
 #include <QtGui/QFocusEvent>
-#include <iostream>
 
 Q_DECLARE_METATYPE(std::string)
 
 namespace propertystore
 {
 
-ExternalStringSelect::ExternalStringSelect(QWidget *parent)
+ExternalStringSelect::ExternalStringSelect(QWidget* parent)
     : QWidget(parent)
 {
     qRegisterMetaType<std::string>();
-    QHBoxLayout *layout = new QHBoxLayout(this);
-    layout->setMargin(0);
-    layout->setSpacing(0);
-    theLineEdit = new QLineEdit(this);
-    theLineEdit->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred));
-    QToolButton *button = new QToolButton(this);
-    button->setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred));
-    button->setText(QLatin1String("Select..."));
-    layout->addWidget(theLineEdit);
-    layout->addWidget(button);
-    setFocusProxy(theLineEdit);
-    setFocusPolicy(Qt::StrongFocus);
-    setAttribute(Qt::WA_InputMethodEnabled);
-    connect(theLineEdit, SIGNAL(textEdited(const QString &)),
-                this, SIGNAL(stringChanged(const QString &)));
-    connect(button, SIGNAL(clicked()),
-                this, SLOT(buttonClicked()));
+    m_layout = new QHBoxLayout( this );
+    m_layout->setMargin( 0 );
+    m_layout->setSpacing( 0 );
+    m_lineEdit = new QLineEdit( this );
+    m_lineEdit->setSizePolicy( QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred) );
+    m_button = new QToolButton( this );
+    m_button->setSizePolicy( QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred) );
+    m_button->setText( QLatin1String("Select...") );
+    m_layout->addWidget( m_lineEdit );
+    m_layout->addWidget( m_button );
+    setFocusProxy( m_lineEdit );
+    setFocusPolicy( Qt::StrongFocus );
+    setAttribute( Qt::WA_InputMethodEnabled );
+    connect( m_lineEdit, SIGNAL(textEdited(const QString &)),
+                this, SIGNAL(stringChanged(const QString &)) );
+    connect( m_button, SIGNAL(clicked()),
+                this, SLOT(buttonClicked()) );
     connect( this, SIGNAL(ExternalStringSelectedQSignal(std::string)),
              this, SLOT(onExternalStringSelectedQueued(std::string)),
              Qt::QueuedConnection );
 }
-
+////////////////////////////////////////////////////////////////////////////////
 ExternalStringSelect* ExternalStringSelect::createNew( QWidget* parent )
 {
     return new ExternalStringSelect( parent );
 }
-
+////////////////////////////////////////////////////////////////////////////////
+void ExternalStringSelect::setString(const QString &str)
+{
+    if (m_lineEdit->text() != str)
+    {
+        m_lineEdit->setText(str);
+    }
+}
+////////////////////////////////////////////////////////////////////////////////
 void ExternalStringSelect::buttonClicked()
 {
     // Do nothing; derived classes should override to produce desired behavior,
     // such as opening a file dialog.
 }
-
+////////////////////////////////////////////////////////////////////////////////
 void ExternalStringSelect::onExternalStringSelected( const std::string& str )
 {
     emit ExternalStringSelectedQSignal( str );
 }
-
+////////////////////////////////////////////////////////////////////////////////
 void ExternalStringSelect::onExternalStringSelectedQueued( const std::string str )
 {
     QString text = text.fromStdString( str );
-    theLineEdit->setText( text );
+    m_lineEdit->setText( text );
     emit stringChanged(text);
 }
-
+////////////////////////////////////////////////////////////////////////////////
 void ExternalStringSelect::focusInEvent(QFocusEvent *e)
 {
-    theLineEdit->event(e);
+    m_lineEdit->event(e);
     if (e->reason() == Qt::TabFocusReason || e->reason() == Qt::BacktabFocusReason) {
-        theLineEdit->selectAll();
+        m_lineEdit->selectAll();
     }
     QWidget::focusInEvent(e);
 }
-
+////////////////////////////////////////////////////////////////////////////////
 void ExternalStringSelect::focusOutEvent(QFocusEvent *e)
 {
-    theLineEdit->event(e);
+    m_lineEdit->event(e);
     QWidget::focusOutEvent(e);
 }
-
+////////////////////////////////////////////////////////////////////////////////
 void ExternalStringSelect::keyPressEvent(QKeyEvent *e)
 {
-    theLineEdit->event(e);
+    m_lineEdit->event(e);
 }
-
+////////////////////////////////////////////////////////////////////////////////
 void ExternalStringSelect::keyReleaseEvent(QKeyEvent *e)
 {
-    theLineEdit->event(e);
+    m_lineEdit->event(e);
 }
-
+////////////////////////////////////////////////////////////////////////////////
 }

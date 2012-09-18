@@ -46,7 +46,6 @@ void ExternalStringSelectFactory::setEditorType( ExternalStringSelect* editor )
 QWidget *ExternalStringSelectFactory::createEditor(ExternalStringSelectManager *manager,
         QtProperty *property, QWidget *parent)
 {
-    //ExternalStringSelect *editor = new ExternalStringSelect(parent);
     // Create new instance from the type set in setEditorType.
     ExternalStringSelect* editor = m_editorType->createNew( parent );
     editor->setString(manager->value(property));
