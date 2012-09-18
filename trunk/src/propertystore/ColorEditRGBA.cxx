@@ -47,7 +47,19 @@ void ColorEditRGBA::buttonClicked()
         return;
     }
 
-    m_colorDialog = new QColorDialog( 0 );
+    // Pull and parse the color residing in the text field, and use it to set
+    // the initally-selected color in the QColorDialog
+    QStringList colors = string().split( "," );
+    int r, g, b, a = 255;
+    if( colors.size() == 4 )
+    {
+        r = colors.at(0).toInt();
+        g = colors.at(1).toInt();
+        b = colors.at(2).toInt();
+        a = colors.at(3).toInt();
+    }
+
+    m_colorDialog = new QColorDialog( QColor( r, g, b, a ) , 0);
     m_colorDialog->setOptions( QColorDialog::ShowAlphaChannel );
     m_colorDialog->setAttribute( Qt::WA_DeleteOnClose );
 
@@ -67,7 +79,7 @@ void ColorEditRGBA::onColorSelected( const QColor& color )
     blue.setNum( color.blue() );
     alpha.setNum( color.alpha() );
 
-    QString colorText = "(" + red + "," + green + "," + blue + "," + alpha + ")";
+    QString colorText = red + "," + green + "," + blue + "," + alpha;
 
     // Now that we've pre-processed the color, let the base class handle updating
     // everything
