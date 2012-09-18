@@ -50,7 +50,8 @@ void ColorEditRGBA::buttonClicked()
     // Pull and parse the color residing in the text field, and use it to set
     // the initally-selected color in the QColorDialog
     QStringList colors = string().split( "," );
-    int r, g, b, a = 255;
+    int r, g, b, a;
+    r = g = b = a = 255;
     if( colors.size() == 4 )
     {
         r = colors.at(0).toInt();
