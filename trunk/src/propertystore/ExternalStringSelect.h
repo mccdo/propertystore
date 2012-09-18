@@ -19,14 +19,15 @@
  *************** <auto-copyright.rb END do not edit this line> ***************/
 #pragma once
 
-/** This class is a slightly altered version of the FileEdit class shown in
+/** This class is an altered version of the FileEdit class shown in
  Qt Quarterly at
 http://doc.qt.nokia.com/qq/qq18-propertybrowser.html#extendingtheframework
 It is being used in accordance with the terms of LGPL **/
 
 
 #include <QtGui/QLineEdit>
-#include <QtGui/QFileDialog>
+#include <QtGui/QHBoxLayout>
+#include <QtGui/QToolButton>
 #include <propertystore/Exports.h>
 
 /// @file ExternalStringSelect.h
@@ -48,9 +49,9 @@ class PROPERTYSTORE_EXPORT ExternalStringSelect : public QWidget
 {
     Q_OBJECT
 public:
-    ExternalStringSelect(QWidget *parent = 0);
-    void setString(const QString &str) { if (theLineEdit->text() != str) theLineEdit->setText(str); }
-    QString string() const { return theLineEdit->text(); }
+    ExternalStringSelect( QWidget* parent = 0 );
+    virtual void setString(const QString &str);
+    QString string() const { return m_lineEdit->text(); }
 
     /// Returns a pointer to a new one of these. Used by ExternalStringSelectFactory
     /// to create new versions of this object. This allows the developer to derive
@@ -63,18 +64,20 @@ Q_SIGNALS:
     void ExternalStringSelectedQSignal( const std::string str );
 
 protected:
-    void focusInEvent(QFocusEvent *e);
-    void focusOutEvent(QFocusEvent *e);
-    void keyPressEvent(QKeyEvent *e);
-    void keyReleaseEvent(QKeyEvent *e);
+    void focusInEvent( QFocusEvent* e );
+    void focusOutEvent( QFocusEvent* e );
+    void keyPressEvent( QKeyEvent* e );
+    void keyReleaseEvent( QKeyEvent* e );
 
 public Q_SLOTS:
     virtual void buttonClicked();
     virtual void onExternalStringSelected( const std::string& str );
     virtual void onExternalStringSelectedQueued( const std::string str );
 
-private:
-    QLineEdit *theLineEdit;
+protected:
+    QLineEdit* m_lineEdit;
+    QHBoxLayout* m_layout;
+    QToolButton* m_button;
 };
 
 }
