@@ -29,6 +29,7 @@
 #include <propertystore/ExternalStringSelectFactory.h>
 #include <propertystore/ExternalStringSelectManager.h>
 #include <propertystore/FileEdit.h>
+#include <propertystore/ColorEditRGBA.h>
 #include <propertystore/PropertySet.h>
 #include <propertystore/Property.h>
 #include <propertystore/Logging.h>

@@ -77,7 +77,7 @@ private:
     QtEnumEditorFactory* mComboBoxFactory;
     QtSliderFactory* mSliderFactory;
     ExternalStringSelectFactory* mFileEditFactory;
-    //ExternalStringSelectFactory* mNodeSelectFactory;
+    ExternalStringSelectFactory* mColorEditFactory;
 };
 
 } // namespace

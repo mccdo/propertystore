@@ -27,6 +27,7 @@ SET( HDRS_TO_MOC
         ExternalStringSelectFactory.h
         ExternalStringSelectManager.h
         FileEdit.h
+        ColorEditRGBA.h
         GenericPropertyBrowser.h
         GroupPropertyBrowser.h
         PropertyParser.h

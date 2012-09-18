@@ -45,6 +45,9 @@ GroupPropertyBrowser::GroupPropertyBrowser(QWidget* parent) :
     // set up other custom ExternalStringSelect types
     mFileEditFactory = new ExternalStringSelectFactory(this);
     mFileEditFactory->setEditorType( new FileEdit );
+
+    mColorEditFactory = new ExternalStringSelectFactory(this);
+    mColorEditFactory->setEditorType( new ColorEditRGBA );
 }
 
 GroupPropertyBrowser::~GroupPropertyBrowser()
@@ -82,6 +85,10 @@ void GroupPropertyBrowser::SetPropertyParser( PropertyParser* parser )
     ExternalStringSelectManager* filePathManager = new ExternalStringSelectManager;
     parser->AddCustomExternalStringManager( filePathManager, "isFilePath" );
     this->setFactoryForManager( filePathManager, mFileEditFactory );
+
+    ExternalStringSelectManager* colorManager = new ExternalStringSelectManager;
+    parser->AddCustomExternalStringManager( colorManager, "isColorRGBA" );
+    this->setFactoryForManager( colorManager, mColorEditFactory );
 }
 
 void GroupPropertyBrowser::RefreshContents( bool autosize )
