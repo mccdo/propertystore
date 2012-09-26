@@ -293,6 +293,20 @@ void PropertyParser::ParsePropertySet( PropertySetPtr set )
             // These are done for all items
             if( item )
             {
+                // Tooltip block could potentially move down into _refreshItem
+                // if it's likely tooltips might change frequently. Current
+                // location ensures fewer calls to look at uiTooTip though.
+                if( property->AttributeExists( "uiToolTip" ) )
+                {
+                    QString toolTip = QString::fromStdString(
+                                property->GetAttribute( "uiToolTip" )->
+                                                       extract<std::string>() );
+                    if( !toolTip.isEmpty() )
+                    {
+                        item->setToolTip( toolTip );
+                    }
+                }
+
                 mItems.push_back( item );
                 _refreshItem( _getItemIndex( item ) );
             }
