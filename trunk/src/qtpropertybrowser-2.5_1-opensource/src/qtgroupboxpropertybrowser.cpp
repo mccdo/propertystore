@@ -315,15 +315,15 @@ void QtGroupBoxPropertyBrowserPrivate::propertyRemoved(QtBrowserItem *index)
         removeRow(parentItem->layout, row);
     } else {
         WidgetItem *par = parentItem->parent;
-        QWidget *w = 0;
+        //QWidget *w = 0;
         QGridLayout *l = 0;
         int oldRow = -1;
         if (!par) {
-            w = q_ptr;
+            //w = q_ptr;
             l = m_mainLayout;
             oldRow = m_children.indexOf(parentItem);
         } else {
-            w = par->groupBox;
+            //w = par->groupBox;
             l = par->layout;
             oldRow = par->children.indexOf(parentItem);
             if (hasHeader(par))
@@ -444,7 +444,14 @@ void QtGroupBoxPropertyBrowserPrivate::updateItem(WidgetItem *item)
         font.setUnderline(false);
         item->widget->setFont(font);
         item->widget->setEnabled(property->isEnabled());
-        item->widget->setToolTip(property->valueText());
+        if( property->toolTip().isEmpty() )
+        {
+            item->widget->setToolTip(property->valueText());
+        }
+        else
+        {
+            item->widget->setToolTip(property->toolTip());
+        }
     }
     //item->setIcon(1, property->valueIcon());
 }
