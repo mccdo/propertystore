@@ -52,6 +52,10 @@ public:
     ExternalStringSelect( QWidget* parent = 0 );
     virtual void setString(const QString &str);
     QString string() const { return m_lineEdit->text(); }
+    /// Sets attributes for the string associated with this instance of the editor.
+    /// Derived classes can look at the values stored in m_attributes to
+    /// tweak display or input of the string.
+    void SetStringAttributes( const QMap<std::string, std::string>& attributes );
 
     /// Returns a pointer to a new one of these. Used by ExternalStringSelectFactory
     /// to create new versions of this object. This allows the developer to derive
@@ -78,6 +82,9 @@ protected:
     QLineEdit* m_lineEdit;
     QHBoxLayout* m_layout;
     QToolButton* m_button;
+    /// Derived classes can look through this map for attributes that control
+    /// specialized string input or display
+    QMap< std::string, std::string > m_attributes;
 };
 
 }

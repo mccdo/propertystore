@@ -442,6 +442,35 @@ void PropertyParser::_refreshItem( int index )
         double step = std::pow( double(10), double(-1 * precision) );
         mDoubleManager->setSingleStep( item, step );
     }
+    else if( property->IsString() )
+    {
+        // Update the attribute map for the string.
+        QMap< std::string, std::string> attributes;
+        std::vector< std::string > attributeList = property->GetAttributeList();
+        for( size_t index = 0; index < attributeList.size(); ++index )
+        {
+            std::string attrName = attributeList.at( index );
+            if( property->GetAttribute( attrName )->IsString() )
+            {
+                attributes[ attrName ] = property->GetAttribute( attrName )->extract<std::string>();
+            }
+        }
+
+        // Find the correct ExternalStringManager and set this item's attributes
+        std::map< std::string, ExternalStringSelectManager* >::iterator itr =
+                m_customStringManagers.begin();
+        while( itr != m_customStringManagers.end() )
+        {
+            std::string str = itr->first;
+            if( (property->AttributeExists( str )) &&
+                    property->GetAttribute( str )->extract<bool>() )
+            {
+                itr->second->SetStringAttributes( item, attributes );
+                break;
+            }
+            ++itr;
+        }
+    }
 
     // Unblock value changed signals from managers. Failure to do this will
     // cause the value set below in _setItemValue to never show up in the browser.

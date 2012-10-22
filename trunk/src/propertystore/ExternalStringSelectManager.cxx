@@ -80,5 +80,18 @@ void ExternalStringSelectManager::setValue(QtProperty* property, const QString& 
     emit valueChanged(property, data.value);
 }
 ////////////////////////////////////////////////////////////////////////////////
+void ExternalStringSelectManager::SetStringAttributes( const QtProperty* property,
+                          const QMap<std::string, std::string>& attributes )
+{
+    attributeMap[ property ] = attributes;
+}
+////////////////////////////////////////////////////////////////////////////////
+QMap< std::string, std::string > ExternalStringSelectManager::GetStringAttributes( const QtProperty *property ) const
+{
+    // Returns emptyMap if no attribute map is set for this property
+    QMap< std::string, std::string > emptyMap;
+    return attributeMap.value( property, emptyMap );
+}
+////////////////////////////////////////////////////////////////////////////////
 }
 

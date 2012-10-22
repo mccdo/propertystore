@@ -107,4 +107,9 @@ void ExternalStringSelect::keyReleaseEvent(QKeyEvent *e)
     m_lineEdit->event(e);
 }
 ////////////////////////////////////////////////////////////////////////////////
+void ExternalStringSelect::SetStringAttributes( const QMap< std::string, std::string >& attributes )
+{
+    m_attributes = attributes;
+}
+////////////////////////////////////////////////////////////////////////////////
 }

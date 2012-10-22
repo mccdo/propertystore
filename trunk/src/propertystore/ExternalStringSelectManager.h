@@ -28,6 +28,8 @@ It is being used in accordance with the terms of LGPL **/
 #include <QtCore/QMap>
 #include <propertystore/Exports.h>
 
+#include <string>
+
 /// @file ExternalStringSelectManager.h
 /// @namespace propertystore
 /// @class ExternalStringSelectManager is the generic manager for any editor
@@ -47,6 +49,16 @@ public:
     QString value(const QtProperty* property) const;
     virtual QIcon valueIcon(const QtProperty* property) const;
 
+    /// Set string-based attributes on the string property. These can be used
+    /// by editor widgets associated with this manager to better control display
+    /// of information.
+    void SetStringAttributes( const QtProperty* property,
+                              const QMap< std::string, std::string >& attributes );
+    /// Returns the attribute map for the property that was set via
+    /// SetStringAttributes.
+    QMap< std::string, std::string > GetStringAttributes( const QtProperty* property ) const;
+
+
 public Q_SLOTS:
     void setValue(QtProperty* property, const QString& val);
 Q_SIGNALS:
@@ -63,6 +75,7 @@ private:
     };
 
     QMap<const QtProperty*, Data> theValues;
+    QMap<const QtProperty*, QMap<std::string, std::string> > attributeMap;
 };
 
 }
