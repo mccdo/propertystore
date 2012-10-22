@@ -41,12 +41,9 @@ ExternalStringSelect* FileEdit::createNew( QWidget* parent )
 
 void FileEdit::buttonClicked()
 {
-//    ves::conductor::UITabs* tabs = ves::conductor::UITabs::instance();
-
     if( m_fileDialog )
     {
         m_fileDialog->raise();
-        //tabs->ActivateTab( m_fileDialog );
         return;
     }
 
@@ -60,9 +57,13 @@ void FileEdit::buttonClicked()
     connect( m_fileDialog, SIGNAL(rejected()), this,
                       SLOT( onFileCancelled() ) );
 
-    m_fileDialog->show();
+    std::string path = m_attributes.value( "fileChooserPath", "" );
+    if( !path.empty() )
+    {
+        m_fileDialog->setDirectory( QString::fromStdString(path) );
+    }
 
-//    tabs->ActivateTab( tabs->AddTab( m_fileDialog, "Select File" ) );
+    m_fileDialog->show();
 }
 
 void FileEdit::onFileSelected( const QString& filePath )
@@ -73,8 +74,6 @@ void FileEdit::onFileSelected( const QString& filePath )
     // everything
     onExternalStringSelected( relativePath.toStdString() );
 
-    //ves::conductor::UITabs::instance()->RemoveTab( m_fileDialog );
-
     if ( m_fileDialog != 0 )
     {
         m_fileDialog->close();
@@ -84,8 +83,6 @@ void FileEdit::onFileSelected( const QString& filePath )
 
 void FileEdit::onFileCancelled()
 {
-    //ves::conductor::UITabs::instance()->RemoveTab( m_fileDialog );
-
     if ( m_fileDialog != 0 )
     {
         m_fileDialog->close();
