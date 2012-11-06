@@ -296,16 +296,16 @@ void PropertyParser::ParsePropertySet( PropertySetPtr set )
                 // Tooltip block could potentially move down into _refreshItem
                 // if it's likely tooltips might change frequently. Current
                 // location ensures fewer calls to look at uiTooTip though.
-                if( property->AttributeExists( "uiToolTip" ) )
-                {
-                    QString toolTip = QString::fromStdString(
-                                property->GetAttribute( "uiToolTip" )->
-                                                       extract<std::string>() );
-                    if( !toolTip.isEmpty() )
-                    {
-                        item->setToolTip( toolTip );
-                    }
-                }
+//                if( property->AttributeExists( "uiToolTip" ) )
+//                {
+//                    QString toolTip = QString::fromStdString(
+//                                property->GetAttribute( "uiToolTip" )->
+//                                                       extract<std::string>() );
+//                    if( !toolTip.isEmpty() )
+//                    {
+//                        item->setToolTip( toolTip );
+//                    }
+//                }
 
                 mItems.push_back( item );
                 _refreshItem( _getItemIndex( item ) );
@@ -469,6 +469,18 @@ void PropertyParser::_refreshItem( int index )
                 break;
             }
             ++itr;
+        }
+    }
+
+    // Update tooltips on the property
+    if( property->AttributeExists( "uiToolTip" ) )
+    {
+        QString toolTip = QString::fromStdString(
+                    property->GetAttribute( "uiToolTip" )->
+                                           extract<std::string>() );
+        if( !toolTip.isEmpty() )
+        {
+            item->setToolTip( toolTip );
         }
     }
 
