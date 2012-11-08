@@ -129,9 +129,11 @@ public:
     **/
     void AddCustomExternalStringManager( ExternalStringSelectManager* manager, const std::string& attributeFlag );
 
-
 Q_SIGNALS:
-    public Q_SLOTS :
+    /// Emitted when the PropertySet has been changed.
+    void Modified();
+
+public Q_SLOTS :
     ///
     /// Internal slot that catches valueChanged signal from QtProperty bool types
     /// and attempts to synchronize the value of the underlying Property
@@ -151,7 +153,6 @@ Q_SIGNALS:
     /// Internal slot that catches valueChanged signal from QtProperty string types
     /// and attempts to synchronize the value of the underlying Property
     void StringValueChanged( QtProperty* item, const QString & value );
-
 
 private:
     // The following three vectors should be synchronized at all times.
@@ -213,6 +214,10 @@ private:
       * closest min/max.)
       **/
     bool m_ignoreValueChanges;
+
+    /// Keeps track of whether we're actively parsing a PropertySet. The
+    /// Modified signal, for instance, is disabled during parsing.
+    bool m_parseOperation;
 
     ///Logger reference
     Poco::Logger& m_logger;
