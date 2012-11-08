@@ -28,6 +28,8 @@ It is being used in accordance with the terms of LGPL **/
 #include <QtGui/QLineEdit>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QToolButton>
+#include <QtCore/QMap>
+
 #include <propertystore/Exports.h>
 
 /// @file ExternalStringSelect.h
