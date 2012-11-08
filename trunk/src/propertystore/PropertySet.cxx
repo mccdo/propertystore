@@ -37,7 +37,9 @@
 namespace propertystore
 {
 
-PropertySet::PropertySet():
+PropertySet::PropertySet()
+    :
+    crunchstore::Persistable(),
     m_isLive( false ),
     m_timer( 0 ),
     m_writeDirty( false ),
@@ -53,7 +55,9 @@ PropertySet::PropertySet():
     AddProperty("NameTag", m_UUIDString.substr( 0, 4 ), "Name Tag");
 }
 ////////////////////////////////////////////////////////////////////////////////
-PropertySet::PropertySet( const PropertySet& orig ):
+PropertySet::PropertySet( const PropertySet& orig )
+    :
+    crunchstore::Persistable( orig ),
     m_logger( orig.m_logger ),
     m_logStream( orig.m_logStream )
 {
