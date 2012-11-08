@@ -28,6 +28,7 @@ namespace propertystore
 PropertyParser::PropertyParser( QObject* parent ) :
     QObject( parent ),
     m_ignoreValueChanges( false ),
+    m_parseOperation( false ),
     m_logger( Poco::Logger::get("PropertyParser") ),
     m_logStream( LogStreamPtr( new Poco::LogStream( m_logger ) ) )
 {
@@ -137,6 +138,7 @@ PropertyParser::ItemVector* PropertyParser::GetItems()
 void PropertyParser::ParsePropertySet( PropertySetPtr set )
 {
     LOG_TRACE( "ParsePropertySet" );
+    m_parseOperation = true;
 
     // Delete old items, etc. before adding new
     size_t max = mItems.size();
@@ -315,6 +317,7 @@ void PropertyParser::ParsePropertySet( PropertySetPtr set )
 
     // Set up specified hierarchy of elements
     _createHierarchy();
+    m_parseOperation = false;
 }
 ////////////////////////////////////////////////////////////////////////////////
 void PropertyParser::RefreshAll()
@@ -802,6 +805,10 @@ void PropertyParser::_setPropertyValue( QtProperty* const item, boost::any value
             // Setvalue was accepted; check for changes to other properties that
             // may occur due to links between properties in the set
             Refresh();
+            if( !m_parseOperation )
+            {
+                Modified();
+            }
         }
         else
         {

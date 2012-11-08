@@ -65,6 +65,9 @@ public:
     void RefreshAllValues();
 
 Q_SIGNALS:
+    /// Forwards the Modified signal from PropertyParser. This is fired when
+    /// the PropertySet held by the parser is modified in any way.
+    void PropertySetModified();
 
 public Q_SLOTS:
 

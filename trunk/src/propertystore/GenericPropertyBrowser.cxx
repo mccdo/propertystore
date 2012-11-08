@@ -95,6 +95,8 @@ void GenericPropertyBrowser::SetPropertyParser( PropertyParser* parser, bool rea
     ExternalStringSelectManager* colorManager = new ExternalStringSelectManager;
     parser->AddCustomExternalStringManager( colorManager, "isColorRGBA" );
     this->setFactoryForManager( colorManager, mColorEditFactory );
+
+    connect( parser, SIGNAL(Modified()), SIGNAL(PropertySetModified()) );
 }
 
 void GenericPropertyBrowser::RefreshContents( bool autosize )
