@@ -137,7 +137,7 @@ PropertyParser::ItemVector* PropertyParser::GetItems()
 ////////////////////////////////////////////////////////////////////////////////
 void PropertyParser::ParsePropertySet( PropertySetPtr set )
 {
-    LOG_TRACE( "ParsePropertySet" );
+    PS_LOG_TRACE( "ParsePropertySet" );
     m_parseOperation = true;
 
     // Delete old items, etc. before adding new
@@ -195,12 +195,12 @@ void PropertyParser::ParsePropertySet( PropertySetPtr set )
                 mProperties.push_back( PropertyPtr(
                                         boost::dynamic_pointer_cast<Property>
                                         ( set->GetDatum( ( *iterator ) ) ) ) );
-                LOG_TRACE( "Adding property named " << (*iterator) );
+                PS_LOG_TRACE( "Adding property named " << (*iterator) );
                 ++iterator;
             }
             else
             {
-                LOG_TRACE( "Not adding property named " << (*iterator) );
+                PS_LOG_TRACE( "Not adding property named " << (*iterator) );
                 iterator = mPropertyNames.erase( iterator );
             }
         }
@@ -270,7 +270,7 @@ void PropertyParser::ParsePropertySet( PropertySetPtr set )
             }
             else if( property->IsString() )
             {
-                LOG_DEBUG( "Looping through custom string managers" );
+                PS_LOG_DEBUG( "Looping through custom string managers" );
                 bool found = false;
                 std::map< std::string, ExternalStringSelectManager* >::iterator itr =
                         m_customStringManagers.begin();
@@ -322,7 +322,7 @@ void PropertyParser::ParsePropertySet( PropertySetPtr set )
 ////////////////////////////////////////////////////////////////////////////////
 void PropertyParser::RefreshAll()
 {
-    LOG_TRACE( "RefreshAll" );
+    PS_LOG_TRACE( "RefreshAll" );
     int max = static_cast < int > ( mProperties.size() );
     for( int index = 0; index < max; index++ )
     {
@@ -333,7 +333,7 @@ void PropertyParser::RefreshAll()
 void PropertyParser::_refreshItem( int index )
 {
     // This log message is usually too verbose to be useful
-    //LOG_TRACE( "_refreshItem " << index );
+    //PS_LOG_TRACE( "_refreshItem " << index );
     if( index >= static_cast < int > ( mItems.size() ) )
     {
         // We haven't set this item up yet!
@@ -351,7 +351,7 @@ void PropertyParser::_refreshItem( int index )
     double max = 0.0;
     _extractMinMaxValues( property, &min, &max, &hasMin, &hasMax );
 
-    LOG_TRACE( "Refreshing " << property->GetAttribute("nameInSet")->extract<std::string>() );
+    PS_LOG_TRACE( "Refreshing " << property->GetAttribute("nameInSet")->extract<std::string>() );
 
     // Block signals from all Qt...Manager instances so that altering range
     // or other non-value settings of an item does not trigger a value change.
@@ -541,7 +541,7 @@ void PropertyParser::_extractMinMaxValues( PropertyPtr property,
 ////////////////////////////////////////////////////////////////////////////////
 void PropertyParser::_createHierarchy()
 {
-    LOG_TRACE( "_createHierarchy" );
+    PS_LOG_TRACE( "_createHierarchy" );
     PropertyPtr property;
     int index;
     int max = static_cast < int > ( mProperties.size() );
@@ -574,15 +574,15 @@ void PropertyParser::_createHierarchy()
                 // Got a hit; add this as sub-item
                 subItem = true;
                 QtProperty* parent = mItems[parentIndex];
-                LOG_TRACE( "parentIndex = " << parentIndex <<
+                PS_LOG_TRACE( "parentIndex = " << parentIndex <<
                            " Looked for parent " << parentName.toStdString() );
-                LOG_TRACE( " and picked up property with label "
+                PS_LOG_TRACE( " and picked up property with label "
                            << parent->propertyName().toStdString() );
                 parent->addSubProperty( item );
             }
             else
             {
-                LOG_ERROR ( "Error finding parent property named "
+                PS_LOG_ERROR ( "Error finding parent property named "
                               << parentName.toStdString() << " for property "
                               << propertyName );
             }
@@ -606,7 +606,7 @@ void PropertyParser::BoolValueChanged( QtProperty* item, bool value )
         return;
     }
 
-    LOG_TRACE( "BoolValueChanged" );
+    PS_LOG_TRACE( "BoolValueChanged" );
     _setPropertyValue( item, value );
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -617,7 +617,7 @@ void PropertyParser::IntValueChanged( QtProperty* item, int value )
         return;
     }
 
-    LOG_TRACE( "IntValueChanged" );
+    PS_LOG_TRACE( "IntValueChanged" );
     _setPropertyValue( item, value );
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -628,7 +628,7 @@ void PropertyParser::StringValueChanged( QtProperty* item, const QString & value
         return;
     }
 
-    LOG_TRACE( "StringValueChanged" );
+    PS_LOG_TRACE( "StringValueChanged" );
     std::string castValue = value.toStdString();
     _setPropertyValue( item, castValue );
 }
@@ -640,7 +640,7 @@ void PropertyParser::DoubleValueChanged( QtProperty* item, double value )
         return;
     }
 
-    LOG_TRACE( "DoubleValueChanged: " << value );
+    PS_LOG_TRACE( "DoubleValueChanged: " << value );
     int index = _getItemIndex( item );
     if( index > -1 )
     {
@@ -659,7 +659,7 @@ void PropertyParser::DoubleValueChanged( QtProperty* item, double value )
 ////////////////////////////////////////////////////////////////////////////////
 void PropertyParser::Refresh()
 {
-    LOG_TRACE( "Refresh" );
+    PS_LOG_TRACE( "Refresh" );
     // Request list of changed properties from set
     PropertySet::PSVectorOfStrings changes = mSet->GetChanges();
     PropertySet::PSVectorOfStrings::iterator iterator;
@@ -732,38 +732,38 @@ int PropertyParser::_getItemIndex( const QtProperty* item ) const
 ////////////////////////////////////////////////////////////////////////////////
 void PropertyParser::_setItemValue( QtProperty* const item, PropertyPtr property )
 {
-    //LOG_TRACE( "_setItemValue" );
+    //PS_LOG_TRACE( "_setItemValue" );
     //boost::any value = property->GetValue();
 
     if( property->IsBool() )
     {
         bool castValue = property->extract<bool>();
-        LOG_TRACE( "_setItemValue: " << castValue );
+        PS_LOG_TRACE( "_setItemValue: " << castValue );
         mBooleanManager->setValue( item, castValue );
     }
     else if( property->IsEnum() )
     {
         int castValue = property->GetAttribute( "enumCurrentIndex" )->
                 extract<int>();
-        LOG_TRACE( "_setItemValue: " << castValue );
+        PS_LOG_TRACE( "_setItemValue: " << castValue );
         mEnumManager->setValue( item, castValue );
     }
     else if( property->IsInt() )
     {
         int castValue = property->extract<int>();
-        LOG_TRACE( "_setItemValue: " << castValue );
+        PS_LOG_TRACE( "_setItemValue: " << castValue );
         mIntManager->setValue( item, castValue );
     }
     else if( property->IsFloat() )
     {
         double castValue = static_cast < double > ( property->extract<float>() );
-        LOG_TRACE( "_setItemValue: " << castValue );
+        PS_LOG_TRACE( "_setItemValue: " << castValue );
         mDoubleManager->setValue( item, castValue );
     }
     else if( property->IsDouble() )
     {
         double castValue = property->extract<double>();
-        LOG_TRACE( "_setItemValue: " << castValue );
+        PS_LOG_TRACE( "_setItemValue: " << castValue );
         mDoubleManager->setValue( item, castValue );
     }
     else if( property->IsString() )
@@ -779,7 +779,7 @@ void PropertyParser::_setItemValue( QtProperty* const item, PropertyPtr property
             if( (property->AttributeExists( str )) &&
                     property->GetAttribute( str )->extract<bool>() )
             {
-                LOG_TRACE( "_setItemValue: (" << str << ") " << castValue );
+                PS_LOG_TRACE( "_setItemValue: (" << str << ") " << castValue );
                 found = true;
                 itr->second->setValue( item, qCastValue );
             }
@@ -787,7 +787,7 @@ void PropertyParser::_setItemValue( QtProperty* const item, PropertyPtr property
         }
         if( !found )
         {
-            LOG_TRACE( "_setItemValue: " << castValue );
+            PS_LOG_TRACE( "_setItemValue: " << castValue );
             mStringManager->setValue( item, qCastValue );
         }
     }
@@ -796,7 +796,7 @@ void PropertyParser::_setItemValue( QtProperty* const item, PropertyPtr property
 void PropertyParser::_setPropertyValue( QtProperty* const item, boost::any value )
 {
     int index = _getItemIndex( item );
-    LOG_TRACE( "_setPropertyValue: index " << index << "(" << item->propertyName().toStdString() << ")"  );
+    PS_LOG_TRACE( "_setPropertyValue: index " << index << "(" << item->propertyName().toStdString() << ")"  );
 
     if( index > -1 )
     {
