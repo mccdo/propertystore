@@ -135,7 +135,7 @@ public:
         }
         catch(...)
         {
-            STATIC_LOG_CRITICAL( "propertystore",
+            PS_STATIC_LOG_CRITICAL( "propertystore",
                                  "Failed boost::any_cast in MakeLive during attempt to call "
                                     << m_SignalName << " signal for property ");
         }
@@ -228,7 +228,7 @@ public:
         }
         catch(...)
         {
-            STATIC_LOG_CRITICAL( "propertystore",
+            PS_STATIC_LOG_CRITICAL( "propertystore",
                                  "Failed value extraction in MakeLiveLinked during attempt to call "
                                     << m_SignalName << " signal for property ");
         }

@@ -48,7 +48,7 @@ PropertySet::PropertySet()
 {
     m_logStream = LogStreamPtr( new Poco::LogStream( m_logger ) );
 
-    LOG_TRACE( "ctor" );
+    PS_LOG_TRACE( "ctor" );
 
 
     // Set NameTag to the first 4-characters of the uuid
@@ -431,13 +431,13 @@ void PropertySet::SaveLiveProperties( Poco::Timer& timer )
     boost::ignore_unused_variable_warning( timer );
     if( m_liveWriteDirty )
     {
-        LOG_INFO( "Changes detected in live property in propertyset " << m_UUIDString <<
+        PS_LOG_INFO( "Changes detected in live property in propertyset " << m_UUIDString <<
                 ": auto-saving." );
         SaveNoOverride();
     }
     else
     {
-        LOG_TRACE( "No live data changes detected in propertyset " << mUUIDString );
+        PS_LOG_TRACE( "No live data changes detected in propertyset " << mUUIDString );
     }
 }
 ////////////////////////////////////////////////////////////////////////////////
