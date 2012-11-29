@@ -451,16 +451,22 @@ void PropertySet::SaveNoOverride()
 ////////////////////////////////////////////////////////////////////////////////
 void PropertySet::EmitValueChangedSignals() const
 {
-    DataMap::const_iterator itr = m_dataMap.begin();
-    while( itr != m_dataMap.end() )
+    std::vector< std::string >::const_iterator itr = m_dataList.begin();
+    DataMap::const_iterator mapItr;
+
+    // Emit these signals in order of property addition
+    while( itr != m_dataList.end() )
     {
-        //Property* property = reinterpret_cast<Property*>( itr->second.get() );
-        PropertyPtr property( itr->second, boost::detail::polymorphic_cast_tag() );
-        property->EmitValueChangedSignal();
+        mapItr = m_dataMap.find( *itr );
+        if( mapItr != m_dataMap.end() )
+        {
+            PropertyPtr property( mapItr->second,
+                              boost::detail::polymorphic_cast_tag() );
+            property->EmitValueChangedSignal();
+        }
         ++itr;
     }
 }
-
 ////////////////////////////////////////////////////////////////////////////////
 }
 
