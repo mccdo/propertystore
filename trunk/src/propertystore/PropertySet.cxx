@@ -262,6 +262,7 @@ bool PropertySet::Load()
         return false;
     }
     m_dataManager->Load( *this );
+    m_writeDirty = false;
     return true;
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -296,6 +297,9 @@ bool PropertySet::Save()
         return false;
     }
     m_dataManager->Save( *this );
+
+    m_writeDirty = false;
+
     return true;
 }
 ////////////////////////////////////////////////////////////////////////////////

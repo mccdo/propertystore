@@ -203,6 +203,10 @@ public:
     /// Deletes the current PropertySet from the DEFAULT_ROLE store
     virtual bool Remove();
 
+    /// Returns true if the data in the set has changed since the last save
+    /// operation.
+    bool IsDirty(){ return m_writeDirty; }
+
 protected:
 
     /// Slot that should be connected to any state-change signal emitted by any
