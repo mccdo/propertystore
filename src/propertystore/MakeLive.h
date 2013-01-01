@@ -25,6 +25,7 @@
 #include <propertystore/Logging.h>
 
 #include <switchwire/EventManager.h>
+#include <switchwire/Event.h>
 
 #include <string>
 #include <iostream>
