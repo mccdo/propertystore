@@ -1,0 +1,1 @@
+Propertystore enables applications to easily store object properties and other information in a database and to display that information to the user via an included Qt widget. Propertystore is a cross-platform C++ library which has been built and tested on Windows, GNU/Linux, and Mac OSX.
