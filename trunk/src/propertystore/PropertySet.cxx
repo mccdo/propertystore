@@ -36,7 +36,7 @@
 
 namespace propertystore
 {
-
+////////////////////////////////////////////////////////////////////////////////
 PropertySet::PropertySet()
     :
     crunchstore::Persistable(),
