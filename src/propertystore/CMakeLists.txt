@@ -1,6 +1,6 @@
 #Lets us address our internal includes as <propertystore/foo.h>
 include_directories(
-        ${CMAKE_SOURCE_DIR}/src
+        ${PROJECT_SOURCE_DIR}/src
         ${QTPBDIR}
         ${CMAKE_BINARY_DIR}/src/propertystore/__/qtpropertybrowser-2.5_1-opensource/src
     )
@@ -11,7 +11,7 @@ if(WIN32)
     ADD_DEFINITIONS(-DQT_QTPROPERTYBROWSER_EXPORT)
 endif(WIN32)
 
-SET( QTPBDIR ${CMAKE_SOURCE_DIR}/src/qtpropertybrowser-2.5_1-opensource/src )
+SET( QTPBDIR ${PROJECT_SOURCE_DIR}/src/qtpropertybrowser-2.5_1-opensource/src )
 
 FILE( GLOB srcs "*.cxx" )
 FILE( GLOB qsrcs "${QTPBDIR}/*.cpp" )
@@ -80,7 +80,7 @@ set(VES_PUBLIC_HEADERS ${hdrs} )
 
 set(VES_TARGET_NAME propertystore)
 set(VES_TARGET_VERSION ${propertystore_VERSION})
-set(VES_TARGET_EXPORT ${CMAKE_PROJECT_NAME}-targets)
+set(VES_TARGET_EXPORT ${PROJECT_NAME}-targets)
 set(VES_TARGET_CATEGORY Lib)
 
 ADD_LIBRARY(${VES_TARGET_NAME} SHARED ${TARGET_SRC} ${VES_PUBLIC_HEADERS} ${MOCCED} ${RCCED})
