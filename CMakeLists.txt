@@ -11,20 +11,27 @@ set(propertystore_VERSION ${propertystore_MAJOR_VERSION}.${propertystore_MINOR_V
 set(VES_PACKAGE_VERSION ${propertystore_VERSION})
 
 #Set the include directory so that propertystore can be used as a sub project
-set(propertystore_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/src" PARENT_SCOPE)
-set(propertystore_LIBRARIES "propertystore" PARENT_SCOPE)
+if( NOT(${CMAKE_PROJECT_NAME} STREQUAL ${PROJECT_NAME}) )
+    set(propertystore_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/src" PARENT_SCOPE)
+    set(propertystore_LIBRARIES "propertystore" PARENT_SCOPE)
+endif()
 
 #option(BUILD_EXAMPLES "Build examples?" ON)
 
-find_package( crunchstore 0.2.0 REQUIRED )
+find_package( crunchstore 0.2.0 )
 if( crunchstore_FOUND )
     include( ${crunchstore_USE_FILE} )
-endif()
+else(crunchstore_FOUND)
+    add_subdirectory( external/crunchstore )
+endif(crunchstore_FOUND)
 
-find_package( switchwire 0.2.0 REQUIRED )
+
+find_package( switchwire 0.2.0 )
 if( switchwire_FOUND )
     include( ${switchwire_USE_FILE} )
-endif()
+else(switchwire_FOUND)
+    add_subdirectory( external/switchwire )
+endif(switchwire_FOUND)
 
 SET(BOOST_INCLUDEDIR "$ENV{BOOST_INSTALL_DIR}/include" CACHE PATH "docstring")
 
