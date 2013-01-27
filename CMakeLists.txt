@@ -12,7 +12,7 @@ set(VES_PACKAGE_VERSION ${propertystore_VERSION})
 
 #Set the include directory so that propertystore can be used as a sub project
 if( NOT(${CMAKE_PROJECT_NAME} STREQUAL ${PROJECT_NAME}) )
-    set(propertystore_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/src" PARENT_SCOPE)
+    set(propertystore_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/src ${PROJECT_SOURCE_DIR}/src/qtpropertybrowser-2.5_1-opensource/src PARENT_SCOPE)
     set(propertystore_LIBRARIES "propertystore" PARENT_SCOPE)
 endif()
 
@@ -23,6 +23,9 @@ if( crunchstore_FOUND )
     include( ${crunchstore_USE_FILE} )
 else(crunchstore_FOUND)
     add_subdirectory( external/crunchstore )
+
+    set(crunchstore_INCLUDE_DIRS "${crunchstore_INCLUDE_DIRS}" PARENT_SCOPE)
+    set(crunchstore_LIBRARIES "${crunchstore_LIBRARIES}" PARENT_SCOPE)
 endif(crunchstore_FOUND)
 
 
@@ -31,6 +34,9 @@ if( switchwire_FOUND )
     include( ${switchwire_USE_FILE} )
 else(switchwire_FOUND)
     add_subdirectory( external/switchwire )
+
+    set(switchwire_INCLUDE_DIRS "${switchwire_INCLUDE_DIRS}" PARENT_SCOPE)
+    set(switchwire_LIBRARIES "${switchwire_LIBRARIES}" PARENT_SCOPE)
 endif(switchwire_FOUND)
 
 SET(BOOST_INCLUDEDIR "$ENV{BOOST_INSTALL_DIR}/include" CACHE PATH "docstring")
