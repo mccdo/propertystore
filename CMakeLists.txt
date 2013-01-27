@@ -10,6 +10,10 @@ set(propertystore_SUB_VERSION 0)
 set(propertystore_VERSION ${propertystore_MAJOR_VERSION}.${propertystore_MINOR_VERSION}.${propertystore_SUB_VERSION})
 set(VES_PACKAGE_VERSION ${propertystore_VERSION})
 
+#Set the include directory so that propertystore can be used as a sub project
+set(propertystore_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/src" PARENT_SCOPE)
+set(propertystore_LIBRARIES "propertystore" PARENT_SCOPE)
+
 #option(BUILD_EXAMPLES "Build examples?" ON)
 
 find_package( crunchstore 0.2.0 REQUIRED )
