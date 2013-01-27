@@ -2,7 +2,7 @@
 include_directories(
         ${PROJECT_SOURCE_DIR}/src
         ${QTPBDIR}
-        ${CMAKE_BINARY_DIR}/src/propertystore/__/qtpropertybrowser-2.5_1-opensource/src
+        ${CMAKE_BINARY_DIR}/src
     )
 
 ADD_DEFINITIONS(-DPROPERTYSTORE_LIBRARY)
@@ -46,7 +46,7 @@ SET( HDRS_TO_MOC_NO_COMPILE
 
 )
 FOREACH( _itr ${HDRS_TO_MOC_NO_COMPILE} )
-    SET( _path ${CMAKE_BINARY_DIR}/src/propertystore/__/qtpropertybrowser-2.5_1-opensource/src )
+    SET( _path ${CMAKE_BINARY_DIR}/src )
     GET_FILENAME_COMPONENT( _fname ${_itr} NAME_WE)
     SET( _outFile moc_${_fname}.cxx )
     QT4_CREATE_MOC_COMMAND( ${_itr} ${_path}/${_outFile} "" "" )
@@ -64,8 +64,8 @@ SET( SRCS_TO_MOC
     )
 FOREACH( _itr ${SRCS_TO_MOC} )
     GET_FILENAME_COMPONENT( _fname ${_itr} NAME_WE)
-    QT4_CREATE_MOC_COMMAND( ${_itr} "${CMAKE_BINARY_DIR}/src/propertystore/__/qtpropertybrowser-2.5_1-opensource/src/${_fname}.moc" "" "" )
-    MACRO_ADD_FILE_DEPENDENCIES( ${_itr} ${CMAKE_BINARY_DIR}/src/propertystore/__/qtpropertybrowser-2.5_1-opensource/src/${_fname}.moc )
+    QT4_CREATE_MOC_COMMAND( ${_itr} "${CMAKE_BINARY_DIR}/src/${_fname}.moc" "" "" )
+    MACRO_ADD_FILE_DEPENDENCIES( ${_itr} ${CMAKE_BINARY_DIR}/src/${_fname}.moc )
 ENDFOREACH( _itr ${SRCS_TO_MOC} )
 ### End special stuff for sources with moc info
 

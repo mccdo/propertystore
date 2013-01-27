@@ -52,7 +52,7 @@ INCLUDE_DIRECTORIES(
     ${POCO_INCLUDE_DIR}
     ${switchwire_INCLUDE_DIRS}
     ${crunchstore_INCLUDE_DIRS}
-    ${PROJECT_SOURCE_DIR}/qtpropertybrowser-2.5_1-opensource/src
+    ${PROJECT_SOURCE_DIR}/src/qtpropertybrowser-2.5_1-opensource/src
 )
 
 # Alias for the qtpropertybrowser path
