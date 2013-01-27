@@ -1,6 +1,6 @@
 #Lets us address our internal includes as <propertystore/foo.h>
 include_directories(
-        ${CMAKE_SOURCE_DIR}/src
+        ${PROJECT_SOURCE_DIR}/src
         ${QTPBDIR}
     )
 
