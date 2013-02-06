@@ -31,9 +31,14 @@ SET( HDRS_TO_MOC
         GenericPropertyBrowser.h
         GroupPropertyBrowser.h
         PropertyParser.h
-        ${QTPBDIR}/qtpropertybrowserutils_p.h
     )
-QT4_WRAP_CPP( MOCCED ${HDRS_TO_MOC} )
+QT4_WRAP_CPP( MOCCED ${HDRS_TO_MOC} OPTIONS -p propertystore )
+
+SET( HDRS_TO_MOC
+       ${QTPBDIR}/qtpropertybrowserutils_p.h
+    )
+QT4_WRAP_CPP( MOCCED2 ${HDRS_TO_MOC} OPTIONS -p ./ )
+LIST(APPEND MOCCED ${MOCCED2})
 
 SET( HDRS_TO_MOC_NO_COMPILE
         ${QTPBDIR}/qtbuttonpropertybrowser.h
