@@ -2,9 +2,15 @@
 # Create and install all of the auto find tools
 # =============================================
 
-# Add all targets to the build-tree export set
-export(TARGETS ${VES_EXPORT_LIBRARY_TARGETS} APPEND
-  FILE "${PROJECT_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}/${PROJECT_NAME}LibraryDepends.cmake")
+if(${PROJECT_NAME} STREQUAL ${CMAKE_PROJECT_NAME})
+    # Add all targets to the build-tree export set
+    export(TARGETS ${VES_EXPORT_LIBRARY_TARGETS}
+        FILE "${PROJECT_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}/${PROJECT_NAME}LibraryDepends.cmake")
+else()
+    # Add all targets to the build-tree export set
+    export(TARGETS ${VES_EXPORT_LIBRARY_TARGETS} APPEND
+        FILE "${PROJECT_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}/${PROJECT_NAME}LibraryDepends.cmake")
+endif()
 
 # Export the package for use from the build-tree
 # (this registers the build-tree with a global CMake-registry)
