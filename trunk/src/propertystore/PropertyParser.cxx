@@ -582,7 +582,7 @@ void PropertyParser::_createHierarchy()
             }
             else
             {
-                PS_LOG_ERROR ( "Error finding parent property named "
+                PS_LOG_DEBUG ( "No (visible) parent property named "
                               << parentName.toStdString() << " for property "
                               << propertyName );
             }
