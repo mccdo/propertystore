@@ -344,39 +344,39 @@ void PropertySet::ChangeAccumulator( PropertyPtr property )
         iterator++;
     }
 
+    // If liveWriteDirty flag isn't already set, check whether this is a
+    // live property. If so, set the  m_liveWriteDirty flag
+    if( !m_liveWriteDirty )
+    {
+        std::vector< MakeLiveBasePtr >::const_iterator mlb =
+                m_liveObjects.begin();
+        while( mlb != m_liveObjects.end() )
+        {
+            std::vector<std::string> liveNames = (*mlb)->GetNames();
+            std::vector<std::string>::const_iterator name =
+                    liveNames.begin();
+            while( name != liveNames.end() )
+            {
+                if( *name == nameInSet )
+                {
+                    m_liveWriteDirty = true;
+                    break;
+                }
+                ++name;
+            }
+            if( m_liveWriteDirty )
+            {
+                break;
+            }
+            ++mlb;
+        }
+    }
+
     // Add the property's name to our list if it isn't already there, but also
     // restrict the size of the vector to 1000 elements.
     if( ( !found ) && ( m_accumulatedChanges.size() < 1000 ) )
     {
         m_accumulatedChanges.push_back( nameInSet );
-
-        // If liveWriteDirty flag isn't already set, check whether this is a
-        // live property. If so, set the  m_liveWriteDirty flag
-        if( !m_liveWriteDirty )
-        {
-            std::vector< MakeLiveBasePtr >::const_iterator mlb =
-                    m_liveObjects.begin();
-            while( mlb != m_liveObjects.end() )
-            {
-                std::vector<std::string> liveNames = (*mlb)->GetNames();
-                std::vector<std::string>::const_iterator name =
-                        liveNames.begin();
-                while( name != liveNames.end() )
-                {
-                    if( *name == nameInSet )
-                    {
-                        m_liveWriteDirty = true;
-                        break;
-                    }
-                    ++name;
-                }
-                if( m_liveWriteDirty )
-                {
-                    break;
-                }
-                ++mlb;
-            }
-        }
     }
 }
 ////////////////////////////////////////////////////////////////////////////////
