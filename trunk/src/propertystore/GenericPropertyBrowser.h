@@ -81,6 +81,8 @@ private:
     QtSliderFactory* mSliderFactory;
     ExternalStringSelectFactory* mFileEditFactory;
     ExternalStringSelectFactory* mColorEditFactory;
+    /// Stores whether browser is readonly
+    bool m_readOnly;
 };
 
 } // namespace
