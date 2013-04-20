@@ -303,6 +303,19 @@ bool PropertySet::Save()
     return true;
 }
 ////////////////////////////////////////////////////////////////////////////////
+bool PropertySet::Save( crunchstore::TransactionKey& transactionKey )
+{
+    if( !m_dataManager )
+    {
+        return false;
+    }
+    m_dataManager->Save( *this, crunchstore::Store::DEFAULT_ROLE, transactionKey );
+
+    m_writeDirty = false;
+
+    return true;
+}
+////////////////////////////////////////////////////////////////////////////////
 void PropertySet::_connectChanges( PropertyPtr property )
 {
     property->SignalAttributeChanged.connect( boost::bind( &PropertySet::
