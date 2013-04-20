@@ -29,6 +29,7 @@
 
 #include <crunchstore/Persistable.h>
 #include <crunchstore/DataManagerPtr.h>
+#include <crunchstore/TransactionKey.h>
 
 #include <propertystore/Exports.h>
 #include <propertystore/MakeLivePtr.h>
@@ -195,6 +196,8 @@ public:
 
     /// Saves this PropertySet to the DEFAULT_ROLE store
     virtual bool Save();
+
+    virtual bool Save( crunchstore::TransactionKey& transactionKey );
 
     /// Strictly writes out PropertySet to store; prevents derived-class overrides
     /// from performing other operations in the process.
