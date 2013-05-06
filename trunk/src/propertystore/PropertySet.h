@@ -197,7 +197,7 @@ public:
     /// Saves this PropertySet to the DEFAULT_ROLE store
     virtual bool Save();
 
-    virtual bool Save( crunchstore::TransactionKey& transactionKey );
+    virtual bool Save( const crunchstore::TransactionKey& transactionKey );
 
     /// Strictly writes out PropertySet to store; prevents derived-class overrides
     /// from performing other operations in the process.

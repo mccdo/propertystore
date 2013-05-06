@@ -303,7 +303,7 @@ bool PropertySet::Save()
     return true;
 }
 ////////////////////////////////////////////////////////////////////////////////
-bool PropertySet::Save( crunchstore::TransactionKey& transactionKey )
+bool PropertySet::Save( const crunchstore::TransactionKey &transactionKey )
 {
     if( !m_dataManager )
     {
