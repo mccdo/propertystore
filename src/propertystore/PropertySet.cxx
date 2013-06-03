@@ -58,10 +58,27 @@ PropertySet::PropertySet()
 PropertySet::PropertySet( const PropertySet& orig )
     :
     crunchstore::Persistable( orig ),
+    m_dataManager( orig.m_dataManager ),
+    m_timer( 0 ),
+    m_writeDirty( false ),
+    m_liveWriteDirty( false ),
     m_logger( orig.m_logger ),
     m_logStream( orig.m_logStream )
 {
-    boost::ignore_unused_variable_warning( orig );
+    // The copy of crunchstore::Persistable in the initializer list puts
+    // instances of Datum into m_dataMap. We need to get rid of those and
+    // replace them with instances of the derived class Property so property
+    // attributes get copied correctly.
+    m_dataMap.clear();
+
+    DataMap::const_iterator it = orig.m_dataMap.begin();
+    while( it != orig.m_dataMap.end() )
+    {
+        PropertyPtr property( new Property( *(boost::static_pointer_cast<Property>(it->second)) ));
+        m_dataMap[ it->first ] = property;
+        _connectChanges( property );
+        ++it;
+    }
 }
 ////////////////////////////////////////////////////////////////////////////////
 PropertySet::~PropertySet()
@@ -443,9 +460,8 @@ void PropertySet::EnableLiveProperties( bool live )
     }
 }
 ////////////////////////////////////////////////////////////////////////////////
-void PropertySet::SaveLiveProperties( Poco::Timer& timer )
+void PropertySet::SaveLiveProperties( Poco::Timer&  )
 {
-    boost::ignore_unused_variable_warning( timer );
     if( m_liveWriteDirty )
     {
         PS_LOG_INFO( "Changes detected in live property in propertyset " << m_UUIDString <<

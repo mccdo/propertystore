@@ -32,7 +32,7 @@
 #include <iostream>
 #include <cmath>
 
-bool evenValidator( propertystore::PropertyPtr property, boost::any value )
+bool evenValidator( propertystore::PropertyPtr, boost::any value )
 {
     // Only allow even numbers
     int castValue = boost::any_cast<int>(value);
@@ -61,7 +61,6 @@ int main(int argc, char *argv[])
     propertySet->SetTypeName( "MyTest" );
 
     propertySet->AddProperty( "ABoolean", true, "A Boolean Value" );
-
     propertySet->AddProperty( "ABoolean_Sub1", false, "Subvalue 1" );
     propertySet->AddProperty( "ABoolean_Sub2", 99, "Subvalue 2" );
     propertySet->AddProperty( "ABoolean_Sub3", 1.0134, "Subvalue 3" );
@@ -93,6 +92,15 @@ int main(int argc, char *argv[])
     //     SignalRequestValidation.connect(
     //     boost::bind( &MyClassName::MyMemberMethodName, this, _1, _2 ) );
 
+    // Test the copy constructor. Notice we have to de-reference the propertySet
+    // pointer to invoke the copy constructor.
+    propertystore::PropertySetPtr copiedSet( new propertystore::PropertySet( *(propertySet) ) );
+    std::cout << "Copy constructor test:" << std::endl;
+    std::cout << "            UUID                                  AnInteger    min" << std::endl;
+    std::cout << "  Original: " << propertySet->GetUUIDAsString() << "    " << propertySet->GetDatumValue< int >( "AnInteger" )
+              << "         " << propertySet->GetPropertyAttributeValue< int >( "AnInteger", "minimumValue" ) << std::endl;
+    std::cout << "  Copy    : " << copiedSet->GetUUIDAsString() << "    " << copiedSet->GetDatumValue< int >( "AnInteger" )
+              << "         " << copiedSet->GetPropertyAttributeValue< int >( "AnInteger", "minimumValue" ) << std::endl << std::endl;
 
     // Set up an SQLiteStore and save propertySet out to it.
     crunchstore::DataManagerPtr manager( new crunchstore::DataManager );
@@ -118,11 +126,6 @@ int main(int argc, char *argv[])
     std::cout << "If LoadByKey worked, this value will be 44: " << std::flush;
     std::cout << propertySet->GetDatumValue< int >( "AnInteger" )
               << std::endl;
-
-    std::cout << "CADTest" << std::endl << std::flush;
-     propertystore::PropertySetPtr ts( new TestSet );
-     ts->SetDataManager( manager );
-     ts->Save();
 
     // Create, set up, and show a GenericPropertyBrowser which can display
     // the PropertySet
