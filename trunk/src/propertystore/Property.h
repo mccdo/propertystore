@@ -126,6 +126,12 @@ public:
     /// listener to these signals until after creation is complete.
     Property( boost::any value, bool enabled = true );
 
+    /// Copy Constructor. NB: While the copy will retain the data and all
+    /// attributes of the original, it WILL NOT RETAIN SIGNAL CONNECTIONS of
+    /// the original. User code is wholly responsible for making any necessary
+    /// signal connections.
+    Property( const Property& orig );
+
     ///
     /// Destructor
     virtual ~Property();

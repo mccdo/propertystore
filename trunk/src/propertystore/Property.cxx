@@ -35,6 +35,22 @@ Property::Property( boost::any value, bool enabled )
     ;
 }
 ////////////////////////////////////////////////////////////////////////////////
+Property::Property(const Property &orig)
+    :
+      boost::signals2::trackable( orig ),
+      crunchstore::Datum( orig ),
+      boost::enable_shared_from_this< Property >( orig ),
+      mEnabled( orig.mEnabled ),
+      mAttributes( orig.mAttributes ),
+      mHasMinimum( orig.mHasMinimum ),
+      mHasMaximum( orig.mHasMaximum ),
+      mMinimum( orig.mMinimum ),
+      mMaximum( orig.mMaximum ),
+      mIsEnum( orig.mIsEnum )
+{
+    ;
+}
+////////////////////////////////////////////////////////////////////////////////
 Property::~Property()
 {
     ;
@@ -392,7 +408,7 @@ void Property::_doExtraEnumSetValueProcessing( boost::any value )
         int castValue = boost::any_cast< int > ( value );
         PSVectorOfStrings castEnumValues =
                 GetAttribute( "enumValues" )->extract< PSVectorOfStrings >();
-        if( castValue < ( castEnumValues.size() ) )
+        if( castValue < (static_cast<int>( castEnumValues.size() )) )
         {
             m_value = castEnumValues.at( castValue );
             index = castValue;

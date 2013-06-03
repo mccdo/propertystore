@@ -70,7 +70,15 @@ public:
     PropertySet();
 
 
-    /// Copy constructor
+    /// Copy constructor. NB: This copies the UUID, properties, and the
+    /// datamanager (if any) set via SetDataManager, but DOES NOT COPY THE
+    /// DIRTY STATE OR LIVE STATE of the PropertySet, and DOES NOT COPY ANY
+    /// SIGNALS REGISTERED FROM THIS SET.
+    ///
+    /// If the original had writes pending, the copy will know nothing about it.
+    /// The copy will by default have live properties turned off since no live
+    /// signals are copied (and we don't have access to their names, so there's
+    /// no way to duplicate them).
     PropertySet( const PropertySet& orig );
 
 
