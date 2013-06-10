@@ -155,11 +155,7 @@ const PropertySet::PSVectorOfStrings&
     if( iterator != m_dataMap.end() )
     {
         //Property* property = reinterpret_cast<Property*>( iterator->second.get() );
-#if BOOST_VERSION > 105000
         PropertyPtr property = boost::static_pointer_cast<Property>( iterator->second );
-#else
-        PropertyPtr property( iterator->second, boost::detail::static_cast_tag() );
-#endif
         return property->GetAttributeList();
     }
     else
@@ -176,11 +172,7 @@ crunchstore::DatumPtr PropertySet::GetPropertyAttribute( std::string const& prop
     if( iterator != m_dataMap.end() )
     {
         //Property* property = reinterpret_cast<Property*>( iterator->second.get() );
-#if BOOST_VERSION > 105000
         PropertyPtr property = boost::static_pointer_cast<Property>( iterator->second );
-#else
-        PropertyPtr property( iterator->second, boost::detail::static_cast_tag() );
-#endif
         return property->GetAttribute( attributeName );
     }
     else
@@ -199,11 +191,7 @@ bool PropertySet::GetPropertyEnabled( std::string const& propertyName ) const
     if( iterator != m_dataMap.end() )
     {
         //Property* property = reinterpret_cast<Property*>( iterator->second.get() );
-#if BOOST_VERSION > 105000
         PropertyPtr property = boost::static_pointer_cast<Property>( iterator->second );
-#else
-        PropertyPtr property( iterator->second, boost::detail::static_cast_tag() );
-#endif
         return property->GetEnabled();
     }
     else
@@ -220,11 +208,7 @@ void PropertySet::SetPropertyAttribute( std::string const& propertyName,
     if( iterator != m_dataMap.end() )
     {
         //Property* property = reinterpret_cast<Property*>( iterator->second.get() );
-#if BOOST_VERSION > 105000
         PropertyPtr property = boost::static_pointer_cast<Property>( iterator->second );
-#else
-        PropertyPtr property( iterator->second, boost::detail::static_cast_tag() );
-#endif
         property->SetAttribute( attributeName, value );
     }
 }
@@ -236,11 +220,7 @@ bool PropertySet::HasPropertyAttribute( std::string const& propertyName,
     if( iterator != m_dataMap.end() )
     {
         //Property* property = reinterpret_cast<Property*>( iterator->second.get() );
-#if BOOST_VERSION > 105000
         PropertyPtr property = boost::static_pointer_cast<Property>( iterator->second );
-#else
-        PropertyPtr property( iterator->second, boost::detail::static_cast_tag() );
-#endif
         return property->AttributeExists( attributeName );
     }
     return false;
@@ -254,11 +234,7 @@ void PropertySet::SetPropertyEnabled( std::string const& propertyName,
     if( iterator != m_dataMap.end() )
     {
         //Property* property = reinterpret_cast<Property*>( iterator->second.get() );
-#if BOOST_VERSION > 105000
         PropertyPtr property = boost::static_pointer_cast<Property>( iterator->second );
-#else
-        PropertyPtr property( iterator->second, boost::detail::static_cast_tag() );
-#endif
         if( enabled )
         {
             property->SetEnabled();
@@ -520,12 +496,7 @@ void PropertySet::EmitValueChangedSignals() const
         mapItr = m_dataMap.find( *itr );
         if( mapItr != m_dataMap.end() )
         {
-#if BOOST_VERSION > 105000
             PropertyPtr property = boost::reinterpret_pointer_cast<Property>( mapItr->second );
-#else
-            PropertyPtr property( mapItr->second,
-                              boost::detail::polymorphic_cast_tag() );
-#endif
             property->EmitValueChangedSignal();
         }
         ++itr;
