@@ -5,6 +5,8 @@ include_directories(
         ${CMAKE_BINARY_DIR}/src
     )
 
+
+
 ADD_DEFINITIONS(-DPROPERTYSTORE_LIBRARY)
 
 if(WIN32)
