@@ -32,7 +32,8 @@ namespace propertystore
 GenericPropertyBrowser::GenericPropertyBrowser(QWidget* parent) :
     QtTreePropertyBrowser(parent),
     mParser( 0 ),
-    m_readOnly( false )
+    m_readOnly( false ),
+    m_displayUnitSystem( US_Units )
 {
     // Create the default editor types we want to use
     mDoubleSpinBoxFactory = new QtDoubleSpinBoxFactory(this);
@@ -63,6 +64,7 @@ void GenericPropertyBrowser::ParsePropertySet( PropertySetPtr set, bool autosize
         SetPropertyParser( new PropertyParser, readOnly );
     }
 
+    mParser->SetDisplayUnitSystem( m_displayUnitSystem );
     mParser->ParsePropertySet( set );
     RefreshAllValues();
     RefreshContents( autosize );
@@ -146,6 +148,11 @@ void GenericPropertyBrowser::RefreshAllValues()
     {
         mParser->RefreshAll();
     }
+}
+
+void propertystore::GenericPropertyBrowser::SetDisplayUnitSystem( DisplayUnitSystem system )
+{
+    m_displayUnitSystem = system;
 }
 
 }

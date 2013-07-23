@@ -32,6 +32,7 @@
 #include <propertystore/ColorEditRGBA.h>
 #include <propertystore/PropertySet.h>
 #include <propertystore/Property.h>
+#include <propertystore/UnitConverter.h>
 #include <propertystore/Logging.h>
 
 #include <vector>
@@ -129,6 +130,8 @@ public:
     **/
     void AddCustomExternalStringManager( ExternalStringSelectManager* manager, const std::string& attributeFlag );
 
+    void SetDisplayUnitSystem( DisplayUnitSystem system );
+
 Q_SIGNALS:
     /// Emitted when the PropertySet has been changed.
     void Modified();
@@ -201,6 +204,9 @@ private:
     /// Helper function to refresh the UI value of a specific Property/QtProperty
     void _refreshItem( int index );
 
+    /// Handle unit conversions on the display side
+    double _getUnitConvertedValue( PropertyPtr property, bool inverse = false, double value = 0.0 );
+
     /** When this is true, changes to values in the browser are not pushed down
       * to the underlying PropertySet.
       *
@@ -218,6 +224,10 @@ private:
     /// Keeps track of whether we're actively parsing a PropertySet. The
     /// Modified signal, for instance, is disabled during parsing.
     bool m_parseOperation;
+
+    UnitConverter m_unitConverter;
+
+    std::string m_displayUnitSystem;
 
     ///Logger reference
     Poco::Logger& m_logger;

@@ -17,6 +17,7 @@
  * Boston, MA 02111-1307, USA.
  *
  *************** <auto-copyright.rb END do not edit this line> ***************/
+#define PROPERTYSTORE_DEBUG
 #include <propertystore/PropertyParser.h>
 
 #include <iostream>
@@ -29,6 +30,7 @@ PropertyParser::PropertyParser( QObject* parent ) :
     QObject( parent ),
     m_ignoreValueChanges( false ),
     m_parseOperation( false ),
+    m_displayUnitSystem( "USDisplayUnit" ),
     m_logger( Poco::Logger::get("PropertyParser") ),
     m_logStream( LogStreamPtr( new Poco::LogStream( m_logger ) ) )
 {
@@ -216,8 +218,32 @@ void PropertyParser::ParsePropertySet( PropertySetPtr set )
         property = ( *iterator );
         QtProperty* item = NULL;
 
+
         std::string propertyLabel = ( property->GetAttribute( "uiLabel" )
                                       ->extract<std::string>() );
+
+        //Check if the property has a USDisplayLabel or SIDisplayLabel
+        //set on it. If so, use the appropriate label instead of the uiLabel.
+        //Only double values might have these.
+        if( property->IsDouble() )
+        {
+            if( "US" == m_displayUnitSystem )
+            {
+                if( property->AttributeExists( "USDisplayLabel" ) )
+                {
+                    propertyLabel = property->
+                       GetAttribute( "USDisplayLabel" )->extract<std::string>();
+                }
+            }
+            else if( "SI" == m_displayUnitSystem )
+            {
+                if( property->AttributeExists( "SIDisplayLabel" ) )
+                {
+                    propertyLabel = property->
+                       GetAttribute( "SIDisplayLabel" )->extract<std::string>();
+                }
+            }
+        }
 
         // Convert label to type needed by Qt functions
         QString label = QString::fromStdString( propertyLabel );
@@ -645,14 +671,43 @@ void PropertyParser::DoubleValueChanged( QtProperty* item, double value )
     if( index > -1 )
     {
         PropertyPtr property = mProperties[index];
-        // Must cast to float if the underlying type is really a float
-        if( property->IsFloat() )
+
+        // If there are no units, or if DisplayUnits and StorageUnits are the
+        // same, set the value and skip the rest of the unit conversion logic
+        if( property->AttributeExists("StorageUnitSystem") )
         {
-            _setPropertyValue( item, static_cast < float > ( value ) );
+            if( property->GetAttribute( "StorageUnitSystem" )
+                    ->extract<std::string>() == m_displayUnitSystem )
+            {
+                _setPropertyValue( item, value );
+                return;
+            }
         }
         else
         {
             _setPropertyValue( item, value );
+            return;
+        }
+
+        // If this property has a unit conversion set on it, we need to convert
+        // from display units back into storage units.
+        // Must cast to float if the underlying type is really a float
+        double unitHashTest = _getUnitConvertedValue( property );
+        if( unitHashTest == value )
+        {
+            // The value we've just been handed is simply the stored
+            // value converted to new units. We don't want to change the stored
+            // value in this case!
+            return;
+        }
+        double cVal = _getUnitConvertedValue( property, true, value );
+        if( property->IsFloat() )
+        {
+            _setPropertyValue( item, static_cast < float > ( cVal ) );
+        }
+        else
+        {
+            _setPropertyValue( item, cVal );
         }
     }
 }
@@ -762,7 +817,7 @@ void PropertyParser::_setItemValue( QtProperty* const item, PropertyPtr property
     }
     else if( property->IsDouble() )
     {
-        double castValue = property->extract<double>();
+        double castValue = _getUnitConvertedValue( property );
         PS_LOG_TRACE( "_setItemValue: " << castValue );
         mDoubleManager->setValue( item, castValue );
     }
@@ -793,6 +848,64 @@ void PropertyParser::_setItemValue( QtProperty* const item, PropertyPtr property
     }
 }
 ////////////////////////////////////////////////////////////////////////////////
+double PropertyParser::_getUnitConvertedValue( PropertyPtr property, bool inverse, double value )
+{
+    PS_LOG_TRACE( "_getUnitConvertedValue" );
+    double storedValue = property->extract< double >();
+    // If no units attached, short-circuit the conversion attempt
+    if( !property->AttributeExists( "StorageUnitSystem" ) )
+    {
+        return storedValue;
+    }
+
+
+    std::string storageUnitSystem = property->GetAttribute( "StorageUnitSystem" )->extract<std::string>();
+    if( m_displayUnitSystem == storageUnitSystem )
+    {
+        return storedValue;
+    }
+
+    // Pull the storage units
+    std::string storageUnit;
+    if( property->AttributeExists( storageUnitSystem + "DisplayUnit" ) )
+    {
+        storageUnit = property->GetAttribute( storageUnitSystem + "DisplayUnit" )->extract<std::string>();
+    }
+    else
+    {
+        return storedValue;
+    }
+
+    // Pull the storage units
+    std::string displayUnit( storageUnit );
+    if( property->AttributeExists( m_displayUnitSystem + "DisplayUnit" ) )
+    {
+        displayUnit = property->GetAttribute( m_displayUnitSystem + "DisplayUnit" )->extract<std::string>();
+    }
+
+    // Convert the value to the display units or storage units based on inverse
+    // parameter
+    try
+    {
+        if( !inverse )
+        {
+            storedValue = m_unitConverter.Convert( storedValue, storageUnit, displayUnit );
+        }
+        else
+        {
+            storedValue = m_unitConverter.Convert( value, displayUnit, storageUnit );
+        }
+    }
+    catch( std::runtime_error& ex )
+    {
+        // Just rethrow the exception for now. Should we instead display an
+        // error dialog? Perhaps display an error icon on the item?
+        throw ex;
+    }
+
+    return storedValue;
+}
+////////////////////////////////////////////////////////////////////////////////
 void PropertyParser::_setPropertyValue( QtProperty* const item, boost::any value )
 {
     int index = _getItemIndex( item );
@@ -815,6 +928,18 @@ void PropertyParser::_setPropertyValue( QtProperty* const item, boost::any value
             // SetValue was denied; re-read this property's value
             _refreshItem( index );
         }
+    }
+}
+////////////////////////////////////////////////////////////////////////////////
+void propertystore::PropertyParser::SetDisplayUnitSystem(DisplayUnitSystem system)
+{
+    if( SI_Units == system )
+    {
+        m_displayUnitSystem = "SI";
+    }
+    else if( US_Units == system )
+    {
+        m_displayUnitSystem = "US";
     }
 }
 ////////////////////////////////////////////////////////////////////////////////
