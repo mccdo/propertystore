@@ -17,7 +17,7 @@
  * Boston, MA 02111-1307, USA.
  *
  *************** <auto-copyright.rb END do not edit this line> ***************/
-#define PROPERTYSTORE_DEBUG
+//#define PROPERTYSTORE_DEBUG
 #include <propertystore/PropertyParser.h>
 
 #include <iostream>
