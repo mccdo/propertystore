@@ -19,6 +19,7 @@
  *************** <auto-copyright.rb END do not edit this line> ***************/
 
 #include <propertystore/Utilities.h>
+#include <propertystore/Property.h>
 
 #include <vector>
 #include <sstream>
@@ -91,6 +92,32 @@ std::string SerializePropertySet( propertystore::PropertySetPtr mySet, bool show
         ++itr;
     }
     return outputStream.str();
+}
+////////////////////////////////////////////////////////////////////////////////
+void AddUnits(propertystore::PropertySetPtr propertySet,
+               const std::string& propertyName,
+               const std::string& storageUnitSystem,
+               const std::string& SIDisplayUnit,
+               const std::string& SIDisplayLabel,
+               const std::string& USDisplayUnit,
+               const std::string& USDisplayLabel )
+{
+    AddUnits( propertySet->GetProperty( propertyName ), storageUnitSystem,
+              SIDisplayUnit, SIDisplayLabel, USDisplayUnit, USDisplayLabel );
+}
+////////////////////////////////////////////////////////////////////////////////
+void AddUnits( propertystore::PropertyPtr property,
+               const std::string& storageUnitSystem,
+               const std::string& SIDisplayUnit,
+               const std::string& SIDisplayLabel,
+               const std::string& USDisplayUnit,
+               const std::string& USDisplayLabel )
+{
+    property->SetAttribute( "StorageUnitSystem", storageUnitSystem );
+    property->SetAttribute( "SIDisplayUnit", SIDisplayUnit );
+    property->SetAttribute( "USDisplayUnit", USDisplayUnit );
+    property->SetAttribute( "SIDisplayLabel", SIDisplayLabel );
+    property->SetAttribute( "USDisplayLabel", USDisplayLabel );
 }
 ////////////////////////////////////////////////////////////////////////////////
 }
