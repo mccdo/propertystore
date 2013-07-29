@@ -83,12 +83,26 @@ double UnitConverter::Convert( double value,
 ////////////////////////////////////////////////////////////////////////////////
 void UnitConverter::SetupDefaultConversions()
 {
+    // Length
         AddConversionInversePair( "meter", "yard", 1.0936133 );
         AddConversionInversePair( "meter", "foot", 3.2808399 );
         AddConversionInversePair( "meter", "inch", 39.370079 );
-        AddConversionInversePair( "meter", "centimeter", 100.0 );
+        AddConversionInversePair( "meter", "micrometer", 1000000.0 );
         AddConversionInversePair( "meter", "millimeter", 1000.0 );
+        AddConversionInversePair( "meter", "centimeter", 100.0 );
         AddConversionInversePair( "meter", "kilometer", 1.0/1000.0 );
+
+        AddConversionInversePair( "mil", "micrometer", 25.4 );
+
+        // Volume
+        AddConversionInversePair( "gallon", "liter", 3.78541 );
+        AddConversionInversePair( "fluidounce", "milliliter", 29.5735 );
+
+        // Pressure
+        AddConversionInversePair( "psi", "megapascal", 0.00689475729 );
+        AddConversionInversePair( "psi", "kilopascal", 6.89475729 );
+
+
 
         // With some more clever parsing of the available conversions I should
         // be able to eliminate stuff like this by doing two-stage conversions.
@@ -97,6 +111,7 @@ void UnitConverter::SetupDefaultConversions()
         // that go from anything to the to_unit. Then you see if there's any overlap
         // in the two "anything" columns. If so, you have a conversion path.
         AddConversionInversePair( "centimeter", "millimeter", 10.0 );
+        AddConversionInversePair( "inch", "centimeter", 2.54 );
 }
 ////////////////////////////////////////////////////////////////////////////////
 

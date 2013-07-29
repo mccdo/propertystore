@@ -26,4 +26,19 @@ namespace propertystore
 {
 ///Dump a propertyset to a string
 PROPERTYSTORE_EXPORT std::string SerializePropertySet( propertystore::PropertySetPtr mySet, bool showHidden = false );
+
+PROPERTYSTORE_EXPORT void AddUnits( propertystore::PropertySetPtr propertySet,
+                                    const std::string& propertyName,
+                                    const std::string& storageUnitSystem,
+                                    const std::string& SIDisplayUnit,
+                                    const std::string& SIDisplayLabel,
+                                    const std::string& USDisplayUnit,
+                                    const std::string& USDisplayLabel );
+
+PROPERTYSTORE_EXPORT void AddUnits( propertystore::PropertyPtr property,
+                                    const std::string& storageUnitSystem,
+                                    const std::string& SIDisplayUnit,
+                                    const std::string& SIDisplayLabel,
+                                    const std::string& USDisplayUnit,
+                                    const std::string& USDisplayLabel );
 }
