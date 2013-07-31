@@ -25,7 +25,7 @@ LiveGUI::LiveGUI(QWidget *parent) :
 
     // Add an SQLite store
     sqstore = crunchstore::SQLiteStorePtr( new crunchstore::SQLiteStore );
-    sqstore->SetStorePath( "/tmp/LiveTest.db" );
+    sqstore->SetStorePath( "./LiveTest.db" );
     manager->AttachStore( sqstore, crunchstore::Store::WORKINGSTORE_ROLE );
 
     // Get rid of the table containing the test data so we start fresh
