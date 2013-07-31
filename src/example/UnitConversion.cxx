@@ -23,6 +23,7 @@
 #include <propertystore/PropertySet.h>
 #include <propertystore/UnitConverter.h>
 #include <propertystore/MakeLive.h>
+#include <propertystore/Utilities.h>
 
 #include <switchwire/EventManager.h>
 #include <switchwire/OptionalMacros.h>
@@ -35,7 +36,7 @@
 
 #include <iostream>
 
-void printValue( const std::string& uuid, double value )
+void printValue( const std::string&, double value )
 {
     std::cout << "Signal rec'd; value changed to " << value << std::endl;
 }
@@ -62,12 +63,19 @@ int main(int argc, char *argv[])
     propertySet->SetTypeName( "UnitConversionTest" );
 
     propertySet->AddProperty( "ADouble", 2.0, "A Double value" );
-    // Set up the storage unit system. Valid values are "SI" and "US"
+    // Unit attributes can be set manually like this:
+    /*
     propertySet->SetPropertyAttribute( "ADouble", "StorageUnitSystem", std::string("US") );
     propertySet->SetPropertyAttribute( "ADouble", "SIDisplayUnit", std::string("meter") );
     propertySet->SetPropertyAttribute( "ADouble", "USDisplayUnit", std::string("foot") );
     propertySet->SetPropertyAttribute( "ADouble", "USDisplayLabel", std::string("A Double value (ft)") );
-    propertySet->SetPropertyAttribute( "ADouble", "SIDisplayLabel", std::string("A Double value (m)") );
+    propertySet->SetPropertyAttribute( "ADouble", "SIDisplayLabel", std::string("A Double value (m)") );*/
+
+    // ...But it's easier to use the AddUnits function in Utilties.h to do this
+    // all at once:
+    propertystore::AddUnits( propertySet, "ADouble", "US",
+                             "meter", "A double value (m)",
+                             "foot", "A double value (ft)" );
 
     // A second double value with no units attached
     propertySet->AddProperty( "DoubleTwo", 4.0, "2nd Double (no units)" );
