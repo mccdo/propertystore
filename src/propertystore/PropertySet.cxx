@@ -89,6 +89,7 @@ PropertySet::~PropertySet()
     if(m_timer)
     {
         m_timer->restart( 0 );
+        //m_timer->stop():
         delete m_timer;
         m_timer = 0;
     }
