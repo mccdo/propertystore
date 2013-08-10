@@ -140,4 +140,9 @@ void GroupPropertyBrowser::RefreshAllValues()
     }
 }
 
+void GroupPropertyBrowser::SetDisplayUnitSystem( DisplayUnitSystem system )
+{
+    m_displayUnitSystem = system;
+}
+
 }
