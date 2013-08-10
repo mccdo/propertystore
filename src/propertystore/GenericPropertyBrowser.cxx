@@ -150,7 +150,7 @@ void GenericPropertyBrowser::RefreshAllValues()
     }
 }
 
-void propertystore::GenericPropertyBrowser::SetDisplayUnitSystem( DisplayUnitSystem system )
+void GenericPropertyBrowser::SetDisplayUnitSystem( DisplayUnitSystem system )
 {
     m_displayUnitSystem = system;
 }

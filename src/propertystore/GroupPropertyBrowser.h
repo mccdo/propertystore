@@ -64,6 +64,8 @@ public:
     /// than RefreshValues();
     void RefreshAllValues();
 
+    void SetDisplayUnitSystem( DisplayUnitSystem system );
+
 Q_SIGNALS:
     /// Forwards the Modified signal from PropertyParser. This is fired when
     /// the PropertySet held by the parser is modified in any way.
@@ -81,6 +83,7 @@ private:
     QtSliderFactory* mSliderFactory;
     ExternalStringSelectFactory* mFileEditFactory;
     ExternalStringSelectFactory* mColorEditFactory;
+    DisplayUnitSystem m_displayUnitSystem;
 };
 
 } // namespace
