@@ -30,7 +30,7 @@ PropertyParser::PropertyParser( QObject* parent ) :
     QObject( parent ),
     m_ignoreValueChanges( false ),
     m_parseOperation( false ),
-    m_displayUnitSystem( "USDisplayUnit" ),
+    m_displayUnitSystem( "US" ),
     m_logger( Poco::Logger::get("PropertyParser") ),
     m_logStream( LogStreamPtr( new Poco::LogStream( m_logger ) ) )
 {
@@ -404,11 +404,11 @@ void PropertyParser::_refreshItem( int index )
     {
         if( hasMin )
         {
-            mIntManager->setMinimum( item, static_cast < int > ( min ) );
+            mIntManager->setMinimum( item, static_cast < int > ( _getUnitConvertedValue( property, min ) ) );
         }
         if( hasMax )
         {
-            mIntManager->setMaximum( item, static_cast < int > ( max ) );
+            mIntManager->setMaximum( item, static_cast < int > ( _getUnitConvertedValue( property, max ) ) );
         }
         //int currentMin = mIntManager->minimum( item );
         //int currentMax = mIntManager->maximum( item );
@@ -429,11 +429,11 @@ void PropertyParser::_refreshItem( int index )
     {
         if( hasMin )
         {
-            mDoubleManager->setMinimum( item, min );
+            mDoubleManager->setMinimum( item, _getUnitConvertedValue( property, min ) );
         }
         if( hasMax )
         {
-            mDoubleManager->setMaximum( item, max );
+            mDoubleManager->setMaximum( item, _getUnitConvertedValue( property, max ) );
         }
 
         int precision = 2;
@@ -452,11 +452,11 @@ void PropertyParser::_refreshItem( int index )
     {
         if( hasMin )
         {
-            mDoubleManager->setMinimum( item, min );
+            mDoubleManager->setMinimum( item, _getUnitConvertedValue( property, min ) );
         }
         if( hasMax )
         {
-            mDoubleManager->setMaximum( item, max );
+            mDoubleManager->setMaximum( item, _getUnitConvertedValue( property, max ) );
         }
 
         int precision = 2;
@@ -692,7 +692,7 @@ void PropertyParser::DoubleValueChanged( QtProperty* item, double value )
         // If this property has a unit conversion set on it, we need to convert
         // from display units back into storage units.
         // Must cast to float if the underlying type is really a float
-        double unitHashTest = _getUnitConvertedValue( property );
+        double unitHashTest = _getUnitConvertedValue( property, property->extract< double >() );
         if( unitHashTest == value )
         {
             // The value we've just been handed is simply the stored
@@ -700,7 +700,7 @@ void PropertyParser::DoubleValueChanged( QtProperty* item, double value )
             // value in this case!
             return;
         }
-        double cVal = _getUnitConvertedValue( property, true, value );
+        double cVal = _getUnitConvertedValue( property, value, true );
         if( property->IsFloat() )
         {
             _setPropertyValue( item, static_cast < float > ( cVal ) );
@@ -817,7 +817,7 @@ void PropertyParser::_setItemValue( QtProperty* const item, PropertyPtr property
     }
     else if( property->IsDouble() )
     {
-        double castValue = _getUnitConvertedValue( property );
+        double castValue = _getUnitConvertedValue( property, property->extract<double>() );
         PS_LOG_TRACE( "_setItemValue: " << castValue );
         mDoubleManager->setValue( item, castValue );
     }
@@ -848,21 +848,22 @@ void PropertyParser::_setItemValue( QtProperty* const item, PropertyPtr property
     }
 }
 ////////////////////////////////////////////////////////////////////////////////
-double PropertyParser::_getUnitConvertedValue( PropertyPtr property, bool inverse, double value )
+double PropertyParser::_getUnitConvertedValue( PropertyPtr property, double value, bool inverse )
 {
     PS_LOG_TRACE( "_getUnitConvertedValue" );
-    double storedValue = property->extract< double >();
+    double result = value;
+//    double storedValue = property->extract< double >();
     // If no units attached, short-circuit the conversion attempt
     if( !property->AttributeExists( "StorageUnitSystem" ) )
     {
-        return storedValue;
+        return result;
     }
 
-
+    // If storage and display units are the same, don't try to convert
     std::string storageUnitSystem = property->GetAttribute( "StorageUnitSystem" )->extract<std::string>();
     if( m_displayUnitSystem == storageUnitSystem )
     {
-        return storedValue;
+        return result;
     }
 
     // Pull the storage units
@@ -873,10 +874,10 @@ double PropertyParser::_getUnitConvertedValue( PropertyPtr property, bool invers
     }
     else
     {
-        return storedValue;
+        return result;
     }
 
-    // Pull the storage units
+    // Pull the display units
     std::string displayUnit( storageUnit );
     if( property->AttributeExists( m_displayUnitSystem + "DisplayUnit" ) )
     {
@@ -889,11 +890,11 @@ double PropertyParser::_getUnitConvertedValue( PropertyPtr property, bool invers
     {
         if( !inverse )
         {
-            storedValue = m_unitConverter.Convert( storedValue, storageUnit, displayUnit );
+            result = m_unitConverter.Convert( value, storageUnit, displayUnit );
         }
         else
         {
-            storedValue = m_unitConverter.Convert( value, displayUnit, storageUnit );
+            result = m_unitConverter.Convert( value, displayUnit, storageUnit );
         }
     }
     catch( std::runtime_error& ex )
@@ -903,7 +904,7 @@ double PropertyParser::_getUnitConvertedValue( PropertyPtr property, bool invers
         throw ex;
     }
 
-    return storedValue;
+    return result;
 }
 ////////////////////////////////////////////////////////////////////////////////
 void PropertyParser::_setPropertyValue( QtProperty* const item, boost::any value )

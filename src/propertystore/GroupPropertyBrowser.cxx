@@ -62,6 +62,7 @@ void GroupPropertyBrowser::ParsePropertySet( PropertySetPtr set, bool autosize )
         SetPropertyParser( new PropertyParser );
     }
 
+    mParser->SetDisplayUnitSystem( m_displayUnitSystem );
     mParser->ParsePropertySet( set );
     RefreshAllValues();
     RefreshContents( autosize );

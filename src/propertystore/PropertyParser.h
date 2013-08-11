@@ -205,7 +205,7 @@ private:
     void _refreshItem( int index );
 
     /// Handle unit conversions on the display side
-    double _getUnitConvertedValue( PropertyPtr property, bool inverse = false, double value = 0.0 );
+    double _getUnitConvertedValue( PropertyPtr property, double value, bool inverse = false );
 
     /** When this is true, changes to values in the browser are not pushed down
       * to the underlying PropertySet.
