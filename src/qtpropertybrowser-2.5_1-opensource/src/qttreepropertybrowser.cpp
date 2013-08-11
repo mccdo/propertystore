@@ -59,6 +59,12 @@
 #include <QtGui/QPalette>
 #include <QtGui/QComboBox>
 
+///
+#include <QtGui/QTextDocument>
+#include <QtGui/QAbstractTextDocumentLayout>
+#include <QtGui/QStyledItemDelegate>
+///
+
 #if QT_VERSION >= 0x040400
 QT_BEGIN_NAMESPACE
 #endif
@@ -223,12 +229,12 @@ void QtPropertyEditorView::mousePressEvent(QMouseEvent *event)
 }
 
 // ------------ QtPropertyEditorDelegate
-class QtPropertyEditorDelegate : public QItemDelegate
+class QtPropertyEditorDelegate : public QStyledItemDelegate
 {
     Q_OBJECT
 public:
     QtPropertyEditorDelegate(QObject *parent = 0)
-        : QItemDelegate(parent), m_editorPrivate(0), m_editedItem(0), m_editedWidget(0)
+        : QStyledItemDelegate(parent), m_editorPrivate(0), m_editedItem(0), m_editedWidget(0)
         {}
 
     void setEditorPrivate(QtTreePropertyBrowserPrivate *editorPrivate)
@@ -367,7 +373,35 @@ void QtPropertyEditorDelegate::paint(QPainter *painter, const QStyleOptionViewIt
     if (c.isValid())
         painter->fillRect(option.rect, c);
     opt.state &= ~QStyle::State_HasFocus;
-    QItemDelegate::paint(painter, opt, index);
+////////
+    //QItemDelegate::paint(painter, opt, index);
+    {
+    QStyleOptionViewItemV4 optionV4 = option;
+    initStyleOption(&optionV4, index);
+
+    QStyle *style = optionV4.widget? optionV4.widget->style() : QApplication::style();
+
+    QTextDocument doc;
+    doc.setHtml(optionV4.text);
+
+    /// Painting item without text
+    optionV4.text = QString();
+    style->drawControl(QStyle::CE_ItemViewItem, &optionV4, painter);
+
+    QAbstractTextDocumentLayout::PaintContext ctx;
+
+    // Highlighting text if item is selected
+    if (optionV4.state & QStyle::State_Selected)
+        ctx.palette.setColor(QPalette::Text, optionV4.palette.color(QPalette::Active, QPalette::HighlightedText));
+
+    QRect textRect = style->subElementRect(QStyle::SE_ItemViewItemText, &optionV4);
+    painter->save();
+    painter->translate(textRect.topLeft());
+    painter->setClipRect(textRect.translated(-textRect.topLeft()));
+    doc.documentLayout()->draw(painter, ctx);
+    painter->restore();
+}
+//////
 
     opt.palette.setCurrentColorGroup(QPalette::Active);
     QColor color = static_cast<QRgb>(QApplication::style()->styleHint(QStyle::SH_Table_GridLineColor, &opt));
@@ -383,7 +417,7 @@ void QtPropertyEditorDelegate::paint(QPainter *painter, const QStyleOptionViewIt
 QSize QtPropertyEditorDelegate::sizeHint(const QStyleOptionViewItem &option,
             const QModelIndex &index) const
 {
-    return QItemDelegate::sizeHint(option, index) + QSize(3, 4);
+    return QStyledItemDelegate::sizeHint(option, index) + QSize(3, 4);
 }
 
 bool QtPropertyEditorDelegate::eventFilter(QObject *object, QEvent *event)
@@ -398,7 +432,7 @@ bool QtPropertyEditorDelegate::eventFilter(QObject *object, QEvent *event)
         if (fe->reason() == Qt::ActiveWindowFocusReason)
             return false;
     }
-    return QItemDelegate::eventFilter(object, event);
+    return QStyledItemDelegate::eventFilter(object, event);
 }
 
 //  -------- QtTreePropertyBrowserPrivate implementation
