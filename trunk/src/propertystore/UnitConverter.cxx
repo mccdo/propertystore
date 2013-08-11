@@ -67,6 +67,11 @@ double UnitConverter::Convert( double value,
                                const std::string &from_unit,
                                const std::string &to_unit ) const
 {
+    if( from_unit == to_unit )
+    {
+        return value;
+    }
+
     std::string key( from_unit );
     key += to_unit;
     std::map< std::string, conversionPtr >::const_iterator itr =
