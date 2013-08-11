@@ -97,11 +97,12 @@ void UnitConverter::SetupDefaultConversions()
         // Volume
         AddConversionInversePair( "gallon", "liter", 3.78541 );
         AddConversionInversePair( "fluidounce", "milliliter", 29.5735 );
+        AddConversionInversePair( "fluidounce", "liter", 0.0295735 );
 
         // Pressure
         AddConversionInversePair( "psi", "megapascal", 0.00689475729 );
         AddConversionInversePair( "psi", "kilopascal", 6.89475729 );
-
+        AddConversionInversePair( "psi", "bar", 0.0689475729 );
 
 
         // With some more clever parsing of the available conversions I should
@@ -112,6 +113,7 @@ void UnitConverter::SetupDefaultConversions()
         // in the two "anything" columns. If so, you have a conversion path.
         AddConversionInversePair( "centimeter", "millimeter", 10.0 );
         AddConversionInversePair( "inch", "centimeter", 2.54 );
+        AddConversionInversePair( "inch", "millimeter", 25.4 );
 }
 ////////////////////////////////////////////////////////////////////////////////
 
