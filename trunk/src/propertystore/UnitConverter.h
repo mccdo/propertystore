@@ -1,8 +1,10 @@
 #pragma once
 
+#include <propertystore/PointerTypes.h>
+#include <propertystore/Exports.h>
+
 #include <string>
 #include <map>
-#include <propertystore/PointerTypes.h>
 
 namespace propertystore
 {
@@ -10,7 +12,7 @@ namespace propertystore
 enum DisplayUnitSystem { SI_Units, US_Units };
 
 // First declare a simple class we will use to store conversion information
-class conversion
+class PROPERTYSTORE_EXPORT conversion
 {
 public:
     conversion();
@@ -38,7 +40,7 @@ typedef propertystore::ClassPtrDef<conversion>::type  conversionPtr;
 /// Holds a set of conversion objects capable of converting from one unit to
 /// another, and provides a single access point for calling these conversion
 /// objects.
-class UnitConverter
+class PROPERTYSTORE_EXPORT UnitConverter
 {
 public:
     UnitConverter();
