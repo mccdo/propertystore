@@ -1068,7 +1068,7 @@ QString QtDoublePropertyManager::valueText(const QtProperty *property) const
         return QString();
     //return QString::number(it.value().val, 'f', it.value().decimals);
     //Make this correctly locale-aware:
-    return QLocale::system().toString( it.value().val, 'f', it.value().decimals  );
+    return QLocale().toString( it.value().val, 'f', it.value().decimals  );
 }
 
 /*!
