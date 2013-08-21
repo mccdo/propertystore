@@ -1066,7 +1066,9 @@ QString QtDoublePropertyManager::valueText(const QtProperty *property) const
     const QtDoublePropertyManagerPrivate::PropertyValueMap::const_iterator it = d_ptr->m_values.constFind(property);
     if (it == d_ptr->m_values.constEnd())
         return QString();
-    return QString::number(it.value().val, 'f', it.value().decimals);
+    //return QString::number(it.value().val, 'f', it.value().decimals);
+    //Make this correctly locale-aware:
+    return QLocale::system().toString( it.value().val, 'f', it.value().decimals  );
 }
 
 /*!
