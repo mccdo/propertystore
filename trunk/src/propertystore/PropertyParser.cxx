@@ -20,6 +20,8 @@
 //#define PROPERTYSTORE_DEBUG
 #include <propertystore/PropertyParser.h>
 
+#include <QtGui/QApplication>
+
 #include <iostream>
 #include <cmath>
 
@@ -247,6 +249,10 @@ void PropertyParser::ParsePropertySet( PropertySetPtr set )
 
         // Convert label to type needed by Qt functions
         QString label = QString::fromStdString( propertyLabel );
+        // Translate the label, using the propertyset's typename as the
+        // translation context
+        std::string trContext = set->GetTypeName();
+        label = qApp->translate( trContext.c_str(), propertyLabel.c_str() );
 
         boost::any value = property->GetValue();
 
@@ -396,7 +402,10 @@ void PropertyParser::_refreshItem( int index )
         Property::PSVectorOfStrings::iterator end = enumNames.end();
         for( iterator = enumNames.begin(); iterator != end; iterator++ )
         {
-            qEnumNames << QString::fromStdString( ( *iterator ) );
+            QString qen = qApp->translate( mSet->GetTypeName().c_str(),
+                                           iterator->c_str() );
+            //qEnumNames << QString::fromStdString( ( *iterator ) );
+            qEnumNames << qen;
         }
         mEnumManager->setEnumNames( item, qEnumNames );
     }
@@ -507,6 +516,9 @@ void PropertyParser::_refreshItem( int index )
         QString toolTip = QString::fromStdString(
                     property->GetAttribute( "uiToolTip" )->
                                            extract<std::string>() );
+        // Translate tooltip
+        std::string trContext = mSet->GetTypeName();
+        toolTip = qApp->translate( trContext.c_str(), toolTip.toStdString().c_str() );
         if( !toolTip.isEmpty() )
         {
             item->setToolTip( toolTip );
