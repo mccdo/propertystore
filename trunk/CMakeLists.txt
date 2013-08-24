@@ -49,6 +49,7 @@ FIND_PACKAGE(Boost 1.44.0 REQUIRED COMPONENTS system)
 
 set( POCO_ROOT "Please specify" CACHE PATH "Root directory where POCO is installed" )
 FIND_PACKAGE(POCO 1.4.1 REQUIRED COMPONENTS PocoFoundation PocoUtil PocoData PocoDataSQLite)
+FIND_PACKAGE(POCO 1.5.0 COMPONENTS PocoJSON)
 
 FIND_PACKAGE(Qt4 REQUIRED COMPONENTS QtCore QtGui )
 include(${QT_USE_FILE})

@@ -1,0 +1,71 @@
+{
+    "TypeName": "ContourPlane",
+    "properties":
+    {
+        "NameTag":
+        {
+            "userVisible": false
+        },
+        "Hide":
+        {
+            "type": "boolean",
+            "default": true,
+            "live": "delayed",
+            "liveSignalName": "HideVizFeature",
+            "liveSendUUID": true,
+            "uiLabel": "Toggle Viz Off"
+        },
+        "PlaneLocation":
+        {
+            "type": "double",
+            "minimum": 0.0,
+            "maximum": 100.0,
+            "default": 50.0,
+            "uiLabel": "Plane Location"
+        },
+        "Advanced":
+        {
+            "isUIGroupOnly": true,
+            "uiLabel": "Advanced"
+        },
+        "Advanced_Opacity":
+        {
+            "type": "double",
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "default": 1.0,
+            "uiLabel": "Opacity"
+        },
+        "Advanced_ContourType":
+        {
+            "type": "string",
+            "enumValues": ["Graduated","Banded","Lined"],
+            "default": "Graduated",
+            "uiLabel": "Contour Type"
+        },
+        "Advanced_IntegerType":
+        {
+            "type": "integer",
+            "default": 34,
+            "uiLabel": "Some Integer"
+        },
+        "Advanced_FloatType":
+        {
+            "type": "float",
+            "default": 34.4,
+            "uiLabel": "Some Float"
+        },
+        "Advanced_BLOBType":
+        {
+            "type": "BLOB",
+            "default": "",
+            "fakeattr": 1.2,
+            "fakeattr2": 3,
+            "fakeattr3": false,
+            "uiLabel": "A big BLOB!!!"
+        }
+    },
+    "propertyOrder": ["NameTag","Hide","PlaneLocation","Advanced","Advanced_Opacity",
+        "Advanced_ContourType","Advanced_IntegerType","Advanced_FloatType",
+        "Advanced_BLOBType"]
+}
