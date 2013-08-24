@@ -71,21 +71,24 @@ INSTALL(
     )
 
 # DeclarativeProperties
-#set( srcs DeclarativeProperties.cxx )
-#
-#SET(TARGET_SRC ${srcs})
-#
-#SET(TARGET_NAME DeclarativeProperties )
-#ADD_EXECUTABLE(${TARGET_NAME} ${TARGET_SRC})
-#TARGET_LINK_LIBRARIES(${TARGET_NAME} propertystore ${QT_LIBRARIES})
-#
-#SET(INSTALL_BINDIR bin)
-#
-#INSTALL(
-#        TARGETS ${TARGET_NAME}
-#        RUNTIME DESTINATION ${INSTALL_BINDIR}
-#    )
-#
-#install(FILES JSONProp.json
-#    DESTINATION bin
-#    COMPONENT development)
+LIST( FIND POCO_LIBRARIES PocoJSON jsonavail )
+if( jsonavail)
+set( srcs DeclarativeProperties.cxx )
+
+SET(TARGET_SRC ${srcs})
+
+SET(TARGET_NAME DeclarativeProperties )
+ADD_EXECUTABLE(${TARGET_NAME} ${TARGET_SRC})
+TARGET_LINK_LIBRARIES(${TARGET_NAME} propertystore ${QT_LIBRARIES})
+
+SET(INSTALL_BINDIR bin)
+
+INSTALL(
+        TARGETS ${TARGET_NAME}
+        RUNTIME DESTINATION ${INSTALL_BINDIR}
+    )
+
+install(FILES JSONProp.json
+    DESTINATION bin
+    COMPONENT development)
+endif( jsonavail )

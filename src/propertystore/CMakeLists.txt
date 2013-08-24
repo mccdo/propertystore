@@ -24,6 +24,14 @@ FILE( GLOB qtbrowserhdrs "${QTPBDIR}/Qt*" )
 list(REMOVE_ITEM qtbrowserhdrs ${qsrcs})
 list(REMOVE_ITEM qtbrowserhdrs ${QTPBDIR}/qtpropertybrowser.pri ${QTPBDIR}/qtpropertybrowser.qrc)
 
+# Removing then adding back so we default to NOT building the file
+# in case there's any funny business with the test for PocoJSON
+LIST( REMOVE_ITEM srcs DeclarativePropertySet.cxx )
+LIST( FIND POCO_LIBRARIES PocoJSON jsonavail )
+if( jsonavail )
+LIST( APPEND srcs DeclarativePropertySet.cxx )
+endif( jsonavail )
+
 SET( HDRS_TO_MOC
         ExternalStringSelect.h
         ExternalStringSelectFactory.h
