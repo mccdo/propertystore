@@ -1,13 +1,13 @@
 #pragma once
 
+#include <Poco/JSON/Object.h>
+
 #include <propertystore/PropertySet.h>
 #include <propertystore/MakeLivePtr.h>
 #include <propertystore/MakeLive.h>
 #include <propertystore/Exports.h>
 
 #include <vector>
-
-#include <Poco/JSON/Object.h>
 
 namespace propertystore
 {
