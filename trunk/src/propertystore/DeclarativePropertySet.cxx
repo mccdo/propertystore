@@ -65,7 +65,11 @@ void DeclarativePropertySet::FromJSONFile( const std::string& filename )
 void DeclarativePropertySet::FromJSON(const std::string &json)
 {
     try{
+#if POCO_VERSION >= 1050200
         Poco::JSON::ParseHandler handler;
+#else
+        Poco::JSON::DefaultHandler handler;
+#endif
         Poco::JSON::Parser parser;
         parser.setHandler( &handler );
         parser.parse( json );
