@@ -2,7 +2,12 @@
 
 #include <Poco/JSON/Parser.h>
 #include <Poco/JSON/Handler.h>
+#include <Poco/Version.h>
+#if POCO_VERSION >= 1050200
+#include <Poco/JSON/ParseHandler.h>
+#else
 #include <Poco/JSON/DefaultHandler.h>
+#endif
 #include <Poco/Dynamic/Var.h>
 #include "Poco/Path.h"
 #include "Poco/File.h"
@@ -60,12 +65,15 @@ void DeclarativePropertySet::FromJSONFile( const std::string& filename )
 void DeclarativePropertySet::FromJSON(const std::string &json)
 {
     try{
-        Poco::JSON::DefaultHandler handler;
+        Poco::JSON::ParseHandler handler;
         Poco::JSON::Parser parser;
         parser.setHandler( &handler );
         parser.parse( json );
+#if POCO_VERSION >= 1050200
+        Poco::DynamicAny result = handler.asVar();
+#else
         Poco::DynamicAny result = handler.result();
-
+#endif
         Poco::JSON::Object::Ptr set;
         if ( result.type() == typeid( Poco::JSON::Object::Ptr ) )
         {
