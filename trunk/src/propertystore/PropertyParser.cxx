@@ -21,6 +21,7 @@
 #include <propertystore/PropertyParser.h>
 
 #include <QtGui/QApplication>
+#include <QLocale>
 
 #include <iostream>
 #include <cmath>
@@ -176,6 +177,11 @@ void PropertyParser::ParsePropertySet( PropertySetPtr set )
     {
         return;
     }
+
+    // Create a default locale; we will use this later when processing labels
+    // and strings
+    QLocale loc;
+
     // Ask the set for a list of its properties
     mPropertyNames = set->GetDataList();
 
@@ -253,6 +259,11 @@ void PropertyParser::ParsePropertySet( PropertySetPtr set )
         // translation context
         std::string trContext = set->GetTypeName();
         label = qApp->translate( trContext.c_str(), propertyLabel.c_str() );
+        if( property->AttributeExists( "ReplaceWithSystemCurrencySymbol" ) )
+        {
+            std::string cSym = property->GetAttribute( "ReplaceWithSystemCurrencySymbol" )->extract<std::string>();
+            label.replace( QString::fromStdString( cSym ), loc.currencySymbol() );
+        }
 
         boost::any value = property->GetValue();
 
@@ -837,6 +848,16 @@ void PropertyParser::_setItemValue( QtProperty* const item, PropertyPtr property
     {
         std::string castValue = property->extract<std::string>();
         QString qCastValue = QString::fromStdString( castValue );
+
+        // Replace chosen currency symbol with system currency symbol if so
+        // indicated
+        QLocale loc;
+        if( property->AttributeExists( "ReplaceWithSystemCurrencySymbol" ) )
+        {
+            std::string cSym = property->GetAttribute( "ReplaceWithSystemCurrencySymbol" )->extract<std::string>();
+            qCastValue.replace( QString::fromStdString( cSym ), loc.currencySymbol() );
+        }
+
         bool found = false;
         std::map< std::string, ExternalStringSelectManager* >::iterator itr =
                 m_customStringManagers.begin();
