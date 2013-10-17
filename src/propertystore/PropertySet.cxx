@@ -17,6 +17,7 @@
  * Boston, MA 02111-1307, USA.
  *
  *************** <auto-copyright.rb END do not edit this line> ***************/
+//#define PROPERTYSTORE_DEBUG
 #include "PropertySet.h"
 #include "Property.h"
 
@@ -86,8 +87,10 @@ PropertySet::PropertySet( const PropertySet& orig )
 ////////////////////////////////////////////////////////////////////////////////
 PropertySet::~PropertySet()
 {
+    PS_LOG_TRACE( "dtor" );
     if(m_timer)
     {
+        PS_LOG_TRACE( "dtor: stopping timer" );
         m_timer->restart( 0 );
         //m_timer->stop():
         delete m_timer;
@@ -312,6 +315,7 @@ bool PropertySet::LoadByKey( std::string const& KeyName, boost::any KeyValue )
 ////////////////////////////////////////////////////////////////////////////////
 bool PropertySet::Save()
 {
+    PS_LOG_TRACE( "Save" );
     //std::cout << "PropertySet::Save -- " << GetTypeName() << std::endl << std::flush;
     if( !m_dataManager )
     {
@@ -440,6 +444,7 @@ unsigned int PropertySet::GetBoostAnyVectorSize( const boost::any& value )
 ////////////////////////////////////////////////////////////////////////////////
 void PropertySet::EnableLiveProperties( bool live )
 {
+    PS_LOG_TRACE( "EnableLiveProperties: " << live );
     // Derived classes should override this method if they want
     // delayed live properties.
 
@@ -471,10 +476,11 @@ void PropertySet::SaveLiveProperties( Poco::Timer&  )
         PS_LOG_INFO( "Changes detected in live property in propertyset " << m_UUIDString <<
                 ": auto-saving." );
         SaveNoOverride();
+        m_liveWriteDirty = false;
     }
     else
     {
-        PS_LOG_TRACE( "No live data changes detected in propertyset " << m_UUIDString );
+        //PS_LOG_TRACE( "No live data changes detected in propertyset " << m_UUIDString );
     }
 }
 ////////////////////////////////////////////////////////////////////////////////
