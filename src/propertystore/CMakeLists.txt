@@ -60,15 +60,15 @@ SET( HDRS_TO_MOC_NO_COMPILE
         ${QTPBDIR}/qtvariantproperty.h
 
 )
-FOREACH( _itr ${HDRS_TO_MOC_NO_COMPILE} )
-    SET( _path ${CMAKE_BINARY_DIR}/src )
-    GET_FILENAME_COMPONENT( _fname ${_itr} NAME_WE)
-    SET( _outFile moc_${_fname}.cxx )
-    QT4_CREATE_MOC_COMMAND( ${_itr} ${_path}/${_outFile} "" "" )
-    MACRO_ADD_FILE_DEPENDENCIES( ${QTPBDIR}/${_fname}.cpp ${_path}/${_outFile} )
-ENDFOREACH( _itr ${HDRS_TO_MOC_NO_COMPILE} )
+#FOREACH( _itr ${HDRS_TO_MOC_NO_COMPILE} )
+#    SET( _path ${CMAKE_BINARY_DIR}/src )
+#    GET_FILENAME_COMPONENT( _fname ${_itr} NAME_WE)
+#    SET( _outFile moc_${_fname}.cxx )
+#    QT4_CREATE_MOC_COMMAND( ${_itr} ${_path}/${_outFile} "" "" )
+#    MACRO_ADD_FILE_DEPENDENCIES( ${QTPBDIR}/${_fname}.cpp ${_path}/${_outFile} )
+#ENDFOREACH( _itr ${HDRS_TO_MOC_NO_COMPILE} )
 
-
+set_source_files_properties( ${HDRS_TO_MOC_NO_COMPILE} PROPERTIES AUTOMOC TRUE )
 # Qt's internal projects sometimes contain moc-able information in source files
 # rather than restricting to headers, and we have to handle this in a special
 # way.
@@ -77,11 +77,12 @@ SET( SRCS_TO_MOC
         ${QTPBDIR}/qtpropertymanager.cpp
         ${QTPBDIR}/qttreepropertybrowser.cpp
     )
-FOREACH( _itr ${SRCS_TO_MOC} )
-    GET_FILENAME_COMPONENT( _fname ${_itr} NAME_WE)
-    QT4_CREATE_MOC_COMMAND( ${_itr} "${CMAKE_BINARY_DIR}/src/${_fname}.moc" "" "" )
-    MACRO_ADD_FILE_DEPENDENCIES( ${_itr} ${CMAKE_BINARY_DIR}/src/${_fname}.moc )
-ENDFOREACH( _itr ${SRCS_TO_MOC} )
+#FOREACH( _itr ${SRCS_TO_MOC} )
+#    GET_FILENAME_COMPONENT( _fname ${_itr} NAME_WE)
+#    QT4_CREATE_MOC_COMMAND( ${_itr} "${CMAKE_BINARY_DIR}/src/${_fname}.moc" "" "" )
+#    MACRO_ADD_FILE_DEPENDENCIES( ${_itr} ${CMAKE_BINARY_DIR}/src/${_fname}.moc )
+#ENDFOREACH( _itr ${SRCS_TO_MOC} )
+set_source_files_properties( ${SRCS_TO_MOC} PROPERTIES AUTOMOC TRUE )
 ### End special stuff for sources with moc info
 
 SET( QRC_FILES ${QTPBDIR}/qtpropertybrowser.qrc )
