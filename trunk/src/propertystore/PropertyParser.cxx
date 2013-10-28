@@ -262,7 +262,9 @@ void PropertyParser::ParsePropertySet( PropertySetPtr set )
         if( property->AttributeExists( "ReplaceWithSystemCurrencySymbol" ) )
         {
             std::string cSym = property->GetAttribute( "ReplaceWithSystemCurrencySymbol" )->extract<std::string>();
+#if (QT_VERSION_MAJOR > 4) || ((QT_VERSION_MAJOR == 4) && (QT_VERSION_MINOR > 7))
             label.replace( QString::fromStdString( cSym ), loc.currencySymbol() );
+#endif
         }
 
         boost::any value = property->GetValue();
@@ -855,7 +857,9 @@ void PropertyParser::_setItemValue( QtProperty* const item, PropertyPtr property
         if( property->AttributeExists( "ReplaceWithSystemCurrencySymbol" ) )
         {
             std::string cSym = property->GetAttribute( "ReplaceWithSystemCurrencySymbol" )->extract<std::string>();
+#if (QT_VERSION_MAJOR > 4) || ((QT_VERSION_MAJOR == 4) && (QT_VERSION_MINOR > 7))
             qCastValue.replace( QString::fromStdString( cSym ), loc.currencySymbol() );
+#endif
         }
 
         bool found = false;
