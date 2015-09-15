@@ -22,8 +22,10 @@
 #include <string>
 #include <vector>
 
+#ifndef Q_MOC_RUN
 #include <boost/any.hpp>
 #include <boost/uuid/uuid.hpp>
+#endif
 
 #include <Poco/Types.h>
 

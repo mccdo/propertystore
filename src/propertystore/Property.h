@@ -25,9 +25,11 @@
 #include <vector>
 #include <map>
 
+#ifndef Q_MOC_RUN
 #include <boost/any.hpp>
 #include <boost/signals2/signal.hpp>
 #include <boost/enable_shared_from_this.hpp>
+#endif
 
 #include <propertystore/Exports.h>
 #include <propertystore/PropertyPtr.h>
